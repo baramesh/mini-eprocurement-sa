@@ -56,7 +56,7 @@ slicing_reason: งานไม่มีหน้าจอ ต้องเสร
 
 ## Scope
 
-- สร้างตารางทั้ง 17 ตาราง ดัชนี และ constraint ตาม `sql/schema.sql`
+- สร้างทุกตารางที่ระบุในหัวข้อตารางข้างต้น ดัชนี และ constraint ตาม `sql/schema.sql`
 - ขั้นตอน `usp_next_doc_no` ออกเลข PR, RFQ, PO, GR
 - ปฏิเสธ UPDATE/DELETE ตาราง `audit_log` สำหรับบัญชีแอป
 
