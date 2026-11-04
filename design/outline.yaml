@@ -1,0 +1,233 @@
+# Document outline: which pieces go in which chapter, and how each is rendered.
+# Pieces carry NO numbers. Chapter, section, table and figure numbers are assigned when the
+# document is composed, so adding, moving or removing a piece renumbers everything after it.
+#
+# render: prose | list | table | figure | items | generated
+author: บารเมษฐ์ นามมุงคุณ
+version: "1.0"
+
+documents:
+  - id: 00-ai-workflow
+    title: การทำงานกับ AI ในโปรเจกต์นี้
+    subtitle: How AI Was Used
+    doc_code: MEP-AIW-001
+    landscape: true
+    chapters:
+      - { title: หลักการ, render: list, pieces: [00-overview/principles], bold_title: true }
+      - title: ข้อจำกัดของเอกสารที่ pipeline แก้
+        render: table
+        caption: ข้อจำกัดของเอกสารและวิธีที่ pipeline แก้
+        pieces: [00-overview/pipeline]
+        columns: [{ title: ประเด็น, field: title }, { title: ปัญหาที่พบเมื่อทำในโปรแกรมแก้ไขเอกสาร, field: effect }, { title: วิธีที่ pipeline แก้, field: solution }]
+      - title: ขั้นตอนและบทบาท
+        render: table
+        caption: ขั้นตอน บทบาทคนและ AI และการตรวจ
+        pieces: [00-overview/steps]
+        columns: [{ title: ลำดับ, field: "#" }, { title: ขั้น, field: title }, { title: ผู้จัดทำกำหนด, field: decide }, { title: AI ทำ, field: ai }, { title: ผลลัพธ์, field: artifact }, { title: การตรวจ, field: check }]
+      - title: สิ่งที่ตัวตรวจจับได้และสิ่งที่ AI แก้ระหว่างทาง
+        render: table
+        caption: ปัญหาที่พบระหว่างทางและการแก้
+        pieces: [00-overview/findings]
+        columns: [{ title: เรื่อง, field: title }, { title: เกิดอะไรขึ้น, field: what }, { title: แก้อย่างไร, field: fix }]
+      - title: สิ่งที่ตรวจแล้วและสิ่งที่ยังไม่ได้ตรวจ
+        render: table
+        caption: สิ่งที่ตรวจแล้วและสิ่งที่ยังไม่ได้ตรวจ
+        pieces: [00-overview/verification]
+        columns: [{ title: ตรวจแล้ว (มีหลักฐาน), field: body }, { title: ยังไม่ได้ตรวจ, field: unchecked }]
+
+  - id: 01-requirements
+    title: ข้อกำหนดความต้องการ
+    subtitle: Requirements
+    doc_code: MEP-REQ-001
+    chapters:
+      - title: ภาพรวมและขอบเขต
+        children:
+          - { title: บริบทธุรกิจ, render: prose, pieces: [01-requirements/context] }
+          - title: ขอบเขต
+            render: table
+            caption: ขอบเขตของระบบ
+            pieces: [01-requirements/scope]
+            columns: [{ title: อยู่ในขอบเขต, field: in_scope }, { title: อยู่นอกขอบเขต, field: out_of_scope }]
+          - title: ผู้เกี่ยวข้องและบทบาท
+            render: table
+            caption: ผู้เกี่ยวข้องและบทบาท
+            pieces: [01-requirements/actors]
+            columns: [{ title: รหัสบทบาท, field: role_code, code: true }, { title: ผู้ใช้, field: user }, { title: สิ่งที่ทำได้, field: body }]
+      - title: ข้อกำหนดเชิงหน้าที่ (Functional Requirements)
+        render: table
+        caption: ข้อกำหนดเชิงหน้าที่
+        pieces: [01-requirements/functional]
+        columns: [{ title: รหัส, field: id }, { title: หัวข้อ, field: title }, { title: ข้อกำหนด, field: body }, { title: ลำดับ, field: priority }]
+      - title: กฎธุรกิจ (Business Rules)
+        render: table
+        caption: กฎธุรกิจ
+        pieces: [01-requirements/business-rules]
+        columns: [{ title: รหัส, field: id }, { title: หัวข้อ, field: title }, { title: กฎ, field: body }, { title: ใช้กับ, field: applies_to }]
+      - title: ข้อกำหนดที่ไม่ใช่เชิงหน้าที่ (Non-functional Requirements)
+        render: table
+        caption: ข้อกำหนดที่ไม่ใช่เชิงหน้าที่
+        pieces: [01-requirements/nfr]
+        columns: [{ title: รหัส, field: id }, { title: หัวข้อ, field: title }, { title: เกณฑ์ที่วัดได้, field: body }]
+      - title: สมมติฐานและข้อจำกัด
+        render: list
+        pieces: [01-requirements/assumptions]
+
+  - id: 02-process-and-usecases
+    title: กระบวนการธุรกิจและ Use Case
+    subtitle: Business Process and Use Cases
+    doc_code: MEP-PRC-001
+    chapters:
+      - title: กระบวนการธุรกิจ
+        children:
+          - title: Journey
+            render: table
+            caption: Journey ของระบบ
+            pieces: [02-bu-process/journeys]
+            columns: [{ title: รหัส, field: id }, { title: Journey, field: title }, { title: คำอธิบาย, field: body }, { title: Use Case, field: usecases }]
+          - { title: ผังกระบวนการจัดซื้อภาพรวม, render: figure, pieces: [02-bu-process/flows] }
+      - title: สถานะเอกสาร
+        children:
+          - { title: สถานะใบขอซื้อ (PR), render: figure, pieces: ["02-bu-process/states/st-01-*"] }
+          - title: สถานะ RFQ และ PO
+            render: table
+            caption: สถานะของ RFQ และ PO
+            pieces: ["02-bu-process/states/st-02-*", "02-bu-process/states/st-03-*"]
+            columns: [{ title: เอกสาร, field: document }, { title: สถานะ (ตามลำดับ), field: states, code: false }, { title: หมายเหตุ, field: body }]
+      - title: Use Case
+        children:
+          - title: รายการ Use Case
+            render: table
+            caption: รายการ Use Case
+            pieces: [02-bu-process/usecases]
+            columns: [{ title: รหัส, field: id }, { title: ชื่อ Use Case, field: title }, { title: ผู้ใช้, field: actors }, { title: FR, field: frs }]
+          - { title: รายละเอียด Use Case, render: items, pieces: [02-bu-process/usecases], only_with_body: true, heading: "{id} {title}" }
+          - { title: ลำดับการทำงาน, render: figure, pieces: [02-bu-process/sequences] }
+
+  - id: 03-data-model
+    title: การออกแบบข้อมูล
+    subtitle: Data Model
+    doc_code: MEP-DB-001
+    chapters:
+      - title: แผนภาพความสัมพันธ์
+        render: figure
+        pieces: [03-domain-data/diagrams]
+      - title: ตารางข้อมูล
+        children:
+          - title: สรุปตารางและหน้าที่
+            render: table
+            caption: สรุปตารางและหน้าที่
+            pieces: [03-domain-data/tables]
+            columns: [{ title: ตาราง, field: table, code: true }, { title: หน้าที่, field: body }, { title: FR ที่รองรับ, field: frs }]
+          - { title: รายละเอียดและพจนานุกรมข้อมูล, render: items, pieces: [03-domain-data/tables], heading: "{table}", extra: dictionary }
+      - title: การตัดสินใจออกแบบ
+        render: table
+        caption: การตัดสินใจออกแบบ
+        pieces: [03-domain-data/decisions]
+        columns: [{ title: หัวข้อ, field: title }, { title: การตัดสินใจ, field: decision }, { title: เหตุผล, field: reason }]
+      - title: ดัชนีหลัก
+        children:
+          - title: ดัชนีและคำค้นที่รองรับ
+            render: table
+            caption: ดัชนีหลักและคำค้นที่รองรับ
+            pieces: ["03-domain-data/indexes/idx-0[1-4]-*"]
+            columns: [{ title: ดัชนี, field: index, code: true }, { title: รองรับคำค้น, field: query }]
+          - { title: Pagination, render: prose, pieces: ["03-domain-data/indexes/idx-05-*"] }
+
+  - id: 04-api-spec
+    title: ข้อกำหนด REST API
+    subtitle: REST API Specification
+    doc_code: MEP-API-001
+    chapters:
+      - title: หลักการทั่วไป
+        lead: ["06-api-contract/conventions/cnv-00-*"]
+        render: table
+        caption: หลักการทั่วไปของ API
+        pieces: ["06-api-contract/conventions/cnv-0[1-9]-*"]
+        columns: [{ title: หัวข้อ, field: title }, { title: ข้อกำหนด, field: body }]
+      - title: รูปแบบข้อผิดพลาด
+        lead: ["06-api-contract/errors/err-00-*"]
+        children:
+          - title: รหัสข้อผิดพลาด
+            render: table
+            caption: รหัสข้อผิดพลาด
+            pieces: ["06-api-contract/errors/err-[a-z]*"]
+            columns: [{ title: รหัส, field: id }, { title: HTTP, field: http }, { title: ความหมาย, field: body }, { title: กฎที่เกี่ยว, field: rules }]
+      - title: กฎรายละเอียดของ operation ที่ซับซ้อน
+        render: table
+        caption: ลำดับการตรวจของ operation ที่ซับซ้อน
+        pieces: [06-api-contract/operations]
+        columns: [{ title: operationId, field: operation, code: true }, { title: ตรวจอะไรบ้าง (ตามลำดับ), field: checks }, { title: ผลสำเร็จ, field: success }]
+      - { title: การเปลี่ยนแปลงที่ทำให้ client พัง, render: list, pieces: [06-api-contract/breaking], bold_title: true }
+      - { title: ดัชนี Endpoint, render: generated, source: endpoint-index }
+
+  - id: 05-screen-spec
+    title: ข้อกำหนดหน้าจอ
+    subtitle: Screen Specification
+    doc_code: MEP-UI-001
+    chapters:
+      - title: ภาพรวมหน้าจอ
+        render: table
+        caption: ภาพรวมหน้าจอ
+        pieces: [05-ui-desc/screens]
+        columns: [{ title: รหัส, field: id }, { title: หน้าจอ, field: title }, { title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: FR, field: frs }, { title: API (operationId), field: operations }]
+      - { title: ผังการนำทาง, render: figure, pieces: [05-ui-desc/navigation] }
+      - title: รายละเอียดหน้าจอ
+        render: items
+        pieces: [05-ui-desc/screens]
+        heading: "{id} {title}"
+        attrs: [{ title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: FR, field: frs }, { title: API operation, field: operations }]
+        attrs_style: list
+      - title: กติกากลางของทุกหน้าจอ
+        render: table
+        caption: กติกากลางของทุกหน้าจอ
+        pieces: [05-ui-desc/global-rules]
+        columns: [{ title: หัวข้อ, field: title }, { title: กติกา, field: body }]
+
+  - id: 06-test-cases
+    title: กรณีทดสอบ
+    subtitle: Test Cases
+    doc_code: MEP-TST-001
+    landscape: true
+    chapters:
+      - title: กลยุทธ์การทดสอบ
+        children:
+          - title: ระดับการทดสอบ
+            render: table
+            caption: ระดับการทดสอบ
+            pieces: ["09-qa-and-test/strategy/stg-0[1-3]*"]
+            columns: [{ title: ระดับ, field: title }, { title: ทดสอบอะไร, field: covers }, { title: หมายเหตุ, field: note }]
+          - { title: การวิเคราะห์ค่าขอบ, render: prose, pieces: ["09-qa-and-test/strategy/stg-04-*"] }
+      - title: กรณีทดสอบ
+        render: table
+        caption: กรณีทดสอบ
+        pieces: [09-qa-and-test/cases]
+        columns: [{ title: รหัส, field: id }, { title: ชื่อกรณีทดสอบ, field: title }, { title: ประเภท, field: type }, { title: FR, field: frs }, { title: API (operationId), field: operation }, { title: ขั้นตอนและข้อมูล, field: steps }, { title: ผลที่คาดหวัง, field: expected }]
+      - title: ผลการรันส่วนที่ทดสอบระดับฐานข้อมูล
+        lead: ["09-qa-and-test/db-results/dbr-00-*"]
+        render: table
+        caption: ผลการรันชุดทดสอบฐานข้อมูล
+        pieces: ["09-qa-and-test/db-results/dbr-0[1-9]*"]
+        columns: [{ title: กรณีทดสอบ, field: title }, { title: สิ่งที่รันจริงที่ระดับฐานข้อมูล, field: run }, { title: ผล, field: result }]
+      - { title: ข้อจำกัดของชุดทดสอบ, render: list, pieces: [09-qa-and-test/limits] }
+
+  - id: 07-traceability-matrix
+    title: เมทริกซ์การสืบกลับ
+    subtitle: Traceability Matrix
+    doc_code: MEP-TRC-001
+    landscape: true
+    chapters:
+      - { title: สรุปความครอบคลุม, render: generated, source: trace-summary }
+      - { title: FR ไปยัง Use Case หน้าจอ API และกรณีทดสอบ, render: generated, source: trace-fr }
+      - { title: API operation ไปยังกรณีทดสอบ, render: generated, source: trace-op }
+
+  - id: 08-plan
+    title: แผนการ์ดงานและ Sprint
+    subtitle: Delivery Plan
+    doc_code: MEP-PLN-001
+    landscape: true
+    chapters:
+      - { title: หลักการของแผน, render: list, pieces: [08-plan/principles], bold_title: true }
+      - { title: Journey การ์ด และ Sprint, render: generated, source: plan-sprint }
+      - { title: การตัดการ์ด, render: generated, source: plan-slicing }
+      - { title: ผลตรวจ gate ของ Journey, render: generated, source: plan-gate }
+      - { title: Backlog, render: generated, source: plan-backlog }
