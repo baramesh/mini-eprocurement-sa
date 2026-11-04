@@ -1,0 +1,10 @@
+{
+  "note": "ส่งมอบรอบแรก เก้าอี้ 1 ตัวชำรุด",
+  "items": [
+    {
+      "poItemId": 3,
+      "qtyReceived": 4,
+      "qtyRejected": 1
+    }
+  ]
+}

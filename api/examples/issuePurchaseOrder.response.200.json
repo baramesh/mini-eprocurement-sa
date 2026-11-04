@@ -1,0 +1,33 @@
+{
+  "poId": 1,
+  "poNo": "PO-2026-00001",
+  "prId": 1,
+  "vendorId": 1,
+  "totalAmount": 4800,
+  "status": "ISSUED",
+  "vendorName": "บริษัท สำนักงานตัวอย่าง จำกัด",
+  "rfqId": null,
+  "issuedAt": "2026-03-02T15:00:00Z",
+  "items": [
+    {
+      "poItemId": 1,
+      "prItemId": 1,
+      "description": "กระดาษ A4 80 แกรม",
+      "unit": "รีม",
+      "quantity": 40,
+      "unitPrice": 90,
+      "qtyReceived": 0,
+      "qtyRemaining": 40
+    },
+    {
+      "poItemId": 2,
+      "prItemId": 2,
+      "description": "หมึกพิมพ์",
+      "unit": "กล่อง",
+      "quantity": 4,
+      "unitPrice": 300,
+      "qtyReceived": 0,
+      "qtyRemaining": 4
+    }
+  ]
+}

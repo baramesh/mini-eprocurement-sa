@@ -7,7 +7,11 @@ usecases:
 frs:
 - FR-09
 operations:
+- getPurchaseRequest
+- getQuotationComparison
+- listVendors
 - createPurchaseOrder
+- getPurchaseOrder
 - issuePurchaseOrder
 ---
 

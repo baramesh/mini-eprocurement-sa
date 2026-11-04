@@ -28,7 +28,8 @@ source_refs:
 - WF-07
 owned_touchpoints:
 - recordGoodsReceipt
-consumed_touchpoints: []
+consumed_touchpoints:
+- getPurchaseOrder
 tables:
 - goods_receipt
 - gr_item
@@ -46,7 +47,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 - หน้าจอ บันทึกการรับของ (SCR-07) ตามข้อกำหนดหน้าจอ
 - จำนวนที่ปฏิเสธไม่นับเป็นรับ
 - ปิด PR เมื่อรับครบทุกรายการ
-- เรียก API: recordGoodsReceipt
+- เรียก API: recordGoodsReceipt (ใช้ร่วม: getPurchaseOrder)
 
 ## Acceptance Criteria
 
@@ -88,6 +89,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | operationId | Method Path | การเป็นเจ้าของ |
 |---|---|---|
 | `recordGoodsReceipt` | POST `/purchase-orders/{poId}/receipts` | เป็นเจ้าของ |
+| `getPurchaseOrder` | GET `/purchase-orders/{poId}` | ใช้ร่วม (เจ้าของ PRC-06) |
 
 ตารางข้อมูลที่เกี่ยวข้อง: `goods_receipt`, `gr_item`
 <!-- /generated -->

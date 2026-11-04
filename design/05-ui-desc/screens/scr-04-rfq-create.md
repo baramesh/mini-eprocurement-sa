@@ -7,8 +7,9 @@ usecases:
 frs:
 - FR-05
 operations:
-- createRfq
+- getPurchaseRequest
 - listVendors
+- createRfq
 ---
 
 # สร้าง RFQ และเชิญผู้ขาย

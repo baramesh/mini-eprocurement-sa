@@ -1,0 +1,23 @@
+{
+  "poId": 2,
+  "poNo": "PO-2026-00002",
+  "prId": 2,
+  "vendorId": 2,
+  "totalAmount": 17400,
+  "status": "PARTIALLY_RECEIVED",
+  "vendorName": "ห้างหุ้นส่วน เฟอร์นิเจอร์ตัวอย่าง",
+  "rfqId": 1,
+  "issuedAt": "2026-03-11T09:00:00Z",
+  "items": [
+    {
+      "poItemId": 3,
+      "prItemId": 3,
+      "description": "เก้าอี้สำนักงานพนักพิงสูง",
+      "unit": "ตัว",
+      "quantity": 6,
+      "unitPrice": 2900,
+      "qtyReceived": 4,
+      "qtyRemaining": 2
+    }
+  ]
+}

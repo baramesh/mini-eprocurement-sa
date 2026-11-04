@@ -7,6 +7,7 @@ frs:
 - FR-08
 operations:
 - createRfq
+- getRfq
 - recordQuotation
 - getQuotationComparison
 - awardRfq

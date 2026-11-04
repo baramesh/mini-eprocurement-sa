@@ -1,0 +1,13 @@
+{
+  "title": "ปากกาและอุปกรณ์เครื่องเขียน",
+  "justification": "ใช้งานประจำ",
+  "neededByDate": "2026-03-31",
+  "items": [
+    {
+      "description": "ปากกาและเครื่องเขียน",
+      "quantity": 100,
+      "unit": "ชุด",
+      "estUnitPrice": 30
+    }
+  ]
+}

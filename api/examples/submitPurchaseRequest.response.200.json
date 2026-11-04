@@ -1,0 +1,56 @@
+{
+  "prId": 4,
+  "prNo": "PR-2026-00004",
+  "status": "SUBMITTED",
+  "title": "ระบบสำรองข้อมูล",
+  "neededByDate": "2026-06-30",
+  "totalEstimated": 250000,
+  "requesterName": "สมชาย ผู้ขอซื้อ",
+  "departmentName": "ไอที",
+  "submittedAt": "2026-03-05T13:00:00Z",
+  "rfqId": null,
+  "poId": null,
+  "justification": "ลดความเสี่ยงข้อมูลสูญหาย",
+  "items": [
+    {
+      "description": "ระบบสำรองข้อมูลพร้อมติดตั้ง",
+      "quantity": 1,
+      "unit": "ชุด",
+      "estUnitPrice": 250000,
+      "prItemId": 5,
+      "lineNo": 1
+    }
+  ],
+  "approvals": [
+    {
+      "approvalId": 5,
+      "docType": "PR",
+      "docId": 4,
+      "stepNo": 1,
+      "requiredRole": "DEPT_APPROVER",
+      "decision": "APPROVED",
+      "comment": null,
+      "decidedAt": "2026-03-05T14:00:00Z"
+    },
+    {
+      "approvalId": 6,
+      "docType": "PR",
+      "docId": 4,
+      "stepNo": 2,
+      "requiredRole": "PROCUREMENT_HEAD",
+      "decision": "PENDING",
+      "comment": null,
+      "decidedAt": null
+    },
+    {
+      "approvalId": 7,
+      "docType": "PR",
+      "docId": 4,
+      "stepNo": 3,
+      "requiredRole": "COMMITTEE",
+      "decision": "PENDING",
+      "comment": null,
+      "decidedAt": null
+    }
+  ]
+}

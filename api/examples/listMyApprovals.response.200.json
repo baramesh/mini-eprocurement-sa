@@ -1,0 +1,34 @@
+[
+  {
+    "approvalId": 6,
+    "docType": "PR",
+    "docId": 4,
+    "stepNo": 2,
+    "requiredRole": "PROCUREMENT_HEAD",
+    "decision": "PENDING",
+    "comment": null,
+    "decidedAt": null,
+    "docNo": "PR-2026-00004",
+    "docTitle": "ระบบสำรองข้อมูล",
+    "requesterName": "สมชาย ผู้ขอซื้อ",
+    "amount": 250000,
+    "submittedAt": "2026-03-05T13:00:00Z",
+    "proposerId": 2
+  },
+  {
+    "approvalId": 7,
+    "docType": "PR",
+    "docId": 4,
+    "stepNo": 3,
+    "requiredRole": "COMMITTEE",
+    "decision": "PENDING",
+    "comment": null,
+    "decidedAt": null,
+    "docNo": "PR-2026-00004",
+    "docTitle": "ระบบสำรองข้อมูล",
+    "requesterName": "สมชาย ผู้ขอซื้อ",
+    "amount": 250000,
+    "submittedAt": "2026-03-05T13:00:00Z",
+    "proposerId": 2
+  }
+]

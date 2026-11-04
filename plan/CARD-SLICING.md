@@ -12,8 +12,8 @@
 | [PRC-03](cards/prc-03-approval-inbox.md) | screen | JNY-01 | 3 | SCR-03 | listMyApprovals, decideApproval | 6 | 5/3 | หน้าจอที่สองจาก Journey ใช้ร่วมกับ JNY-02 (ผลเลือกผู้ชนะ) จึงมีการ์ดเดียวและระบุ `supports_journeys` |
 | [PRC-08](cards/prc-08-vendor-master.md) | screen | JNY-02 | 1 | SCR-08 | listVendors, createVendor, setVendorStatus | 4 | 3/2 | เป็นข้อมูลตั้งต้นที่ RFQ ต้องใช้ จึงเป็น phase แรกของ JNY-02 |
 | [PRC-04](cards/prc-04-rfq-create.md) | screen | JNY-02 | 2 | SCR-04 | createRfq | 5 | 5/3 | หนึ่งหน้าจอ หนึ่งการ์ด |
-| [PRC-05](cards/prc-05-quotation-compare.md) | screen | JNY-02 | 3 | SCR-05 | recordQuotation, getQuotationComparison, awardRfq | 8 | 8/5 | หน้าจอเดียวที่รวมการบันทึก เปรียบเทียบ และเสนอผล เพราะแยกส่งมอบไม่ได้ |
-| [PRC-06](cards/prc-06-purchase-order.md) | screen | JNY-03 | 1 | SCR-06 | createPurchaseOrder, issuePurchaseOrder | 5 | 5/3 | หนึ่งหน้าจอ หนึ่งการ์ด |
+| [PRC-05](cards/prc-05-quotation-compare.md) | screen | JNY-02 | 3 | SCR-05 | getRfq, recordQuotation, getQuotationComparison, awardRfq | 10 | 8/5 | หน้าจอเดียวที่รวมการบันทึก เปรียบเทียบ และเสนอผล เพราะแยกส่งมอบไม่ได้ |
+| [PRC-06](cards/prc-06-purchase-order.md) | screen | JNY-03 | 1 | SCR-06 | createPurchaseOrder, getPurchaseOrder, issuePurchaseOrder | 7 | 5/3 | หนึ่งหน้าจอ หนึ่งการ์ด |
 | [PRC-07](cards/prc-07-goods-receipt.md) | screen | JNY-03 | 2 | SCR-07 | recordGoodsReceipt | 4 | 5/3 | หนึ่งหน้าจอ หนึ่งการ์ด |
 | [PRC-09](cards/prc-09-spend-report.md) | screen | JNY-04 | 1 | SCR-09 | getSpendSummary | 2 | 5/3 | หนึ่งหน้าจอ หนึ่งการ์ด |
 | [PRC-10](cards/prc-10-audit-trail.md) | screen | JNY-04 | 2 | SCR-10 | listAuditLogs | 2 | 2/2 | หนึ่งหน้าจอ หนึ่งการ์ด |

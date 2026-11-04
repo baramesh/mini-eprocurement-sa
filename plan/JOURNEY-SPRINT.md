@@ -39,7 +39,7 @@
 
 | Phase | การ์ด | สถานะ | Sprint | Dependency |
 |---:|---|---|---:|---|
-| 1 | `PRC-06` | draft | 3 | PRC-05, PRC-03 |
+| 1 | `PRC-06` | draft | 3 | PRC-05, PRC-03, PRC-08 |
 | 2 | `PRC-07` | draft | 3 | PRC-06 |
 
 ### Gate

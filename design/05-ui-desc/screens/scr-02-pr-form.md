@@ -9,8 +9,8 @@ frs:
 - FR-01
 - FR-03
 operations:
-- createPurchaseRequest
 - getPurchaseRequest
+- createPurchaseRequest
 - updatePurchaseRequest
 - submitPurchaseRequest
 rules:

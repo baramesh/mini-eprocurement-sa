@@ -1,0 +1,22 @@
+{
+  "from": "2026-03-01",
+  "to": "2026-03-31",
+  "rows": [
+    {
+      "group": "ปฏิบัติการ",
+      "prCount": 1,
+      "poCount": 1,
+      "estimatedTotal": 120000,
+      "orderedTotal": 118000,
+      "savingVsEstimate": 2000
+    },
+    {
+      "group": "ไอที",
+      "prCount": 2,
+      "poCount": 2,
+      "estimatedTotal": 22800,
+      "orderedTotal": 22200,
+      "savingVsEstimate": 600
+    }
+  ]
+}

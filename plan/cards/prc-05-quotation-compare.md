@@ -16,6 +16,8 @@ depends_on:
 - PRC-04
 - PRC-S3
 acceptance_refs:
+- AC-05-06
+- AC-05-07
 - AC-06-01
 - AC-06-02
 - AC-06-03
@@ -40,6 +42,7 @@ source_refs:
 - SCR-05
 - WF-05
 owned_touchpoints:
+- getRfq
 - recordQuotation
 - getQuotationComparison
 - awardRfq
@@ -63,13 +66,15 @@ slicing_reason: หน้าจอเดียวที่รวมการบ�
 - หน้าจอ บันทึกและเปรียบเทียบใบเสนอราคา (SCR-05) ตามข้อกำหนดหน้าจอ
 - ตารางเปรียบเทียบที่ไฮไลต์ราคารวมต่ำสุด
 - เหตุผลบังคับอย่างน้อย 20 ตัวอักษรเมื่อไม่เลือกต่ำสุด
-- เรียก API: recordQuotation, getQuotationComparison, awardRfq
+- เรียก API: getRfq, recordQuotation, getQuotationComparison, awardRfq
 
 ## Acceptance Criteria
 
 <!-- generated:ac -->
 | Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
+| [AC-05-06](../../design/01-requirements/acceptance-criteria/ac-05-06-positive-get-rfq.md) | ดูรายละเอียด RFQ | Positive | 200 มี `items` 1 รายการ และ `vendors` 3 ราย พร้อม `prNo` |
+| [AC-05-07](../../design/01-requirements/acceptance-criteria/ac-05-07-negative-get-rfq.md) | ดู RFQ ที่ไม่มี | Negative | 404 `ERR-NF-001` |
 | [AC-06-01](../../design/01-requirements/acceptance-criteria/ac-06-01-negative-record-quotation.md) | บันทึกใบเสนอราคาจากผู้ขายที่ไม่ได้รับเชิญ | Negative | 422 `ERR-RFQ-002` |
 | [AC-06-02](../../design/01-requirements/acceptance-criteria/ac-06-02-negative-record-quotation.md) | บันทึกใบเสนอราคาหลังปิดรับ | Negative | 409 `ERR-RFQ-003` |
 | [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับแรก `isActive` = false ฉบับหลัง true เหลือฉบับที่ใช้งาน 1 ฉบับ |
@@ -117,6 +122,7 @@ slicing_reason: หน้าจอเดียวที่รวมการบ�
 <!-- generated:touchpoints -->
 | operationId | Method Path | การเป็นเจ้าของ |
 |---|---|---|
+| `getRfq` | GET `/rfqs/{rfqId}` | เป็นเจ้าของ |
 | `recordQuotation` | POST `/rfqs/{rfqId}/quotations` | เป็นเจ้าของ |
 | `getQuotationComparison` | GET `/rfqs/{rfqId}/comparison` | เป็นเจ้าของ |
 | `awardRfq` | POST `/rfqs/{rfqId}/award` | เป็นเจ้าของ |

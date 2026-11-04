@@ -1,0 +1,10 @@
+{
+  "approvalId": 8,
+  "docType": "PR",
+  "docId": 6,
+  "stepNo": 1,
+  "requiredRole": "DEPT_APPROVER",
+  "decision": "REJECTED",
+  "comment": "ขอเปรียบเทียบสเปกกับรุ่นอื่นก่อน",
+  "decidedAt": "2026-03-06T13:00:00Z"
+}

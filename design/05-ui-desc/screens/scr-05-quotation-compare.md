@@ -10,6 +10,7 @@ frs:
 - FR-07
 - FR-08
 operations:
+- getRfq
 - recordQuotation
 - getQuotationComparison
 - awardRfq

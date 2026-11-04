@@ -5,6 +5,7 @@ frs:
 - FR-10
 operations:
 - createPurchaseOrder
+- getPurchaseOrder
 - issuePurchaseOrder
 - recordGoodsReceipt
 ---

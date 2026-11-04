@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "prId": 4,
+      "prNo": "PR-2026-00004",
+      "status": "SUBMITTED",
+      "title": "ระบบสำรองข้อมูล",
+      "neededByDate": "2026-06-30",
+      "totalEstimated": 250000,
+      "requesterName": "สมชาย ผู้ขอซื้อ",
+      "departmentName": "ไอที",
+      "submittedAt": "2026-03-05T13:00:00Z",
+      "rfqId": null,
+      "poId": null
+    }
+  ],
+  "nextCursor": null
+}

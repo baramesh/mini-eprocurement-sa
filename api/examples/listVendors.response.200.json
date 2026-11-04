@@ -1,0 +1,34 @@
+[
+  {
+    "nameTh": "บริษัท สำนักงานตัวอย่าง จำกัด",
+    "taxId": "0000000000011",
+    "email": "sales@vendor1.example.test",
+    "vendorId": 1,
+    "vendorCode": "V0001",
+    "status": "ACTIVE"
+  },
+  {
+    "nameTh": "ห้างหุ้นส่วน เฟอร์นิเจอร์ตัวอย่าง",
+    "taxId": "0000000000012",
+    "email": "sales@vendor2.example.test",
+    "vendorId": 2,
+    "vendorCode": "V0002",
+    "status": "ACTIVE"
+  },
+  {
+    "nameTh": "บริษัท ไอทีตัวอย่าง จำกัด",
+    "taxId": "0000000000013",
+    "email": "sales@vendor3.example.test",
+    "vendorId": 3,
+    "vendorCode": "V0003",
+    "status": "ACTIVE"
+  },
+  {
+    "nameTh": "บริษัท คอมพิวเตอร์ตัวอย่าง จำกัด",
+    "taxId": "0000000000014",
+    "email": "sales@vendor4.example.test",
+    "vendorId": 4,
+    "vendorCode": "V0004",
+    "status": "ACTIVE"
+  }
+]

@@ -7,6 +7,7 @@ usecases:
 frs:
 - FR-10
 operations:
+- getPurchaseOrder
 - recordGoodsReceipt
 ---
 

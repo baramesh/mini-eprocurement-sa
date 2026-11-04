@@ -1,24 +1,22 @@
 openapi: 3.0.3
-info:
-  title: Mini e-Procurement API
-  version: 1.0.0
-  description: |
-    REST API ของระบบจัดซื้อจัดจ้างขนาดย่อ (โจทย์สมมติเพื่อแสดงงานออกแบบ)
+info: {title: Mini e-Procurement API, version: 1.0.0, description: 'REST API ของระบบจัดซื้อจัดจ้างขนาดย่อ (โจทย์สมมติเพื่อแสดงงานออกแบบ)
+
     ทุกการเรียกต้องมี Bearer token จาก SSO; บทบาทที่เรียกได้ระบุที่ `x-roles` ของแต่ละ operation
+
     และ `x-fr` ระบุข้อกำหนดที่ operation นั้นรองรับ (ใช้ตรวจ traceability)
+
+    '}
 servers:
-  - url: https://api.example.test/api/v1
+- {url: 'https://api.example.test/api/v1'}
 security:
-  - bearerAuth: []
-
+- bearerAuth: []
 tags:
-  - name: purchase-requests
-  - name: approvals
-  - name: rfqs
-  - name: purchase-orders
-  - name: vendors
-  - name: reports
-
+- {name: purchase-requests}
+- {name: approvals}
+- {name: rfqs}
+- {name: purchase-orders}
+- {name: vendors}
+- {name: reports}
 paths:
   /purchase-requests:
     get:
@@ -28,18 +26,35 @@ paths:
       x-fr: [FR-02]
       x-roles: [REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN]
       parameters:
-        - { name: status, in: query, schema: { $ref: '#/components/schemas/PrStatus' } }
-        - { name: createdFrom, in: query, schema: { type: string, format: date } }
-        - { name: createdTo, in: query, schema: { type: string, format: date } }
-        - { name: cursor, in: query, description: ตัวชี้หน้าถัดไปแบบ keyset, schema: { type: string } }
-        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 50 } }
+      - name: status
+        in: query
+        schema: {$ref: '#/components/schemas/PrStatus'}
+      - name: createdFrom
+        in: query
+        schema: {type: string, format: date}
+      - name: createdTo
+        in: query
+        schema: {type: string, format: date}
+      - name: requesterId
+        in: query
+        schema: {type: integer}
+        description: กรองตามผู้ขอซื้อ (ผู้ขอซื้อธรรมดาเห็นเฉพาะของตนอยู่แล้ว ค่านี้ใช้กับบทบาทอื่น)
+      - name: cursor
+        in: query
+        description: ตัวชี้หน้าถัดไปแบบ keyset
+        schema: {type: string}
+      - name: limit
+        in: query
+        schema: {type: integer, minimum: 1, maximum: 100, default: 50}
       responses:
         '200':
           description: รายการ PR ตามสิทธิ์ของผู้เรียก
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PrPage' }
-        '401': { $ref: '#/components/responses/Error' }
+              schema: {$ref: '#/components/schemas/PrPage'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/Error'}
     post:
       tags: [purchase-requests]
       operationId: createPurchaseRequest
@@ -50,18 +65,19 @@ paths:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/PrInput' }
+            schema: {$ref: '#/components/schemas/PrInput'}
       responses:
         '201':
           description: สร้างแล้ว ได้เลขที่ PR
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PurchaseRequest' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/PurchaseRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/Error'}
   /purchase-requests/{prId}:
     parameters:
-      - { $ref: '#/components/parameters/PrId' }
+    - {$ref: '#/components/parameters/PrId'}
     get:
       tags: [purchase-requests]
       operationId: getPurchaseRequest
@@ -73,8 +89,10 @@ paths:
           description: รายละเอียด PR
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PurchaseRequest' }
-        '404': { $ref: '#/components/responses/Error' }
+              schema: {$ref: '#/components/schemas/PurchaseRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
     put:
       tags: [purchase-requests]
       operationId: updatePurchaseRequest
@@ -82,21 +100,27 @@ paths:
       x-fr: [FR-01]
       x-roles: [REQUESTER]
       parameters:
-        - { name: If-Match, in: header, required: true, description: ค่า rowVersion ล่าสุดที่ผู้ใช้เห็น, schema: { type: string } }
+      - name: If-Match
+        in: header
+        required: true
+        description: ค่า rowVersion ล่าสุดที่ผู้ใช้เห็น
+        schema: {type: string}
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/PrInput' }
+            schema: {$ref: '#/components/schemas/PrInput'}
       responses:
         '200':
           description: แก้แล้ว
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PurchaseRequest' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/PurchaseRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
   /purchase-requests/{prId}/submit:
     post:
       tags: [purchase-requests]
@@ -106,17 +130,19 @@ paths:
       x-fr: [FR-03, FR-13]
       x-roles: [REQUESTER]
       parameters:
-        - { $ref: '#/components/parameters/PrId' }
-        - { $ref: '#/components/parameters/IdempotencyKey' }
+      - {$ref: '#/components/parameters/PrId'}
+      - {$ref: '#/components/parameters/IdempotencyKey'}
       responses:
         '200':
           description: ส่งแล้ว สถานะ SUBMITTED พร้อมสายอนุมัติ
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PurchaseRequest' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/PurchaseRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
   /approvals:
     get:
       tags: [approvals]
@@ -131,8 +157,9 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/Approval' }
-
+                items: {$ref: '#/components/schemas/ApprovalItem'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
   /approvals/{approvalId}/decision:
     post:
       tags: [approvals]
@@ -142,23 +169,27 @@ paths:
       x-fr: [FR-04, FR-08, FR-13]
       x-roles: [DEPT_APPROVER, PROCUREMENT_HEAD, COMMITTEE]
       parameters:
-        - { name: approvalId, in: path, required: true, schema: { type: integer, format: int64 } }
-        - { $ref: '#/components/parameters/IdempotencyKey' }
+      - name: approvalId
+        in: path
+        required: true
+        schema: {type: integer, format: int64}
+      - {$ref: '#/components/parameters/IdempotencyKey'}
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/DecisionInput' }
+            schema: {$ref: '#/components/schemas/DecisionInput'}
       responses:
         '200':
           description: บันทึกผลแล้ว
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Approval' }
-        '403': { $ref: '#/components/responses/Error' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/Approval'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
   /rfqs:
     post:
       tags: [rfqs]
@@ -167,21 +198,40 @@ paths:
       x-fr: [FR-05, FR-14]
       x-roles: [PROCUREMENT]
       parameters:
-        - { $ref: '#/components/parameters/IdempotencyKey' }
+      - {$ref: '#/components/parameters/IdempotencyKey'}
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/RfqInput' }
+            schema: {$ref: '#/components/schemas/RfqInput'}
       responses:
         '201':
           description: สร้าง RFQ แล้ว
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Rfq' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/Rfq'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
+  /rfqs/{rfqId}:
+    get:
+      tags: [rfqs]
+      operationId: getRfq
+      summary: ดูรายละเอียด RFQ (รายการ PR และผู้ขายที่เชิญ)
+      x-fr: [FR-05, FR-06]
+      x-roles: [PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE]
+      parameters:
+      - {$ref: '#/components/parameters/RfqId'}
+      responses:
+        '200':
+          description: รายละเอียด RFQ
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RfqDetail'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
   /rfqs/{rfqId}/quotations:
     post:
       tags: [rfqs]
@@ -191,21 +241,23 @@ paths:
       x-fr: [FR-06]
       x-roles: [PROCUREMENT]
       parameters:
-        - { $ref: '#/components/parameters/RfqId' }
+      - {$ref: '#/components/parameters/RfqId'}
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/QuotationInput' }
+            schema: {$ref: '#/components/schemas/QuotationInput'}
       responses:
         '201':
           description: บันทึกแล้ว
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Quotation' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/Quotation'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
   /rfqs/{rfqId}/comparison:
     get:
       tags: [rfqs]
@@ -214,14 +266,16 @@ paths:
       x-fr: [FR-07]
       x-roles: [PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE]
       parameters:
-        - { $ref: '#/components/parameters/RfqId' }
+      - {$ref: '#/components/parameters/RfqId'}
       responses:
         '200':
           description: ราคาของทุกรายต่อรายการ พร้อมระบุรายที่ต่ำสุด
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Comparison' }
-
+              schema: {$ref: '#/components/schemas/Comparison'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
   /rfqs/{rfqId}/award:
     post:
       tags: [rfqs]
@@ -230,21 +284,23 @@ paths:
       x-fr: [FR-08, FR-13]
       x-roles: [PROCUREMENT]
       parameters:
-        - { $ref: '#/components/parameters/RfqId' }
-        - { $ref: '#/components/parameters/IdempotencyKey' }
+      - {$ref: '#/components/parameters/RfqId'}
+      - {$ref: '#/components/parameters/IdempotencyKey'}
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/AwardInput' }
+            schema: {$ref: '#/components/schemas/AwardInput'}
       responses:
         '202':
           description: รับเรื่องแล้ว RFQ เป็น AWARD_PENDING รออนุมัติ
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Rfq' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/Rfq'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '422': {$ref: '#/components/responses/Error'}
   /purchase-orders:
     post:
       tags: [purchase-orders]
@@ -253,21 +309,40 @@ paths:
       x-fr: [FR-09, FR-14]
       x-roles: [PROCUREMENT]
       parameters:
-        - { $ref: '#/components/parameters/IdempotencyKey' }
+      - {$ref: '#/components/parameters/IdempotencyKey'}
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/PoInput' }
+            schema: {$ref: '#/components/schemas/PoInput'}
       responses:
         '201':
           description: สร้าง PO สถานะ DRAFT
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PurchaseOrder' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/PurchaseOrder'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
+  /purchase-orders/{poId}:
+    get:
+      tags: [purchase-orders]
+      operationId: getPurchaseOrder
+      summary: ดูรายละเอียด PO พร้อมยอดสั่ง รับสะสม และคงเหลือ
+      x-fr: [FR-09, FR-10]
+      x-roles: [PROCUREMENT, PROCUREMENT_HEAD, RECEIVER, ADMIN]
+      parameters:
+      - {$ref: '#/components/parameters/PoId'}
+      responses:
+        '200':
+          description: รายละเอียด PO
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PurchaseOrder'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
   /purchase-orders/{poId}/issue:
     post:
       tags: [purchase-orders]
@@ -276,16 +351,18 @@ paths:
       x-fr: [FR-09, FR-13]
       x-roles: [PROCUREMENT]
       parameters:
-        - { $ref: '#/components/parameters/PoId' }
-        - { $ref: '#/components/parameters/IdempotencyKey' }
+      - {$ref: '#/components/parameters/PoId'}
+      - {$ref: '#/components/parameters/IdempotencyKey'}
       responses:
         '200':
           description: ออกแล้ว สถานะ ISSUED
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PurchaseOrder' }
-        '409': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/PurchaseOrder'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Error'}
   /purchase-orders/{poId}/receipts:
     post:
       tags: [purchase-orders]
@@ -294,22 +371,24 @@ paths:
       x-fr: [FR-10, FR-14]
       x-roles: [RECEIVER]
       parameters:
-        - { $ref: '#/components/parameters/PoId' }
-        - { $ref: '#/components/parameters/IdempotencyKey' }
+      - {$ref: '#/components/parameters/PoId'}
+      - {$ref: '#/components/parameters/IdempotencyKey'}
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/ReceiptInput' }
+            schema: {$ref: '#/components/schemas/ReceiptInput'}
       responses:
         '201':
           description: บันทึกแล้ว PO เป็น PARTIALLY_RECEIVED หรือ RECEIVED
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Receipt' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/Receipt'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
   /vendors:
     get:
       tags: [vendors]
@@ -318,8 +397,15 @@ paths:
       x-fr: [FR-11]
       x-roles: [PROCUREMENT, PROCUREMENT_HEAD, ADMIN]
       parameters:
-        - { name: q, in: query, description: คำค้นชื่อหรือเลขผู้เสียภาษี, schema: { type: string } }
-        - { name: status, in: query, schema: { type: string, enum: [ACTIVE, SUSPENDED] } }
+      - name: q
+        in: query
+        description: คำค้นชื่อหรือเลขผู้เสียภาษี
+        schema: {type: string}
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum: [ACTIVE, SUSPENDED]
       responses:
         '200':
           description: รายการผู้ขาย
@@ -327,7 +413,9 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/Vendor' }
+                items: {$ref: '#/components/schemas/Vendor'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
     post:
       tags: [vendors]
       operationId: createVendor
@@ -338,16 +426,17 @@ paths:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/VendorInput' }
+            schema: {$ref: '#/components/schemas/VendorInput'}
       responses:
         '201':
           description: เพิ่มแล้ว
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Vendor' }
-        '409': { $ref: '#/components/responses/Error' }
-        '422': { $ref: '#/components/responses/Error' }
-
+              schema: {$ref: '#/components/schemas/Vendor'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
   /vendors/{vendorId}/status:
     put:
       tags: [vendors]
@@ -356,7 +445,10 @@ paths:
       x-fr: [FR-11, FR-13]
       x-roles: [PROCUREMENT_HEAD]
       parameters:
-        - { name: vendorId, in: path, required: true, schema: { type: integer } }
+      - name: vendorId
+        in: path
+        required: true
+        schema: {type: integer}
       requestBody:
         required: true
         content:
@@ -365,15 +457,20 @@ paths:
               type: object
               required: [status]
               properties:
-                status: { type: string, enum: [ACTIVE, SUSPENDED] }
-                reason: { type: string, maxLength: 500 }
+                status:
+                  type: string
+                  enum: [ACTIVE, SUSPENDED]
+                  x-source: vendor.status
+                reason: {type: string, maxLength: 500, x-computed: บันทึกใน audit_log.detail ของเหตุการณ์ ไม่เก็บเป็นคอลัมน์ของ vendor, example: ระงับชั่วคราวระหว่างตรวจเอกสารจดทะเบียน}
       responses:
         '200':
           description: เปลี่ยนแล้ว
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Vendor' }
-
+              schema: {$ref: '#/components/schemas/Vendor'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
   /reports/spend-summary:
     get:
       tags: [reports]
@@ -382,16 +479,29 @@ paths:
       x-fr: [FR-12]
       x-roles: [PROCUREMENT_HEAD, ADMIN]
       parameters:
-        - { name: from, in: query, required: true, schema: { type: string, format: date } }
-        - { name: to, in: query, required: true, schema: { type: string, format: date } }
-        - { name: groupBy, in: query, schema: { type: string, enum: [department, vendor, month], default: department } }
+      - name: from
+        in: query
+        required: true
+        schema: {type: string, format: date}
+      - name: to
+        in: query
+        required: true
+        schema: {type: string, format: date}
+      - name: groupBy
+        in: query
+        schema:
+          type: string
+          enum: [department, vendor, month]
+          default: department
       responses:
         '200':
           description: สรุปจำนวนเอกสารและมูลค่า
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/SpendSummary' }
-
+              schema: {$ref: '#/components/schemas/SpendSummary'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/Error'}
   /audit-logs:
     get:
       tags: [reports]
@@ -400,8 +510,16 @@ paths:
       x-fr: [FR-13]
       x-roles: [ADMIN]
       parameters:
-        - { name: entity, in: query, required: true, schema: { type: string, enum: [PR, RFQ, PO, GR, VENDOR] } }
-        - { name: entityId, in: query, required: true, schema: { type: integer, format: int64 } }
+      - name: entity
+        in: query
+        required: true
+        schema:
+          type: string
+          enum: [PR, RFQ, PO, GR, VENDOR]
+      - name: entityId
+        in: query
+        required: true
+        schema: {type: integer, format: int64}
       responses:
         '200':
           description: เหตุการณ์เรียงตามเวลา
@@ -409,155 +527,196 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/AuditEntry' }
-
+                items: {$ref: '#/components/schemas/AuditEntry'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/Error'}
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
   parameters:
-    PrId: { name: prId, in: path, required: true, schema: { type: integer, format: int64 } }
-    RfqId: { name: rfqId, in: path, required: true, schema: { type: integer, format: int64 } }
-    PoId: { name: poId, in: path, required: true, schema: { type: integer, format: int64 } }
+    PrId:
+      name: prId
+      in: path
+      required: true
+      schema: {type: integer, format: int64}
+    RfqId:
+      name: rfqId
+      in: path
+      required: true
+      schema: {type: integer, format: int64}
+    PoId:
+      name: poId
+      in: path
+      required: true
+      schema: {type: integer, format: int64}
     IdempotencyKey:
       name: Idempotency-Key
       in: header
       required: true
       description: UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05)
-      schema: { type: string, format: uuid }
-
+      schema: {type: string, format: uuid}
   responses:
+    Unauthorized:
+      description: ไม่มี token หรือ token หมดอายุ (ERR-AUTH-001)
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Problem'}
+    Forbidden:
+      description: บทบาทหรือขอบเขตข้อมูลไม่อนุญาต (ERR-AUTH-002)
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Problem'}
+    NotFound:
+      description: ไม่พบเอกสารตามรหัสที่ระบุ หรือผู้เรียกไม่มีสิทธิ์เห็นเอกสารนั้น (ERR-NF-001)
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Problem'}
     Error:
       description: ข้อผิดพลาด (รหัสใน `code` ดูตารางรหัสข้อผิดพลาดในเอกสาร API)
       content:
         application/json:
-          schema: { $ref: '#/components/schemas/Problem' }
-
+          schema: {$ref: '#/components/schemas/Problem'}
   schemas:
     Problem:
       type: object
       required: [code, message]
       properties:
-        code: { type: string, example: ERR-SOD-001 }
-        message: { type: string, description: ข้อความภาษาไทยแสดงผู้ใช้ }
+        code: {type: string, example: ERR-SOD-001}
+        message: {type: string, description: ข้อความภาษาไทยแสดงผู้ใช้}
         details:
           type: array
           items:
             type: object
             properties:
-              field: { type: string }
-              issue: { type: string }
-
+              field: {type: string}
+              issue: {type: string}
     PrStatus:
       type: string
       enum: [DRAFT, SUBMITTED, APPROVED, IN_SOURCING, ORDERED, CLOSED, CANCELLED]
-
     PrItemInput:
       type: object
       required: [description, quantity, unit, estUnitPrice]
       properties:
-        description: { type: string, maxLength: 300 }
-        quantity: { type: number, exclusiveMinimum: true, minimum: 0 }
-        unit: { type: string, maxLength: 30 }
-        estUnitPrice: { type: number, minimum: 0 }
-
+        description: {type: string, maxLength: 300, x-source: pr_item.description}
+        quantity: {type: number, exclusiveMinimum: true, minimum: 0, x-source: pr_item.quantity}
+        unit: {type: string, maxLength: 30, x-source: pr_item.unit}
+        estUnitPrice: {type: number, minimum: 0, x-source: pr_item.est_unit_price}
     PrInput:
       type: object
       required: [title, justification, neededByDate, items]
       properties:
-        title: { type: string, maxLength: 200 }
-        justification: { type: string, maxLength: 1000 }
-        neededByDate: { type: string, format: date }
+        title: {type: string, maxLength: 200, x-source: purchase_request.title}
+        justification: {type: string, maxLength: 1000, x-source: purchase_request.justification}
+        neededByDate: {type: string, format: date, x-source: purchase_request.needed_by_date}
         items:
           type: array
           minItems: 1
           maxItems: 100
-          items: { $ref: '#/components/schemas/PrItemInput' }
-
-    PurchaseRequest:
+          items: {$ref: '#/components/schemas/PrItemInput'}
+          x-source: pr_item[pr_id=pr_id]
+    PrSummary:
       type: object
       properties:
-        prId: { type: integer, format: int64 }
-        prNo: { type: string, example: PR-2026-00001 }
-        status: { $ref: '#/components/schemas/PrStatus' }
-        title: { type: string }
-        justification: { type: string }
-        neededByDate: { type: string, format: date }
-        totalEstimated: { type: number }
-        rowVersion: { type: string, description: ใช้เป็นค่า If-Match ตอนแก้ }
-        items:
-          type: array
+        prId: {type: integer, format: int64, x-source: purchase_request.pr_id}
+        prNo: {type: string, example: PR-2026-00001, x-source: purchase_request.pr_no}
+        status: {$ref: '#/components/schemas/PrStatus', x-source: purchase_request.status}
+        title: {type: string, x-source: purchase_request.title}
+        neededByDate: {type: string, format: date, x-source: purchase_request.needed_by_date}
+        totalEstimated: {type: number, x-source: purchase_request.total_estimated}
+        requesterName: {type: string, x-source: 'app_user[user_id=requester_id].full_name'}
+        departmentName: {type: string, x-source: 'department[department_id=department_id].name_th'}
+        submittedAt: {type: string, format: date-time, nullable: true, x-source: purchase_request.submitted_at}
+        rfqId: {type: integer, format: int64, nullable: true, description: RFQ ล่าสุดของ PR นี้ ใช้นำทางไปหน้าเปรียบเทียบ, x-source: 'rfq[pr_id=pr_id].rfq_id'}
+        poId: {type: integer, format: int64, nullable: true, description: PO ของ PR นี้ ใช้นำทางไปหน้ารับของ, x-source: 'purchase_order[pr_id=pr_id].po_id'}
+    PurchaseRequest:
+      allOf:
+      - {$ref: '#/components/schemas/PrSummary'}
+      - type: object
+        properties:
+          justification: {type: string, x-source: purchase_request.justification}
+          rowVersion: {type: string, example: 00000000000007D1, description: ใช้เป็นค่า If-Match ตอนแก้, x-source: purchase_request.row_version, x-computed: ROWVERSION ของแถว ส่งเป็นสตริงฐานสิบหก}
           items:
-            allOf:
-              - $ref: '#/components/schemas/PrItemInput'
+            type: array
+            items:
+              allOf:
+              - {$ref: '#/components/schemas/PrItemInput'}
               - type: object
                 properties:
-                  prItemId: { type: integer, format: int64 }
-                  lineNo: { type: integer }
-        approvals:
-          type: array
-          items: { $ref: '#/components/schemas/Approval' }
-
+                  prItemId: {type: integer, format: int64, x-source: pr_item.pr_item_id}
+                  lineNo: {type: integer, x-source: pr_item.line_no}
+            x-source: pr_item[pr_id=pr_id]
+          approvals:
+            type: array
+            items: {$ref: '#/components/schemas/Approval'}
+            x-source: approval[doc_id=pr_id,doc_type==PR]
     PrPage:
       type: object
       properties:
         items:
           type: array
-          items: { $ref: '#/components/schemas/PurchaseRequest' }
-        nextCursor: { type: string, nullable: true }
-
+          items: {$ref: '#/components/schemas/PrSummary'}
+          x-source: purchase_request
+        nextCursor: {type: string, nullable: true, x-computed: 'keyset: ค่า (created_at, pr_id) ของแถวสุดท้ายของหน้า เข้ารหัส base64; null เมื่อไม่มีหน้าถัดไป'}
     Approval:
       type: object
       properties:
-        approvalId: { type: integer, format: int64 }
-        docType: { type: string, enum: [PR, AWARD] }
-        docId: { type: integer, format: int64 }
-        stepNo: { type: integer }
-        requiredRole: { type: string }
-        decision: { type: string, enum: [PENDING, APPROVED, REJECTED] }
-        comment: { type: string, nullable: true }
-        decidedAt: { type: string, format: date-time, nullable: true }
-
+        approvalId: {type: integer, format: int64, x-source: approval.approval_id}
+        docType:
+          type: string
+          enum: [PR, AWARD]
+          x-source: approval.doc_type
+        docId: {type: integer, format: int64, x-source: approval.doc_id}
+        stepNo: {type: integer, x-source: approval.step_no}
+        requiredRole: {type: string, x-source: approval.required_role}
+        decision:
+          type: string
+          enum: [PENDING, APPROVED, REJECTED]
+          x-source: approval.decision
+        comment: {type: string, nullable: true, x-source: approval.comment}
+        decidedAt: {type: string, format: date-time, nullable: true, x-source: approval.decided_at}
     DecisionInput:
       type: object
       required: [decision]
       properties:
-        decision: { type: string, enum: [APPROVED, REJECTED] }
-        comment: { type: string, maxLength: 500, description: บังคับเมื่อ REJECTED }
-
+        decision:
+          type: string
+          enum: [APPROVED, REJECTED]
+          x-source: approval.decision
+        comment: {type: string, maxLength: 500, description: บังคับเมื่อ REJECTED, x-source: approval.comment}
     RfqInput:
       type: object
       required: [prId, dueAt, vendorIds]
       properties:
-        prId: { type: integer, format: int64 }
-        dueAt: { type: string, format: date-time }
+        prId: {type: integer, format: int64, x-source: rfq.pr_id}
+        dueAt: {type: string, format: date-time, x-source: rfq.due_at}
         vendorIds:
           type: array
           minItems: 3
           uniqueItems: true
-          items: { type: integer }
-
+          items: {type: integer}
+          x-source: rfq_vendor[rfq_id=rfq_id].vendor_id
     Rfq:
       type: object
       properties:
-        rfqId: { type: integer, format: int64 }
-        rfqNo: { type: string, example: RFQ-2026-00001 }
-        prId: { type: integer, format: int64 }
-        status: { type: string, enum: [OPEN, AWARD_PENDING, AWARDED] }
-        dueAt: { type: string, format: date-time }
+        rfqId: {type: integer, format: int64, x-source: rfq.rfq_id}
+        rfqNo: {type: string, example: RFQ-2026-00001, x-source: rfq.rfq_no}
+        prId: {type: integer, format: int64, x-source: rfq.pr_id}
+        status:
+          type: string
+          enum: [OPEN, AWARD_PENDING, AWARDED]
+          x-source: rfq.status
+        dueAt: {type: string, format: date-time, x-source: rfq.due_at}
         vendorIds:
           type: array
-          items: { type: integer }
-
+          items: {type: integer}
+          x-source: rfq_vendor[rfq_id=rfq_id].vendor_id
     QuotationInput:
       type: object
       required: [vendorId, leadTimeDays, items]
       properties:
-        vendorId: { type: integer }
-        leadTimeDays: { type: integer, minimum: 0 }
+        vendorId: {type: integer, x-source: quotation.vendor_id}
+        leadTimeDays: {type: integer, minimum: 0, x-source: quotation.lead_time_days}
         items:
           type: array
           minItems: 1
@@ -565,69 +724,87 @@ components:
             type: object
             required: [prItemId, unitPrice]
             properties:
-              prItemId: { type: integer, format: int64 }
-              unitPrice: { type: number, minimum: 0 }
-
+              prItemId: {type: integer, format: int64, x-source: quotation_item.pr_item_id}
+              unitPrice: {type: number, minimum: 0, x-source: quotation_item.unit_price}
+          x-source: quotation_item[quotation_id=quotation_id]
     Quotation:
       type: object
       properties:
-        quotationId: { type: integer, format: int64 }
-        vendorId: { type: integer }
-        totalAmount: { type: number }
-        leadTimeDays: { type: integer }
-        isActive: { type: boolean }
-        submittedAt: { type: string, format: date-time }
-
+        quotationId: {type: integer, format: int64, x-source: quotation.quotation_id}
+        vendorId: {type: integer, x-source: quotation.vendor_id}
+        vendorName: {type: string, x-source: 'vendor[vendor_id=vendor_id].name_th'}
+        totalAmount: {type: number, x-source: quotation.total_amount}
+        leadTimeDays: {type: integer, x-source: quotation.lead_time_days}
+        isActive: {type: boolean, x-source: quotation.is_active}
+        submittedAt: {type: string, format: date-time, x-source: quotation.submitted_at}
     Comparison:
       type: object
       properties:
-        rfqId: { type: integer, format: int64 }
-        lowestQuotationId: { type: integer, format: int64, nullable: true }
+        rfqId: {type: integer, format: int64, x-source: rfq.rfq_id}
+        lowestQuotationId: {type: integer, format: int64, nullable: true, x-compute: 'argmin(quotations, totalAmount, quotationId)'}
         quotations:
           type: array
           items:
             allOf:
-              - $ref: '#/components/schemas/Quotation'
-              - type: object
-                properties:
-                  itemPrices:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        prItemId: { type: integer, format: int64 }
-                        unitPrice: { type: number }
-
+            - {$ref: '#/components/schemas/Quotation'}
+            - type: object
+              properties:
+                itemPrices:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      prItemId: {type: integer, format: int64, x-source: quotation_item.pr_item_id}
+                      unitPrice: {type: number, x-source: quotation_item.unit_price}
+                  x-source: quotation_item[quotation_id=quotation_id]
+          x-source: quotation[rfq_id=rfq_id,is_active==1]
     AwardInput:
       type: object
       required: [quotationId]
       properties:
-        quotationId: { type: integer, format: int64 }
-        reason: { type: string, maxLength: 500, description: บังคับ (อย่างน้อย 20 ตัวอักษร) เมื่อไม่ใช่ราคาต่ำสุด }
-
+        quotationId: {type: integer, format: int64, x-source: award.quotation_id}
+        reason: {type: string, maxLength: 500, description: บังคับ (อย่างน้อย 20 ตัวอักษร) เมื่อไม่ใช่ราคาต่ำสุด, x-source: award.reason}
     PoInput:
       type: object
       required: [prId]
       properties:
-        prId: { type: integer, format: int64 }
-        vendorId: { type: integer, description: ใช้เฉพาะซื้อตรง (PR ไม่เกิน 5,000 บาท) }
-        rfqId: { type: integer, format: int64, description: ใช้เมื่อออกจากผลประกวดที่อนุมัติแล้ว }
-
+        prId: {type: integer, format: int64, x-source: purchase_order.pr_id}
+        vendorId: {type: integer, description: ใช้เฉพาะซื้อตรง (PR ไม่เกิน 5, 000 บาท): null, x-source: purchase_order.vendor_id}
+        rfqId: {type: integer, format: int64, description: ใช้เมื่อออกจากผลประกวดที่อนุมัติแล้ว, x-source: purchase_order.rfq_id}
     PurchaseOrder:
       type: object
       properties:
-        poId: { type: integer, format: int64 }
-        poNo: { type: string, example: PO-2026-00001 }
-        prId: { type: integer, format: int64 }
-        vendorId: { type: integer }
-        totalAmount: { type: number }
-        status: { type: string, enum: [DRAFT, ISSUED, PARTIALLY_RECEIVED, RECEIVED, CANCELLED] }
-
+        poId: {type: integer, format: int64, x-source: purchase_order.po_id}
+        poNo: {type: string, example: PO-2026-00001, x-source: purchase_order.po_no}
+        prId: {type: integer, format: int64, x-source: purchase_order.pr_id}
+        vendorId: {type: integer, x-source: purchase_order.vendor_id}
+        totalAmount: {type: number, x-source: purchase_order.total_amount}
+        status:
+          type: string
+          enum: [DRAFT, ISSUED, PARTIALLY_RECEIVED, RECEIVED, CANCELLED]
+          x-source: purchase_order.status
+        vendorName: {type: string, x-source: 'vendor[vendor_id=vendor_id].name_th'}
+        rfqId: {type: integer, format: int64, nullable: true, x-source: purchase_order.rfq_id}
+        issuedAt: {type: string, format: date-time, nullable: true, x-source: purchase_order.issued_at}
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              poItemId: {type: integer, format: int64, x-source: po_item.po_item_id}
+              prItemId: {type: integer, format: int64, x-source: po_item.pr_item_id}
+              description: {type: string, x-source: 'pr_item[pr_item_id=pr_item_id].description'}
+              unit: {type: string, x-source: 'pr_item[pr_item_id=pr_item_id].unit'}
+              quantity: {type: number, x-source: po_item.quantity}
+              unitPrice: {type: number, x-source: po_item.unit_price}
+              qtyReceived: {type: number, description: รับสะสม (ไม่รวมจำนวนที่ปฏิเสธ ตาม BR-10), x-compute: 'sum(gr_item[po_item_id=po_item_id].qty_received)'}
+              qtyRemaining: {type: number, description: คงเหลือ = สั่ง ลบ รับสะสม, x-compute: quantity - qtyReceived}
+          x-source: po_item[po_id=po_id]
     ReceiptInput:
       type: object
       required: [items]
       properties:
-        note: { type: string, maxLength: 500 }
+        note: {type: string, maxLength: 500, x-source: goods_receipt.note}
         items:
           type: array
           minItems: 1
@@ -635,56 +812,134 @@ components:
             type: object
             required: [poItemId, qtyReceived]
             properties:
-              poItemId: { type: integer, format: int64 }
-              qtyReceived: { type: number, minimum: 0 }
-              qtyRejected: { type: number, minimum: 0, default: 0 }
-
+              poItemId: {type: integer, format: int64, x-source: gr_item.po_item_id}
+              qtyReceived: {type: number, minimum: 0, x-source: gr_item.qty_received}
+              qtyRejected: {type: number, minimum: 0, default: 0, x-source: gr_item.qty_rejected}
+          x-source: gr_item[gr_id=gr_id]
     Receipt:
       type: object
       properties:
-        grId: { type: integer, format: int64 }
-        grNo: { type: string, example: GR-2026-00001 }
-        poStatus: { type: string, enum: [PARTIALLY_RECEIVED, RECEIVED] }
-
+        grId: {type: integer, format: int64, x-source: goods_receipt.gr_id}
+        grNo: {type: string, example: GR-2026-00001, x-source: goods_receipt.gr_no}
+        poStatus:
+          type: string
+          enum: [PARTIALLY_RECEIVED, RECEIVED]
+          x-source: purchase_order[po_id=po_id].status
     VendorInput:
       type: object
       required: [nameTh, taxId]
       properties:
-        nameTh: { type: string, maxLength: 200 }
-        taxId: { type: string, pattern: '^[0-9]{13}$' }
-        email: { type: string, format: email }
-
+        nameTh: {type: string, maxLength: 200, x-source: vendor.name_th}
+        taxId: {type: string, pattern: '^[0-9]{13}$', x-source: vendor.tax_id}
+        email: {type: string, format: email, x-source: vendor.email}
     Vendor:
       allOf:
-        - $ref: '#/components/schemas/VendorInput'
-        - type: object
-          properties:
-            vendorId: { type: integer }
-            vendorCode: { type: string }
-            status: { type: string, enum: [ACTIVE, SUSPENDED] }
-
+      - {$ref: '#/components/schemas/VendorInput'}
+      - type: object
+        properties:
+          vendorId: {type: integer, x-source: vendor.vendor_id}
+          vendorCode: {type: string, x-source: vendor.vendor_code}
+          status:
+            type: string
+            enum: [ACTIVE, SUSPENDED]
+            x-source: vendor.status
     SpendSummary:
       type: object
       properties:
-        from: { type: string, format: date }
-        to: { type: string, format: date }
+        from: {type: string, format: date, x-computed: ค่าของ query from}
+        to: {type: string, format: date, x-computed: ค่าของ query to}
         rows:
           type: array
           items:
             type: object
             properties:
-              group: { type: string }
-              prCount: { type: integer }
-              poCount: { type: integer }
-              estimatedTotal: { type: number }
-              orderedTotal: { type: number }
-              savingVsEstimate: { type: number, description: ประมาณการ ลบ มูลค่าที่สั่งจริง }
-
+              group: {type: string, x-computed: รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน)}
+              prCount: {type: integer, x-computed: รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน)}
+              poCount: {type: integer, x-computed: รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน)}
+              estimatedTotal: {type: number, x-computed: รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน)}
+              orderedTotal: {type: number, x-computed: รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน)}
+              savingVsEstimate: {type: number, description: ประมาณการ ลบ มูลค่าที่สั่งจริง, x-computed: รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน)}
+          x-compute: builtin:spend-summary
     AuditEntry:
       type: object
       properties:
-        auditId: { type: integer, format: int64 }
-        action: { type: string }
-        actorId: { type: integer }
-        detail: { type: string }
-        createdAt: { type: string, format: date-time }
+        auditId: {type: integer, format: int64, x-source: audit_log.audit_id}
+        action: {type: string, x-source: audit_log.action}
+        actorId: {type: integer, x-source: audit_log.actor_id}
+        detail: {type: string, x-source: audit_log.detail}
+        createdAt: {type: string, format: date-time, x-source: audit_log.created_at}
+    ApprovalItem:
+      allOf:
+      - {$ref: '#/components/schemas/Approval'}
+      - type: object
+        properties:
+          docNo:
+            type: string
+            x-source:
+            - when: {doc_type: PR}
+              from: purchase_request[pr_id=doc_id].pr_no
+            - when: {doc_type: AWARD}
+              from: rfq[rfq_id=doc_id].rfq_no
+          docTitle:
+            type: string
+            x-source:
+            - when: {doc_type: PR}
+              from: purchase_request[pr_id=doc_id].title
+            - when: {doc_type: AWARD}
+              from: rfq[rfq_id=doc_id]>purchase_request[pr_id=pr_id].title
+          requesterName:
+            type: string
+            x-source:
+            - when: {doc_type: PR}
+              from: purchase_request[pr_id=doc_id]>app_user[user_id=requester_id].full_name
+            - when: {doc_type: AWARD}
+              from: rfq[rfq_id=doc_id]>purchase_request[pr_id=pr_id]>app_user[user_id=requester_id].full_name
+          amount:
+            type: number
+            description: วงเงิน PR หรือมูลค่าใบเสนอราคาที่ชนะ
+            x-source:
+            - when: {doc_type: PR}
+              from: purchase_request[pr_id=doc_id].total_estimated
+            - when: {doc_type: AWARD}
+              from: award[rfq_id=doc_id]>quotation[quotation_id=quotation_id].total_amount
+          submittedAt:
+            type: string
+            format: date-time
+            x-source:
+            - when: {doc_type: PR}
+              from: purchase_request[pr_id=doc_id].submitted_at
+            - when: {doc_type: AWARD}
+              from: award[rfq_id=doc_id].awarded_at
+          proposerId:
+            type: integer
+            description: ผู้ขอซื้อ (PR) หรือผู้เสนอผล (AWARD) ใช้ซ่อนปุ่มตัดสินตาม BR-04
+            x-source:
+            - when: {doc_type: PR}
+              from: purchase_request[pr_id=doc_id].requester_id
+            - when: {doc_type: AWARD}
+              from: award[rfq_id=doc_id].awarded_by
+    RfqDetail:
+      allOf:
+      - {$ref: '#/components/schemas/Rfq'}
+      - type: object
+        properties:
+          prNo: {type: string, x-source: 'purchase_request[pr_id=pr_id].pr_no'}
+          prTitle: {type: string, x-source: 'purchase_request[pr_id=pr_id].title'}
+          items:
+            type: array
+            items:
+              type: object
+              properties:
+                prItemId: {type: integer, format: int64, x-source: pr_item.pr_item_id}
+                description: {type: string, x-source: pr_item.description}
+                quantity: {type: number, x-source: pr_item.quantity}
+                unit: {type: string, x-source: pr_item.unit}
+            x-source: pr_item[pr_id=pr_id]
+          vendors:
+            type: array
+            items:
+              type: object
+              properties:
+                vendorId: {type: integer, x-source: rfq_vendor.vendor_id}
+                vendorName: {type: string, x-source: 'vendor[vendor_id=vendor_id].name_th'}
+            x-source: rfq_vendor[rfq_id=rfq_id]

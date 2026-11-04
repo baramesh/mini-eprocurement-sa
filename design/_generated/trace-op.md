@@ -9,10 +9,12 @@
 | `listMyApprovals` | GET `/approvals` | AC-04-05 | PRC-03 | draft x1 |
 | `decideApproval` | POST `/approvals/{approvalId}/decision` | AC-04-01, AC-04-02, AC-04-03, AC-04-04, AC-08-05 | PRC-03 | draft x1 |
 | `createRfq` | POST `/rfqs` | AC-05-01, AC-05-02, AC-05-03, AC-05-04, AC-05-05 | PRC-04 | draft x1 |
+| `getRfq` | GET `/rfqs/{rfqId}` | AC-05-06, AC-05-07 | PRC-05 | draft x1 |
 | `recordQuotation` | POST `/rfqs/{rfqId}/quotations` | AC-06-01, AC-06-02, AC-06-03 | PRC-05 | draft x1 |
 | `getQuotationComparison` | GET `/rfqs/{rfqId}/comparison` | AC-07-01 | PRC-05 | draft x1 |
 | `awardRfq` | POST `/rfqs/{rfqId}/award` | AC-08-01, AC-08-02, AC-08-03, AC-08-04 | PRC-05 | draft x1 |
 | `createPurchaseOrder` | POST `/purchase-orders` | AC-09-01, AC-09-02, AC-09-03 | PRC-06 | draft x1 |
+| `getPurchaseOrder` | GET `/purchase-orders/{poId}` | AC-09-06, AC-09-07 | PRC-06 | draft x1 |
 | `issuePurchaseOrder` | POST `/purchase-orders/{poId}/issue` | AC-09-04, AC-09-05 | PRC-06 | draft x1 |
 | `recordGoodsReceipt` | POST `/purchase-orders/{poId}/receipts` | AC-10-01, AC-10-02, AC-10-03, AC-10-04 | PRC-07 | draft x1 |
 | `listVendors` | GET `/vendors` | AC-11-04 | PRC-08 | draft x1 |

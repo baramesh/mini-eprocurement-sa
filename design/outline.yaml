@@ -177,7 +177,8 @@ documents:
         caption: โมดูลของ API service
         pieces: [04-arch-desc/components]
         columns: [{ title: โมดูล, field: title }, { title: หน้าที่, field: body }, { title: FR, field: frs }, { title: API operation, field: operations }]
-      - { title: มุมมองขณะทำงาน (Runtime View), render: figure, pieces: ["04-arch-desc/views/v-0[34]-*"] }
+      - { title: มุมมองขณะทำงาน (Runtime View), render: figure, pieces: ["04-arch-desc/views/v-06-*", "04-arch-desc/views/v-07-*", "04-arch-desc/views/v-08-*", "04-arch-desc/views/v-03-*", "04-arch-desc/views/v-04-*", "04-arch-desc/views/v-09-*", "04-arch-desc/views/v-10-*", "04-arch-desc/views/v-11-*", "04-arch-desc/views/v-12-*", "04-arch-desc/views/v-13-*", "04-arch-desc/views/v-14-*"] }
+      - { title: โครงสร้างโค้ดของ API service (Development View), render: items, pieces: [04-arch-desc/development], heading: "{id} {title}" }
       - title: การติดตั้ง
         children:
           - { title: แผนภาพการติดตั้ง, render: figure, pieces: ["04-arch-desc/views/v-05-*"] }
@@ -262,10 +263,12 @@ documents:
             heading: "{id} {title}"
             attrs: [{ title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: FR, field: frs }, { title: API operation, field: operations }]
             attrs_style: list
+          - { title: พฤติกรรมหน้าจอและการเรียก API, render: items, pieces: [05-ui-desc/interactions], heading: "{id} {title}" }
   - id: 08-api-specification
     title: ข้อกำหนด REST API
     subtitle: API Specification
     doc_code: MEP-API-001
+    landscape: true
     chapters:
       - title: หลักการทั่วไป
         lead: ["06-api-contract/conventions/cnv-00-*"]
@@ -281,11 +284,7 @@ documents:
             caption: รหัสข้อผิดพลาด
             pieces: ["06-api-contract/errors/err-[a-z]*"]
             columns: [{ title: รหัส, field: id }, { title: HTTP, field: http }, { title: ความหมาย, field: body }, { title: กฎที่เกี่ยว, field: rules }]
-      - title: กฎรายละเอียดของ operation ที่ซับซ้อน
-        render: table
-        caption: ลำดับการตรวจของ operation ที่ซับซ้อน
-        pieces: [06-api-contract/operations]
-        columns: [{ title: operationId, field: operation, code: true }, { title: ตรวจอะไรบ้าง (ตามลำดับ), field: checks }, { title: ผลสำเร็จ, field: success }]
+      - { title: ข้อกำหนดรายละเอียดของแต่ละ operation, render: generated-items, source: api-contract, pieces: [06-api-contract/operations] }
       - { title: การเปลี่ยนแปลงที่ทำให้ client พัง, render: list, pieces: [06-api-contract/breaking], bold_title: true }
       - { title: ดัชนี Endpoint, render: generated, source: endpoint-index }
 

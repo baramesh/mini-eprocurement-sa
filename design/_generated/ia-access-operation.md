@@ -9,10 +9,12 @@
 | `listMyApprovals` |  | ✓ |  | ✓ | ✓ |  |  |
 | `decideApproval` |  | ✓ |  | ✓ | ✓ |  |  |
 | `createRfq` |  |  | ✓ |  |  |  |  |
+| `getRfq` |  |  | ✓ | ✓ | ✓ |  |  |
 | `recordQuotation` |  |  | ✓ |  |  |  |  |
 | `getQuotationComparison` |  |  | ✓ | ✓ | ✓ |  |  |
 | `awardRfq` |  |  | ✓ |  |  |  |  |
 | `createPurchaseOrder` |  |  | ✓ |  |  |  |  |
+| `getPurchaseOrder` |  |  | ✓ | ✓ |  | ✓ | ✓ |
 | `issuePurchaseOrder` |  |  | ✓ |  |  |  |  |
 | `recordGoodsReceipt` |  |  |  |  |  | ✓ |  |
 | `listVendors` |  |  | ✓ | ✓ |  |  | ✓ |

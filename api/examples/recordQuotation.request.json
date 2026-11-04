@@ -1,0 +1,10 @@
+{
+  "vendorId": 1,
+  "leadTimeDays": 14,
+  "items": [
+    {
+      "prItemId": 4,
+      "unitPrice": 29000
+    }
+  ]
+}

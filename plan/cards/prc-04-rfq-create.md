@@ -33,6 +33,7 @@ source_refs:
 owned_touchpoints:
 - createRfq
 consumed_touchpoints:
+- getPurchaseRequest
 - listVendors
 tables:
 - rfq
@@ -51,7 +52,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 - หน้าจอ สร้าง RFQ และเชิญผู้ขาย (SCR-04) ตามข้อกำหนดหน้าจอ
 - เลือกผู้ขายจากรายการที่ใช้งานได้
 - แจ้งให้ซื้อตรงเมื่อวงเงินไม่เกินเกณฑ์
-- เรียก API: createRfq
+- เรียก API: createRfq (ใช้ร่วม: getPurchaseRequest, listVendors)
 
 ## Acceptance Criteria
 
@@ -97,6 +98,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | operationId | Method Path | การเป็นเจ้าของ |
 |---|---|---|
 | `createRfq` | POST `/rfqs` | เป็นเจ้าของ |
+| `getPurchaseRequest` | GET `/purchase-requests/{prId}` | ใช้ร่วม (เจ้าของ PRC-02) |
 | `listVendors` | GET `/vendors` | ใช้ร่วม (เจ้าของ PRC-08) |
 
 ตารางข้อมูลที่เกี่ยวข้อง: `rfq`, `rfq_vendor`

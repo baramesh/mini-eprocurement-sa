@@ -26,6 +26,8 @@
 | AC-05-03 | FR-05 | PRC-04 | draft x1 |
 | AC-05-04 | FR-05, FR-11 | PRC-04 | draft x1 |
 | AC-05-05 | FR-05 | PRC-04 | draft x1 |
+| AC-05-06 | FR-05 | PRC-05 | draft x1 |
+| AC-05-07 | FR-05 | PRC-05 | draft x1 |
 | AC-06-01 | FR-06 | PRC-05 | draft x1 |
 | AC-06-02 | FR-06 | PRC-05 | draft x1 |
 | AC-06-03 | FR-06 | PRC-05, PRC-S1 | draft x2 |
@@ -40,6 +42,8 @@
 | AC-09-03 | FR-09, FR-11 | PRC-06 | draft x1 |
 | AC-09-04 | FR-09, FR-13 | PRC-06 | draft x1 |
 | AC-09-05 | FR-09 | PRC-06 | draft x1 |
+| AC-09-06 | FR-10 | PRC-06 | draft x1 |
+| AC-09-07 | FR-09 | PRC-06 | draft x1 |
 | AC-10-01 | FR-10, FR-14 | PRC-07 | draft x1 |
 | AC-10-02 | FR-10 | PRC-07 | draft x1 |
 | AC-10-03 | FR-10 | PRC-07 | draft x1 |

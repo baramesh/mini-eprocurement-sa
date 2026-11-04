@@ -1,0 +1,79 @@
+# Which sample-data row each API example is built from. The example body itself is never typed: an internal script builds it from the
+# row through the x-source mapping in api/openapi.yaml, then validates it against the response schema.
+#   row:    one row, table[column==value]           rows: every row matching, for a list response
+#   params: path and query values shown with the call, and the report period
+#   set:    the sample data holds the state AFTER later steps, so an example of an earlier step overrides those fields (documented here, visible in the contract)
+listPurchaseRequests:
+  params: { status: SUBMITTED }
+  response: { status: 200, rows: "purchase_request[status==SUBMITTED]" }
+createPurchaseRequest:
+  request: { row: "purchase_request[pr_no==PR-2026-00005]" }
+  response: { status: 201, row: "purchase_request[pr_no==PR-2026-00005]" }
+getPurchaseRequest:
+  params: { prId: 4 }
+  response: { status: 200, row: "purchase_request[pr_no==PR-2026-00004]" }
+updatePurchaseRequest:
+  params: { prId: 5 }
+  request: { row: "purchase_request[pr_no==PR-2026-00005]" }
+  response: { status: 200, row: "purchase_request[pr_no==PR-2026-00005]" }
+submitPurchaseRequest:
+  params: { prId: 4 }
+  response: { status: 200, row: "purchase_request[pr_no==PR-2026-00004]" }
+listMyApprovals:
+  response: { status: 200, rows: "approval[decision==PENDING]" }
+decideApproval:
+  params: { approvalId: 8 }
+  request: { row: "approval[approval_id==8]" }
+  response: { status: 200, row: "approval[approval_id==8]" }
+createRfq:
+  request: { row: "rfq[rfq_no==RFQ-2026-00002]" }
+  response: { status: 201, row: "rfq[rfq_no==RFQ-2026-00002]", set: { status: OPEN } }
+getRfq:
+  params: { rfqId: 2 }
+  response: { status: 200, row: "rfq[rfq_no==RFQ-2026-00002]" }
+recordQuotation:
+  params: { rfqId: 2 }
+  request: { row: "quotation[quotation_id==5]" }
+  response: { status: 201, row: "quotation[quotation_id==5]" }
+getQuotationComparison:
+  params: { rfqId: 2 }
+  response: { status: 200, row: "rfq[rfq_no==RFQ-2026-00002]" }
+awardRfq:
+  params: { rfqId: 2 }
+  request: { row: "award[rfq_id==2]" }
+  response: { status: 202, row: "rfq[rfq_no==RFQ-2026-00002]", set: { status: AWARD_PENDING } }
+createPurchaseOrder:
+  request: { row: "purchase_order[po_no==PO-2026-00001]" }
+  response:
+    status: 201
+    row: "purchase_order[po_no==PO-2026-00001]"
+    set: { status: DRAFT, issuedAt: null, "items[].qtyReceived": 0, "items[].qtyRemaining": "=quantity" }
+issuePurchaseOrder:
+  params: { poId: 1 }
+  response:
+    status: 200
+    row: "purchase_order[po_no==PO-2026-00001]"
+    set: { status: ISSUED, "items[].qtyReceived": 0, "items[].qtyRemaining": "=quantity" }
+getPurchaseOrder:
+  params: { poId: 2 }
+  response: { status: 200, row: "purchase_order[po_no==PO-2026-00002]" }
+recordGoodsReceipt:
+  params: { poId: 2 }
+  request: { row: "goods_receipt[gr_no==GR-2026-00002]" }
+  response: { status: 201, row: "goods_receipt[gr_no==GR-2026-00002]" }
+listVendors:
+  params: { status: ACTIVE }
+  response: { status: 200, rows: "vendor[status==ACTIVE]" }
+createVendor:
+  request: { row: "vendor[vendor_code==V0004]" }
+  response: { status: 201, row: "vendor[vendor_code==V0004]" }
+setVendorStatus:
+  params: { vendorId: 5 }
+  request: { row: "vendor[vendor_code==V0005]" }
+  response: { status: 200, row: "vendor[vendor_code==V0005]" }
+getSpendSummary:
+  params: { from: "2026-03-01", to: "2026-03-31", groupBy: department }
+  response: { status: 200, rows: "department[is_active==1]" }
+listAuditLogs:
+  params: { entity: PR, entityId: 1 }
+  response: { status: 200, rows: "audit_log[entity==PR,entity_id==1]" }

@@ -15,12 +15,15 @@ estimate:
 depends_on:
 - PRC-05
 - PRC-03
+- PRC-08
 acceptance_refs:
 - AC-09-01
 - AC-09-02
 - AC-09-03
 - AC-09-04
 - AC-09-05
+- AC-09-06
+- AC-09-07
 source_refs:
 - JNY-03
 - UC-06
@@ -32,8 +35,12 @@ source_refs:
 - WF-06
 owned_touchpoints:
 - createPurchaseOrder
+- getPurchaseOrder
 - issuePurchaseOrder
-consumed_touchpoints: []
+consumed_touchpoints:
+- getPurchaseRequest
+- getQuotationComparison
+- listVendors
 tables:
 - po_item
 - purchase_order
@@ -51,7 +58,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 - หน้าจอ ใบสั่งซื้อ (SCR-06) ตามข้อกำหนดหน้าจอ
 - สองโหมด: จากผลประกวดและซื้อตรง
 - ตรวจมูลค่าไม่เกินวงเงิน PR
-- เรียก API: createPurchaseOrder, issuePurchaseOrder
+- เรียก API: createPurchaseOrder, getPurchaseOrder, issuePurchaseOrder (ใช้ร่วม: getPurchaseRequest, getQuotationComparison, listVendors)
 
 ## Acceptance Criteria
 
@@ -63,6 +70,8 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [AC-09-03](../../design/01-requirements/acceptance-criteria/ac-09-03-negative-create-purchase-order.md) | ออก PO ให้ผู้ขายที่ถูกระงับ | Negative | 422 `ERR-VND-002` |
 | [AC-09-04](../../design/01-requirements/acceptance-criteria/ac-09-04-positive-issue-purchase-order.md) | ออก PO จาก DRAFT เป็น ISSUED | Positive | 200 `ISSUED` มี audit |
 | [AC-09-05](../../design/01-requirements/acceptance-criteria/ac-09-05-negative-issue-purchase-order.md) | ออก PO ซ้ำ | Negative | 409 `ERR-STATE-001` |
+| [AC-09-06](../../design/01-requirements/acceptance-criteria/ac-09-06-positive-get-purchase-order.md) | ดู PO พร้อมยอดคงเหลือ | Positive | 200 `qtyReceived` 4 และ `qtyRemaining` 2 (จำนวนที่ปฏิเสธไม่นับเป็นรับ) |
+| [AC-09-07](../../design/01-requirements/acceptance-criteria/ac-09-07-negative-get-purchase-order.md) | ดู PO ที่ไม่มี | Negative | 404 `ERR-NF-001` |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -97,7 +106,11 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | operationId | Method Path | การเป็นเจ้าของ |
 |---|---|---|
 | `createPurchaseOrder` | POST `/purchase-orders` | เป็นเจ้าของ |
+| `getPurchaseOrder` | GET `/purchase-orders/{poId}` | เป็นเจ้าของ |
 | `issuePurchaseOrder` | POST `/purchase-orders/{poId}/issue` | เป็นเจ้าของ |
+| `getPurchaseRequest` | GET `/purchase-requests/{prId}` | ใช้ร่วม (เจ้าของ PRC-02) |
+| `getQuotationComparison` | GET `/rfqs/{rfqId}/comparison` | ใช้ร่วม (เจ้าของ PRC-05) |
+| `listVendors` | GET `/vendors` | ใช้ร่วม (เจ้าของ PRC-08) |
 
 ตารางข้อมูลที่เกี่ยวข้อง: `po_item`, `purchase_order`
 <!-- /generated -->

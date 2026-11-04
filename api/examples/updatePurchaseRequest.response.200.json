@@ -1,0 +1,25 @@
+{
+  "prId": 5,
+  "prNo": "PR-2026-00005",
+  "status": "DRAFT",
+  "title": "ปากกาและอุปกรณ์เครื่องเขียน",
+  "neededByDate": "2026-03-31",
+  "totalEstimated": 3000,
+  "requesterName": "ธนา ผู้ขอซื้อฝ่ายปฏิบัติการ",
+  "departmentName": "ปฏิบัติการ",
+  "submittedAt": null,
+  "rfqId": null,
+  "poId": null,
+  "justification": "ใช้งานประจำ",
+  "items": [
+    {
+      "description": "ปากกาและเครื่องเขียน",
+      "quantity": 100,
+      "unit": "ชุด",
+      "estUnitPrice": 30,
+      "prItemId": 6,
+      "lineNo": 1
+    }
+  ],
+  "approvals": []
+}

@@ -20,7 +20,10 @@ context:                   { fields: {}, standalone: true }
 controls:                  { fields: { errors: [ERR], tables: [table], nfr: [NFR] }, standalone: true }
 conventions:               { fields: { errors: [ERR] }, standalone: true }
 data-intro:                { fields: { tables: [table] }, standalone: true }
+interactions:              { fields: { screen: [SCR], navigates_to: [SCR], operations: [api], rules: [BR], errors: [ERR], ia: [IAR], uir: [UIR] }, required: [screen, operations] }
+intro:                { fields: { tables: [table] }, standalone: true }
 decisions:                 { fields: { tables: [table], rules: [BR], nfr: [NFR], errors: [ERR], containers: [CTN], components: [CMP], operations: [api], assumptions: [ASM] }, required_any: [tables, rules, nfr, containers, components, assumptions] }
+development:               { fields: { see: [V], tables: [table], components: [CMP], containers: [CTN], adrs: [ADR] }, required_any: [components, containers] }
 diagrams:                  { fields: { tables: [table] }, required: [tables] }
 environments:              { fields: {}, standalone: true }
 errors:                    { fields: { rules: [BR, FR, NFR] }, standalone: true, prose_ok: [ERR] }
@@ -31,7 +34,6 @@ global-rules:              { fields: {}, standalone: true }
 glossary:                  { fields: {}, standalone: true }
 ia:                        { fields: { errors: [ERR] }, standalone: true }
 indexes:                   { fields: { tables: [table], operations: [api], nfr: [NFR] }, required_any: [tables, nfr] }
-intro:                     { fields: {}, standalone: true }
 journeys:                  { fields: { usecases: [UC] }, required: [usecases] }
 navigation:                { fields: { screens: [SCR] }, required: [screens] }
 nfr:                       { fields: { frs: [FR] }, standalone: true }
@@ -48,5 +50,5 @@ steps:                     { prose: free, fields: {}, standalone: true }
 tables:                    { fields: { table: [table], frs: [FR] }, required: [table, frs] }
 usecases:                  { fields: { frs: [FR], rules: [BR], errors: [ERR], tables: [table] }, required: [frs] }
 verification:              { prose: free, fields: {}, standalone: true }
-views:                     { fields: { containers: [CTN], usecases: [UC], operations: [api] }, required_any: [containers, usecases] }
+views:                     { fields: { see: [V], containers: [CTN], usecases: [UC], operations: [api], rules: [BR], errors: [ERR], nfr: [NFR], tables: [table] }, required_any: [containers, usecases] }
 wireframes:                { fields: { screen: [SCR], rules: [BR], errors: [ERR], nfr: [NFR] }, required: [screen], prose_ok: [SCR] }

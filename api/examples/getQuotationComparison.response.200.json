@@ -1,0 +1,51 @@
+{
+  "rfqId": 2,
+  "lowestQuotationId": 5,
+  "quotations": [
+    {
+      "quotationId": 5,
+      "vendorId": 1,
+      "vendorName": "บริษัท สำนักงานตัวอย่าง จำกัด",
+      "totalAmount": 116000,
+      "leadTimeDays": 14,
+      "isActive": true,
+      "submittedAt": "2026-03-12T10:00:00Z",
+      "itemPrices": [
+        {
+          "prItemId": 4,
+          "unitPrice": 29000
+        }
+      ]
+    },
+    {
+      "quotationId": 6,
+      "vendorId": 3,
+      "vendorName": "บริษัท ไอทีตัวอย่าง จำกัด",
+      "totalAmount": 118000,
+      "leadTimeDays": 9,
+      "isActive": true,
+      "submittedAt": "2026-03-11T10:00:00Z",
+      "itemPrices": [
+        {
+          "prItemId": 4,
+          "unitPrice": 29500
+        }
+      ]
+    },
+    {
+      "quotationId": 7,
+      "vendorId": 4,
+      "vendorName": "บริษัท คอมพิวเตอร์ตัวอย่าง จำกัด",
+      "totalAmount": 120000,
+      "leadTimeDays": 12,
+      "isActive": true,
+      "submittedAt": "2026-03-13T10:00:00Z",
+      "itemPrices": [
+        {
+          "prItemId": 4,
+          "unitPrice": 30000
+        }
+      ]
+    }
+  ]
+}
