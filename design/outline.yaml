@@ -5,6 +5,14 @@
 # render: prose | list | table | figure | items | generated
 author: บารเมษฐ์ นามมุงคุณ
 version: "1.0"
+project: ระบบจัดซื้อจัดจ้างขนาดย่อ (Mini e-Procurement)
+contract: ไม่มี (โจทย์สมมติเพื่อแสดงผลงาน)
+date_th: 4 พฤศจิกายน 2569
+prepared_by: { name: บารเมษฐ์ นามมุงคุณ, position: System Analyst, date: 4 พฤศจิกายน 2569 }
+reviewed_by: { name: ยังไม่มี (เอกสารตัวอย่าง), position: "-", date: "-" }
+approved_by: { name: ยังไม่มี (เอกสารตัวอย่าง), position: "-", date: "-" }
+revisions:
+  - { version: "1.0", date: 4 พฤศจิกายน 2569, by: บารเมษฐ์ นามมุงคุณ, detail: จัดทำฉบับแรก (ร่างโดย AI รอผู้จัดทำตรวจรับ) }
 
 documents:
   - id: 00-ai-workflow

@@ -1,6 +1,6 @@
 ---
 doc_id: STG-01
-covers: ทุก operation ตามกฎใน `docs/04-api-spec.md` รวมรหัสข้อผิดพลาด
+covers: ทุก operation ตามกฎในเล่มข้อกำหนด API รวมรหัสข้อผิดพลาด
 note: เป็นระดับหลักของชุดนี้
 ---
 
