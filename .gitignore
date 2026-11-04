@@ -1,0 +1,30 @@
+# Agent / AI tool configuration: kept local on purpose, never committed.
+# The repository shows the work and its results; it is not a template for re-running the agent setup.
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+GEMINI.md
+.claude/
+.codex/
+.cursor/
+.cursorrules
+.gemini/
+.github/copilot-instructions.md
+.windsurf/
+.aider*
+.mcp.json
+
+# Internal build/check scripts: kept local, not published
+tools/
+
+# Build intermediates
+tmp/
+*.html
+!docs/**/*.html
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+__pycache__/
+*.pyc
