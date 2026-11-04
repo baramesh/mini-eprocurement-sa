@@ -7,15 +7,15 @@
 ## โครงของ repository
 
 ```text
-design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (339 ไฟล์ ณ รุ่น 1.0 ไม่นับภาพ) แบ่งตามพื้นที่ของงานออกแบบ
+design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (341 ไฟล์ ณ รุ่น 1.0 ไม่นับภาพ) แบ่งตามพื้นที่ของงานออกแบบ
   01-requirements/  02-bu-process/  03-domain-data/  04-arch-desc/  05-ui-desc/
   06-api-contract/  08-security-arch/  00-overview/  10-plan/
   _generated/       เนื้อหาที่สร้างอัตโนมัติ (ดัชนี endpoint, พจนานุกรมข้อมูล, เมทริกซ์การสืบกลับ, เมทริกซ์ IA, ตารางแผน)
   outline.yaml      โครงเล่ม: ไฟล์ย่อยไหนอยู่เล่มไหน บทไหน
 plan/        การ์ดงานสำหรับ dev (Journey-first) พร้อมผล gate และ backlog  ->  plan/README.md
 api/         สัญญา API (OpenAPI)
-sql/         schema (T-SQL) และชุดตรวจสอบ schema
-tests/db/    ผลรันชุดตรวจสอบ schema บน SQL Server จริง
+sql/         schema (T-SQL) ชุดตรวจสอบ schema และชุดตรวจความสอดคล้องของข้อมูลตัวอย่าง
+tests/db/    ผลรันชุดตรวจสอบ schema และผลโหลดข้อมูลตัวอย่างบน SQL Server จริง
 output/      PDF แยกรายเล่ม
 ```
 
@@ -30,7 +30,7 @@ output/      PDF แยกรายเล่ม
 | 03 การออกแบบ User Flow | Journey 4, ผังกระบวนการ, สถานะเอกสาร, Use Case 10, sequence diagram | [03-user-flow.pdf](output/03-user-flow.pdf) |
 | 04 โครงสร้างข้อมูลของส่วนติดต่อผู้ใช้ (Information Architecture) | กลุ่มผู้ใช้, ผังการนำทาง, ทะเบียนหน้าจอ, เมทริกซ์สิทธิ์, เมทริกซ์ข้อมูลรายหน้าจอ, glossary, กรณีขอบเขต | [04-information-architecture.pdf](output/04-information-architecture.pdf) |
 | 05 สถาปัตยกรรมของระบบ (System Architecture Design) | บริบท, หน่วยประกอบ, โมดูล API, runtime view, การติดตั้ง, ความมั่นคงปลอดภัย (OWASP), ADR 6 เรื่อง | [05-system-architecture.pdf](output/05-system-architecture.pdf) |
-| 06 การออกแบบฐานข้อมูล (Database Design) | ER diagram, 17 ตาราง (T-SQL) พร้อมพจนานุกรมข้อมูล, การตัดสินใจออกแบบ, ดัชนี | [06-database-design.pdf](output/06-database-design.pdf) |
+| 06 การออกแบบฐานข้อมูล (Database Design) | ER diagram, 17 ตาราง (T-SQL) พร้อมพจนานุกรมข้อมูล, การตัดสินใจออกแบบ, ดัชนี, ข้อมูลตั้งต้นและข้อมูลตัวอย่าง (CSV) | [06-database-design.pdf](output/06-database-design.pdf) |
 | 07 การออกแบบ UX/UI | Design System (กติกากลาง), wireframe 10 หน้าจอ (สร้างด้วย FigCraft) พร้อมเลขกำกับ, หน้าจอ 10 หน้า พร้อมฟิลด์และกติกา | [07-ux-ui.pdf](output/07-ux-ui.pdf) |
 | 08 ข้อกำหนด API (API Specification) | OpenAPI 19 operation, รหัสข้อผิดพลาด 18 รหัส, กฎต่อ operation | [08-api-specification.pdf](output/08-api-specification.pdf) |
 | 09 เกณฑ์ตรวจรับ (Acceptance Criteria) | 52 ข้อ ผูกกับ FR ใช้การวิเคราะห์ค่าขอบกับเกณฑ์วงเงิน เพื่อส่งต่อให้ QA ออกแบบ test case | [09-acceptance-criteria.pdf](output/09-acceptance-criteria.pdf) |
@@ -54,7 +54,7 @@ output/      PDF แยกรายเล่ม
 
 ## ตรวจแล้วและยังไม่ได้ตรวจ
 
-- **ตรวจแล้ว:** รหัสที่อ้างกันระหว่างไฟล์ย่อยและแผนงานมีอยู่จริงทั้งหมด; ทุก FR และทุก API operation มีเกณฑ์ตรวจรับและทุก operation มีเจ้าของการ์ดใบเดียว; ทุกหน้าจอมี wireframe; `schema.sql` รันผ่านบน SQL Server 2022 และชุดตรวจสอบ schema ผ่านทั้งหมด; เลขหน้าในสารบัญตรงกับหน้าจริงทุก PDF
+- **ตรวจแล้ว:** รหัสที่อ้างกันระหว่างไฟล์ย่อยและแผนงานมีอยู่จริงทั้งหมด; ทุก FR และทุก API operation มีเกณฑ์ตรวจรับและทุก operation มีเจ้าของการ์ดใบเดียว; ทุกหน้าจอมี wireframe; `schema.sql` รันผ่านบน SQL Server 2022 และชุดตรวจสอบ schema ผ่านทั้งหมด; ข้อมูลตั้งต้นและข้อมูลตัวอย่างโหลดเข้า schema ได้ และชุดตรวจความสอดคล้องของข้อมูลผ่านทั้งหมด; เลขหน้าในสารบัญตรงกับหน้าจริงทุก PDF
 - **ยังไม่ได้ตรวจ:** เกณฑ์ตรวจรับยังไม่ถูก QA นำไปออกแบบ test case และรันกับระบบ (ยังไม่มีระบบ); wireframe เป็นโครงความละเอียดต่ำ ไม่ได้ทดสอบกับผู้ใช้; สถาปัตยกรรมและเทคโนโลยีที่เลือกเป็นข้อเสนอที่ยังไม่ได้ทดลองสร้างต้นแบบ; ประสิทธิภาพที่ 100,000 PR; ประมาณการ story point เป็นค่าตั้งต้นของ AI และการ์ดทุกใบเป็น `draft` รอทีมตรวจรับ; เกณฑ์วงเงินไม่ได้เทียบกับระเบียบจริง
 
 ## หมายเหตุ

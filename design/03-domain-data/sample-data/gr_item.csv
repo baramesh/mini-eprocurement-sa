@@ -1,0 +1,5 @@
+gr_item_id,gr_id,po_item_id,qty_received,qty_rejected
+1,1,1,40,0
+2,1,2,4,0
+3,2,3,4,1
+4,3,4,4,0

@@ -1,0 +1,9 @@
+user_id,department_id,full_name,email,role_code,is_active
+2,1,สมชาย ผู้ขอซื้อ,somchai.req@example.test,REQUESTER,1
+3,1,สมหญิง ผู้อนุมัติฝ่ายไอที,somying.appr@example.test,DEPT_APPROVER,1
+4,3,วิชัย เจ้าหน้าที่จัดซื้อ,wichai.proc@example.test,PROCUREMENT,1
+5,3,ปราณี หัวหน้าจัดซื้อ,pranee.head@example.test,PROCUREMENT_HEAD,1
+6,3,กรรมการ พิจารณา,committee@example.test,COMMITTEE,1
+7,1,สุดา ผู้รับของ,suda.recv@example.test,RECEIVER,1
+8,2,ธนา ผู้ขอซื้อฝ่ายปฏิบัติการ,thana.req@example.test,REQUESTER,1
+9,2,มานี ผู้อนุมัติฝ่ายปฏิบัติการ,manee.appr@example.test,DEPT_APPROVER,1

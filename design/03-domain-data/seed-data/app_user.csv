@@ -1,0 +1,2 @@
+user_id,department_id,full_name,email,role_code,is_active
+1,1,ผู้ดูแลระบบ,admin@example.test,ADMIN,1

@@ -1,0 +1,6 @@
+vendor_id,vendor_code,name_th,tax_id,email,status,created_at
+1,V0001,บริษัท สำนักงานตัวอย่าง จำกัด,0000000000011,sales@vendor1.example.test,ACTIVE,2026-01-10 09:00:00
+2,V0002,ห้างหุ้นส่วน เฟอร์นิเจอร์ตัวอย่าง,0000000000012,sales@vendor2.example.test,ACTIVE,2026-01-10 09:05:00
+3,V0003,บริษัท ไอทีตัวอย่าง จำกัด,0000000000013,sales@vendor3.example.test,ACTIVE,2026-01-11 10:00:00
+4,V0004,บริษัท คอมพิวเตอร์ตัวอย่าง จำกัด,0000000000014,sales@vendor4.example.test,ACTIVE,2026-01-12 10:00:00
+5,V0005,บริษัท ถูกระงับตัวอย่าง จำกัด,0000000000015,,SUSPENDED,2026-01-13 10:00:00

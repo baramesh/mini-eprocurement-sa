@@ -222,6 +222,12 @@ documents:
         caption: การตัดสินใจออกแบบ
         pieces: [03-domain-data/decisions]
         columns: [{ title: หัวข้อ, field: title }, { title: การตัดสินใจ, field: decision }, { title: เหตุผล, field: reason }]
+      - title: ข้อมูลตั้งต้นและข้อมูลตัวอย่าง
+        children:
+          - { title: ข้อมูลตั้งต้น, render: prose, pieces: ["03-domain-data/data-intro/di-01-*"] }
+          - { title: ข้อมูลตัวอย่าง, render: prose, pieces: ["03-domain-data/data-intro/di-02-*"] }
+          - { title: ไฟล์และจำนวนแถว, render: generated, source: data-files }
+          - { title: สถานการณ์ที่ครอบคลุม, render: generated, source: data-scenario }
       - title: ดัชนีหลัก
         children:
           - title: ดัชนีและคำค้นที่รองรับ
