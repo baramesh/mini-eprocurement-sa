@@ -14,7 +14,7 @@ design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่ง�
   outline.yaml      โครงเล่ม: ไฟล์ย่อยไหนอยู่เล่มไหน บทไหน
 plan/        การ์ดงานสำหรับ dev (Journey-first) พร้อมผล gate และ backlog  ->  plan/README.md
 api/         สัญญา API (OpenAPI)
-sql/         schema (T-SQL) ชุดตรวจสอบ schema และชุดตรวจความสอดคล้องของข้อมูลตัวอย่าง
+sql/         schema (T-SQL) สคริปต์ insert ข้อมูลตั้งต้นและข้อมูลตัวอย่าง (สร้างจาก CSV) และชุดตรวจ
 tests/db/    ผลรันชุดตรวจสอบ schema และผลโหลดข้อมูลตัวอย่างบน SQL Server จริง
 output/      PDF แยกรายเล่ม
 ```

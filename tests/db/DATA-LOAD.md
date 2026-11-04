@@ -3,7 +3,7 @@
 สร้างอัตโนมัติ ห้ามแก้ด้วยมือ
 
 - SQL Server 16.0.4305.5 (Linux container) ฐานข้อมูลว่างที่สร้าง schema ใหม่
-- โหลดผ่าน INSERT จาก CSV ตามลำดับตารางที่พึ่งกัน ทุก foreign key และ constraint ของ schema ทำงานระหว่างโหลด
+- โหลดด้วยสคริปต์ที่ส่งมอบจริง ( แล้ว ) ซึ่งสร้างจาก CSV ตามลำดับตารางที่พึ่งกัน ทุก foreign key และ constraint ของ schema ทำงานระหว่างโหลด
 - ผลรวมแถวหลังโหลด (ตารางหลัก): department|3 app_user|9 vendor|5 purchase_request|6 rfq|2 quotation|7 purchase_order|3 goods_receipt|3 
 
 ## ผลตรวจความสอดคล้อง (`sql/data-checks.sql`)

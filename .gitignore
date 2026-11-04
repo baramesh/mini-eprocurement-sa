@@ -28,3 +28,6 @@ tmp/
 .idea/
 __pycache__/
 *.pyc
+
+# release bundles
+dist/
