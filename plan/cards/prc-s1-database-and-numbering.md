@@ -67,7 +67,7 @@ slicing_reason: งานไม่มีหน้าจอ ต้องเสร
 |---|---|---|---|
 | [AC-01-03](../../design/01-requirements/acceptance-criteria/ac-01-03-negative-create-purchase-request.md) | จำนวนเป็นศูนย์ | Negative | 422 `ERR-VAL-001` ที่ `items[0].quantity` |
 | [AC-01-04](../../design/01-requirements/acceptance-criteria/ac-01-04-negative-update-purchase-request.md) | แก้ draft ด้วยเวอร์ชันล้าสมัย | Negative | B ได้ 409 `ERR-CONC-001` |
-| [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับแรก `isActive` = false ฉบับหลัง true เหลือฉบับที่ใช้งาน 1 ฉบับ |
+| [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับหลัง `isActive` = true; ตารางเปรียบเทียบของ RFQ มีใบเสนอราคาของผู้ขายรายนี้เพียงฉบับเดียวคือฉบับหลัง; ฉบับแรกยังอยู่ในฐานข้อมูลที่ `is_active` = 0 (ตรวจที่ชั้นฐานข้อมูล เพราะไม่มี operation อ่านฉบับที่เลิกใช้) |
 | [AC-11-01](../../design/01-requirements/acceptance-criteria/ac-11-01-negative-create-vendor.md) | เพิ่มผู้ขายเลขภาษีซ้ำ | Negative | 409 `ERR-VND-001` |
 | [AC-13-02](../../design/01-requirements/acceptance-criteria/ac-13-02-security-list-audit-logs.md) | บัญชีแอปแก้ audit ไม่ได้ | Security | ถูกปฏิเสธโดยฐานข้อมูล (NFR-02) |
 | [AC-14-01](../../design/01-requirements/acceptance-criteria/ac-14-01-concurrency-create-purchase-request.md) | ออกเลขเอกสารพร้อมกัน | Concurrency | เลข 1,000 ค่าไม่ซ้ำ ต่อเนื่อง (NFR-04) |

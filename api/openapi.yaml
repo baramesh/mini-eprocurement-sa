@@ -300,6 +300,7 @@ paths:
         '401': {$ref: '#/components/responses/Unauthorized'}
         '403': {$ref: '#/components/responses/Forbidden'}
         '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Error'}
         '422': {$ref: '#/components/responses/Error'}
   /purchase-orders:
     post:
@@ -363,6 +364,7 @@ paths:
         '403': {$ref: '#/components/responses/Forbidden'}
         '404': {$ref: '#/components/responses/NotFound'}
         '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
   /purchase-orders/{poId}/receipts:
     post:
       tags: [purchase-orders]
@@ -461,7 +463,7 @@ paths:
                   type: string
                   enum: [ACTIVE, SUSPENDED]
                   x-source: vendor.status
-                reason: {type: string, maxLength: 500, x-computed: บันทึกใน audit_log.detail ของเหตุการณ์ ไม่เก็บเป็นคอลัมน์ของ vendor, example: ระงับชั่วคราวระหว่างตรวจเอกสารจดทะเบียน}
+                reason: {type: string, maxLength: 500, description: บังคับเมื่อ status เป็น SUSPENDED, x-computed: บันทึกใน audit_log.detail ของเหตุการณ์ ไม่เก็บเป็นคอลัมน์ของ vendor, example: ระงับชั่วคราวระหว่างตรวจเอกสารจดทะเบียน}
       responses:
         '200':
           description: เปลี่ยนแล้ว
@@ -471,6 +473,7 @@ paths:
         '401': {$ref: '#/components/responses/Unauthorized'}
         '403': {$ref: '#/components/responses/Forbidden'}
         '404': {$ref: '#/components/responses/NotFound'}
+        '422': {$ref: '#/components/responses/Error'}
   /reports/spend-summary:
     get:
       tags: [reports]

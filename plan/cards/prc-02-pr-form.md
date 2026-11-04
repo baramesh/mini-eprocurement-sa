@@ -83,7 +83,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [AC-03-07](../../design/01-requirements/acceptance-criteria/ac-03-07-resilience-submit-purchase-request.md) | ส่งซ้ำหลังแคช Idempotency หาย | Resilience | 409 `ERR-STATE-001` ไม่สร้างแถวอนุมัติและ audit ซ้ำ (กฎสถานะของเอกสารเป็นด่านที่สอง ตาม ADR-04) |
 | [AC-14-01](../../design/01-requirements/acceptance-criteria/ac-14-01-concurrency-create-purchase-request.md) | ออกเลขเอกสารพร้อมกัน | Concurrency | เลข 1,000 ค่าไม่ซ้ำ ต่อเนื่อง (NFR-04) |
 | [AC-02-03](../../design/01-requirements/acceptance-criteria/ac-02-03-positive-get-purchase-request.md) | ดูรายละเอียด PR พร้อมสายอนุมัติ | Positive | 200 มี `items` ครบและ `approvals` 2 ขั้นตามลำดับ |
-| [AC-02-04](../../design/01-requirements/acceptance-criteria/ac-02-04-security-get-purchase-request.md) | ดู PR ของหน่วยงานอื่น | Security | 403 `ERR-AUTH-002` |
+| [AC-02-04](../../design/01-requirements/acceptance-criteria/ac-02-04-security-get-purchase-request.md) | ดู PR ของหน่วยงานอื่น | Security | 404 `ERR-NF-001` (ไม่บอกว่าเอกสารมีอยู่) |
 <!-- /generated -->
 
 ## Dependency / Assumption

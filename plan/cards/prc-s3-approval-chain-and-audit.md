@@ -64,7 +64,7 @@ slicing_reason: ตรรกะที่ใช้ร่วมระหว่า�
 | [AC-04-01](../../design/01-requirements/acceptance-criteria/ac-04-01-security-decide-approval.md) | ผู้ขอซื้ออนุมัติ PR ตนเอง | Security | 403 `ERR-SOD-001` |
 | [AC-04-03](../../design/01-requirements/acceptance-criteria/ac-04-03-positive-decide-approval.md) | อนุมัติครบทุกขั้น | Positive | PR เป็น `APPROVED` มี audit ครบทุกขั้น |
 | [AC-08-05](../../design/01-requirements/acceptance-criteria/ac-08-05-positive-decide-approval.md) | อนุมัติผลเลือกวงเงินเกิน 200,000 | Positive | RFQ เป็น `AWARDED` (BR-05) |
-| [AC-13-01](../../design/01-requirements/acceptance-criteria/ac-13-01-positive-list-audit-logs.md) | ตรวจ audit ของ PR | Positive | เห็นเหตุการณ์ครบเรียงตามเวลา |
+| [AC-13-01](../../design/01-requirements/acceptance-criteria/ac-13-01-positive-list-audit-logs.md) | ตรวจ audit ของ PR | Positive | ประวัติของ PR มี `SUBMIT` แล้ว `APPROVE` ทุกขั้นเรียงตามเวลา และประวัติของ RFQ ที่สร้างจาก PR นั้นมี `CREATE` |
 <!-- /generated -->
 
 ## Dependency / Assumption

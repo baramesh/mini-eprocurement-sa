@@ -274,7 +274,7 @@ documents:
         lead: ["06-api-contract/conventions/cnv-00-*"]
         render: table
         caption: หลักการทั่วไปของ API
-        pieces: ["06-api-contract/conventions/cnv-0[1-9]-*"]
+        pieces: ["06-api-contract/conventions/cnv-0[1-9]-*", "06-api-contract/conventions/cnv-1[0-9]-*"]
         columns: [{ title: หัวข้อ, field: title }, { title: ข้อกำหนด, field: body }]
       - title: รูปแบบข้อผิดพลาด
         lead: ["06-api-contract/errors/err-00-*"]

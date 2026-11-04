@@ -18,7 +18,7 @@ components:                { fields: { frs: [FR], operations: [api] }, required:
 containers:                { fields: { adrs: [ADR] }, standalone: true }
 context:                   { fields: {}, standalone: true }
 controls:                  { fields: { errors: [ERR], tables: [table], nfr: [NFR] }, standalone: true }
-conventions:               { fields: { errors: [ERR] }, standalone: true }
+conventions:               { fields: { errors: [ERR], rules: [BR], see: [CNV], tables: [table], operations: [api] }, standalone: true }
 data-intro:                { fields: { tables: [table] }, standalone: true }
 interactions:              { fields: { screen: [SCR], navigates_to: [SCR], operations: [api], rules: [BR], errors: [ERR], ia: [IAR], uir: [UIR] }, required: [screen, operations] }
 intro:                { fields: { tables: [table] }, standalone: true }

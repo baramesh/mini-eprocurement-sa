@@ -55,5 +55,5 @@ sequenceDiagram
 | 4 | `awardRfq` | ต้องมีใบเสนอราคาที่ใช้งานอย่างน้อย 2 ราย (BR-02) และ `quotationId` ต้องเป็นหนึ่งในนั้น | `422` `ERR-RFQ-005` |
 | 5 | `awardRfq` | ถ้า `quotationId` ไม่ใช่ `lowestQuotationId` ต้องมี `reason` อย่างน้อย 20 ตัวอักษร (BR-06) | `422` `ERR-RFQ-004` |
 | 6 | `awardRfq` | insert `award` ตั้ง RFQ เป็น `AWARD_PENDING` | ผู้เสนอผล (`awarded_by`) คือผู้เรียก |
-| 7 | `awardRfq` | สร้างแถว `approval` ชนิด `AWARD`: ราคารวมผู้ชนะเกิน 200,000 บาทขั้นเดียว `COMMITTEE` นอกนั้นขั้นเดียว `PROCUREMENT_HEAD` (BR-05) | ผู้เสนอผลอนุมัติเองไม่ได้ (BR-04 ตรวจตอนตัดสิน ดู V-04) |
+| 7 | `awardRfq` | สร้างแถว `approval` ชนิด `AWARD` (`doc_id` คือ `rfq_id` ของ RFQ นี้): ราคารวมผู้ชนะเกิน 200,000 บาทขั้นเดียว `COMMITTEE` นอกนั้นขั้นเดียว `PROCUREMENT_HEAD` (BR-05) | ผู้เสนอผลอนุมัติเองไม่ได้ (BR-04 ตรวจตอนตัดสิน ดู V-04) |
 | 8 | `awardRfq` | เขียน `audit_log` (`AWARD`) แล้วตอบ `202` | เมื่ออนุมัติครบ RFQ เป็น `AWARDED`; เมื่อปฏิเสธ RFQ กลับ `OPEN` และลบแถว `award` (ประวัติอยู่ใน `audit_log`) |

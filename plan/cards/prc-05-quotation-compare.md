@@ -77,7 +77,7 @@ slicing_reason: หน้าจอเดียวที่รวมการบ�
 | [AC-05-07](../../design/01-requirements/acceptance-criteria/ac-05-07-negative-get-rfq.md) | ดู RFQ ที่ไม่มี | Negative | 404 `ERR-NF-001` |
 | [AC-06-01](../../design/01-requirements/acceptance-criteria/ac-06-01-negative-record-quotation.md) | บันทึกใบเสนอราคาจากผู้ขายที่ไม่ได้รับเชิญ | Negative | 422 `ERR-RFQ-002` |
 | [AC-06-02](../../design/01-requirements/acceptance-criteria/ac-06-02-negative-record-quotation.md) | บันทึกใบเสนอราคาหลังปิดรับ | Negative | 409 `ERR-RFQ-003` |
-| [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับแรก `isActive` = false ฉบับหลัง true เหลือฉบับที่ใช้งาน 1 ฉบับ |
+| [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับหลัง `isActive` = true; ตารางเปรียบเทียบของ RFQ มีใบเสนอราคาของผู้ขายรายนี้เพียงฉบับเดียวคือฉบับหลัง; ฉบับแรกยังอยู่ในฐานข้อมูลที่ `is_active` = 0 (ตรวจที่ชั้นฐานข้อมูล เพราะไม่มี operation อ่านฉบับที่เลิกใช้) |
 | [AC-07-01](../../design/01-requirements/acceptance-criteria/ac-07-01-positive-get-quotation-comparison.md) | ตารางเทียบราคาระบุรายต่ำสุด | Positive | `lowestQuotationId` ชี้ใบ 90 |
 | [AC-08-01](../../design/01-requirements/acceptance-criteria/ac-08-01-negative-award-rfq.md) | เสนอผลโดยมีใบเสนอราคารายเดียว | Negative | 422 `ERR-RFQ-005` |
 | [AC-08-02](../../design/01-requirements/acceptance-criteria/ac-08-02-negative-award-rfq.md) | เลือกไม่ใช่ราคาต่ำสุด ไม่มีเหตุผล | Negative | 422 `ERR-RFQ-004` |
