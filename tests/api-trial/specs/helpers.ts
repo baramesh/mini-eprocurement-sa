@@ -5,8 +5,15 @@ import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { parse } from 'yaml';
 
-// @ts-ignore - plain ESM module of the reference server
-import { signJwt, AUDIENCE } from '../server.mjs';
+
+// Test profile (CNV-10): HS256 token signed with the shared test secret; claims per CNV-03.
+const SECRET = process.env.TEST_JWT_SECRET ?? 'test-secret-test-secret-test-secret-0123';
+const AUDIENCE = 'eprocurement';
+const b64 = (o: unknown) => Buffer.from(JSON.stringify(o)).toString('base64url');
+const signJwt = (claims: Record<string, unknown>) => {
+  const body = `${b64({ alg: 'HS256', typ: 'JWT' })}.${b64(claims)}`;
+  return `${body}.${crypto.createHmac('sha256', SECRET).update(body).digest('base64url')}`;
+};
 
 // Personas = rows of sql/sample-data.sql (app_user). Token claims: CNV-03; test profile: CNV-10.
 export const P = {
@@ -72,7 +79,7 @@ export function client(request: APIRequestContext) {
     const h: Record<string, string> = { ...headers };
     if (who) h.authorization = `Bearer ${token(who, over)}`;
     if (method !== 'GET' && !h['idempotency-key'] && h['idempotency-key'] !== '') h['idempotency-key'] = crypto.randomUUID();
-    const r = await request.fetch(path.replace(/^\//, ''), { method, headers: h, data: body as any });
+    const r = await request.fetch(path.startsWith('/__test') ? path : path.replace(/^\//, ''), { method, headers: h, data: body as any });
     const text = await r.text();
     const res = { status: r.status(), body: text ? JSON.parse(text) : null };
     checkContract(method, path, res.status, res.body);
@@ -108,7 +115,7 @@ export function client(request: APIRequestContext) {
       return api.getPr(requester, pr.prId);
     },
     newVendor: async (name = 'ผู้ขายทดสอบ') =>
-      ok('proc', 'POST', '/vendors', { nameTh: `${name} ${taxSeq}`, taxId: String(1000000000000 + ++taxSeq), email: `v${taxSeq}@vendor.example.test` }),
+      ok('proc', 'POST', '/vendors', { nameTh: `${name} ${taxSeq}`, taxId: String((Date.now() % 1e10) * 1000 + (++taxSeq % 1000)).padStart(13, '0'), email: `v${taxSeq}@vendor.example.test` }),
     vendors: async (n: number) => { const v = []; for (let i = 0; i < n; i++) v.push(await api.newVendor()); return v; },
     dueIn: (ms: number) => new Date(Date.now() + ms).toISOString(),
 

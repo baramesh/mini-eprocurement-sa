@@ -8,12 +8,12 @@ test.describe('PR create / read / update (FR-01, FR-02)', () => {
     const a = client(request);
     const r = await a.call('reqA', 'POST', '/purchase-requests', {
       title: 'ปากกา', justification: 'ใช้งาน', neededByDate: new Date(Date.now() + 864e5).toISOString().slice(0, 10),
-      items: [{ description: 'ปากกา', quantity: 3, unit: 'ด้าม', estUnitPrice: 10.005 }, { description: 'สมุด', quantity: 2, unit: 'เล่ม', estUnitPrice: 20 }],
+      items: [{ description: 'ปากกา', quantity: 3, unit: 'ด้าม', estUnitPrice: 10 }, { description: 'คลิป', quantity: 0.5, unit: 'กล่อง', estUnitPrice: 0.01 }],
     });
     expect(r.status).toBe(201);
     expect(r.body.prNo).toMatch(/^PR-\d{4}-\d{5}$/);
     expect(r.body.status).toBe('DRAFT');
-    expect(r.body.totalEstimated).toBe(70.02); // 3*10.005=30.015 -> 30.02 (half-up, + 40
+    expect(r.body.totalEstimated).toBe(30.01); // 30.00 + (0.5 x 0.01 = 0.005 -> 0.01 half-up; banker's rounding would give 30.00)
   });
   test('AC-01-02 items [] -> 422 ERR-VAL-001', async ({ request }) => {
     const a = client(request);
@@ -211,7 +211,7 @@ test.describe('Quotations & comparison (FR-06, FR-07)', () => {
     const a = client(request);
     const { pr, vs, rfq } = await a.rfq(30000);
     const late = new Date(Date.parse(rfq.dueAt) + 1000).toISOString();
-    const r = await a.call('proc', 'POST', `/rfqs/${rfq.rfqId}/quotations`, { vendorId: vs[0].vendorId, items: [{ prItemId: pr.items[0].prItemId, unitPrice: 100 }] }, { 'x-test-now': late });
+    const r = await a.call('proc', 'POST', `/rfqs/${rfq.rfqId}/quotations`, { vendorId: vs[0].vendorId, leadTimeDays: 7, items: [{ prItemId: pr.items[0].prItemId, unitPrice: 100 }] }, { 'x-test-now': late });
     expect([r.status, r.body.code]).toEqual([409, 'ERR-RFQ-003']);
   });
   test('AC-06-03 same vendor twice -> first inactive, second active, one active left', async ({ request }) => {
@@ -413,7 +413,6 @@ test.describe('Reports & audit (FR-12, FR-13)', () => {
     expect(ev.map((x: any) => x.createdAt)).toEqual([...ev.map((x: any) => x.createdAt)].sort());
     expect((await a.audit('RFQ', rfq.rfqId)).length).toBeGreaterThan(0);   
   });
-  test.fixme('AC-13-02 UPDATE/DELETE on audit_log is rejected by the database - not testable through the API (belongs to tests/db)', async () => {});
 });
 
 test.describe('Concurrency (NFR-04)', () => {

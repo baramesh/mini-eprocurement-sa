@@ -1,0 +1,49 @@
+# Stack from ADR-01: ASP.NET Core 8 API, SQL Server 2022, Redis, reverse proxy.
+#   docker compose up -d --build        (from this directory; the API is then on http://localhost:8080/api/v1)
+name: eproc
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD:-Dev_Passw0rd!x}
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD:-Dev_Passw0rd!x}
+      APP_PASSWORD: ${APP_PASSWORD:-App_Passw0rd!x}
+    volumes:
+      - ../sql:/sql:ro
+      - ./db:/db:ro
+    entrypoint: ["/bin/bash", "/db/init.sh"]
+    restart: "no"
+  redis:
+    image: redis:7-alpine
+  api:
+    build: ./api
+    depends_on:
+      db-init: { condition: service_completed_successfully }
+      redis: { condition: service_started }
+    environment:
+      APP_PROFILE: ${APP_PROFILE:-test}
+      TEST_JWT_SECRET: ${TEST_JWT_SECRET:-test-secret-test-secret-test-secret-0123}
+      ConnectionStrings__App: Server=db;Database=eproc;User Id=app;Password=${APP_PASSWORD:-App_Passw0rd!x};TrustServerCertificate=True;Max Pool Size=100
+      ConnectionStrings__Admin: Server=db;Database=eproc;User Id=sa;Password=${SA_PASSWORD:-Dev_Passw0rd!x};TrustServerCertificate=True
+      Redis: redis:6379,allowAdmin=true
+    volumes:
+      - ../sql:/sql:ro
+  proxy:
+    image: nginx:1.27-alpine
+    depends_on: [api]
+    ports: ["8080:80"]
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro

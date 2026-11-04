@@ -23,7 +23,7 @@ data-intro:                { fields: { tables: [table] }, standalone: true }
 interactions:              { fields: { screen: [SCR], navigates_to: [SCR], operations: [api], rules: [BR], errors: [ERR], ia: [IAR], uir: [UIR] }, required: [screen, operations] }
 intro:                { fields: { tables: [table] }, standalone: true }
 decisions:                 { fields: { tables: [table], rules: [BR], nfr: [NFR], errors: [ERR], containers: [CTN], components: [CMP], operations: [api], assumptions: [ASM] }, required_any: [tables, rules, nfr, containers, components, assumptions] }
-development:               { fields: { see: [V], tables: [table], components: [CMP], containers: [CTN], adrs: [ADR] }, required_any: [components, containers] }
+development:               { fields: { see: [V], errors: [ERR], tables: [table], components: [CMP], containers: [CTN], adrs: [ADR] }, required_any: [components, containers] }
 diagrams:                  { fields: { tables: [table] }, required: [tables] }
 environments:              { fields: {}, standalone: true }
 errors:                    { fields: { rules: [BR, FR, NFR] }, standalone: true, prose_ok: [ERR] }

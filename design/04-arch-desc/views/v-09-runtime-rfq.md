@@ -21,6 +21,7 @@ errors:
 - ERR-RFQ-002
 - ERR-RFQ-003
 - ERR-RFQ-006
+- ERR-STATE-001
 - ERR-STATE-002
 - ERR-VAL-001
 - ERR-VND-002
@@ -61,4 +62,4 @@ sequenceDiagram
 | 7 | `recordQuotation` | RFQ ต้องเป็น `OPEN` และเวลาปัจจุบัน (UTC) ไม่เกิน `due_at` | `409` `ERR-RFQ-003` |
 | 8 | `recordQuotation` | ผู้ขายต้องอยู่ใน `rfq_vendor` ของ RFQ นี้ (BR-07) | `422` `ERR-RFQ-002` |
 | 9 | `recordQuotation` | `items` ต้องครอบคลุมทุกรายการของ PR ไม่ซ้ำ ราคารวม = ผลรวมของ ปัดเศษ 2 ตำแหน่ง (จำนวนของ PR × ราคาต่อหน่วยที่เสนอ) | ไม่ครบ `422` `ERR-VAL-001` |
-| 10 | `recordQuotation` | ในธุรกรรมเดียว ตั้ง `is_active` เป็น 0 ให้ฉบับเดิมของผู้ขายรายนี้ (BR-08 เก็บประวัติ) แล้ว insert ฉบับใหม่ `is_active` เป็น 1 ดัชนีเฉพาะ `ux_quotation_active` ป้องกันสองฉบับพร้อมกัน | `201` |
+| 10 | `recordQuotation` | ในธุรกรรมเดียว ตั้ง `is_active` เป็น 0 ให้ฉบับเดิมของผู้ขายรายนี้ (BR-08 เก็บประวัติ) แล้ว insert ฉบับใหม่ `is_active` เป็น 1 ดัชนีเฉพาะ `ux_quotation_active` ป้องกันสองฉบับพร้อมกัน ผู้เรียกที่แพ้การแข่งกันได้ `409` `ERR-STATE-001` และส่งใหม่ได้ | `201` |

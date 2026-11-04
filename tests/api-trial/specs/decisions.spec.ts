@@ -154,3 +154,11 @@ test('V-06 step 4: writing to someone else\'s PR is also 404 (not 403)', async (
   const r = await a.call('reqB', 'POST', `/purchase-requests/${pr.prId}/submit`);
   expect([r.status, r.body.code]).toEqual([404, 'ERR-NF-001']);
 });
+
+test('CNV-02: a unit price with 3 decimals is rejected, not rounded', async ({ request }) => {
+  const a = client(request);
+  const body = a.prInput(100); body.items[0].estUnitPrice = 10.005;
+  const r = await a.call('reqA', 'POST', '/purchase-requests', body);
+  expect([r.status, r.body.code]).toEqual([422, 'ERR-VAL-001']);
+  expect(r.body.details.map((d: any) => d.field)).toContain('items[0].estUnitPrice');
+});
