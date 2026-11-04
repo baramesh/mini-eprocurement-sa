@@ -1,6 +1,12 @@
 ---
 doc_id: ADR-03
 status: accepted
+tables:
+- approval
+components:
+- CMP-02
+operations:
+- decideApproval
 ---
 
 # endpoint อนุมัติกลาง

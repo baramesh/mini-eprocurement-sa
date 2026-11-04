@@ -1,6 +1,13 @@
 ---
 doc_id: V-02
 caption: หน่วยประกอบของระบบ
+containers:
+- CTN-01
+- CTN-02
+- CTN-03
+- CTN-04
+- CTN-05
+- CTN-06
 ---
 
 # หน่วยประกอบ

@@ -1,5 +1,7 @@
 ---
 doc_id: ASM-03
+containers:
+- CTN-06
 ---
 
 # สมมติฐานข้อ 3

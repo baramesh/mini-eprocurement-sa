@@ -4,6 +4,8 @@ screen: SCR-02
 caption: Wireframe ของหน้าจอ SCR-02 แบบฟอร์มใบขอซื้อ
 image: design/05-ui-desc/wireframes/img/wf-02-pr-form.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+rules:
+- BR-03
 ---
 
 # Wireframe SCR-02 แบบฟอร์มใบขอซื้อ

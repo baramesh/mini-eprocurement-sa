@@ -7,6 +7,8 @@ kind: Negative
 operation: createPurchaseOrder
 scenario: ซื้อตรงกับผู้ขาย `SUSPENDED`
 expected: 422 `ERR-VND-002`
+errors:
+- ERR-VND-002
 ---
 
 # ออก PO ให้ผู้ขายที่ถูกระงับ

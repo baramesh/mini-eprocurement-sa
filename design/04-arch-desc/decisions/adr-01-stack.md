@@ -1,6 +1,9 @@
 ---
 doc_id: ADR-01
 status: proposed
+containers:
+- CTN-03
+- CTN-04
 ---
 
 # เทคโนโลยีหลัก

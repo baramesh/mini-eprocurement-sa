@@ -6,6 +6,8 @@ kind: Negative
 operation: createPurchaseRequest
 scenario: '`quantity` = 0'
 expected: 422 `ERR-VAL-001` ที่ `items[0].quantity`
+errors:
+- ERR-VAL-001
 ---
 
 # จำนวนเป็นศูนย์

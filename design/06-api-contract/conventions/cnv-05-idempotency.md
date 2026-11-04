@@ -1,5 +1,7 @@
 ---
 doc_id: CNV-05
+errors:
+- ERR-IDEM-001
 ---
 
 # การเรียกซ้ำ

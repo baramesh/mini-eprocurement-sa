@@ -1,6 +1,12 @@
 ---
 doc_id: ADR-04
 status: proposed
+errors:
+- ERR-STATE-001
+containers:
+- CTN-05
+nfr:
+- NFR-05
 ---
 
 # ที่เก็บ Idempotency-Key

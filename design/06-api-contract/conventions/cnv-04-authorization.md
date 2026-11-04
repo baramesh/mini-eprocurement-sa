@@ -1,5 +1,7 @@
 ---
 doc_id: CNV-04
+errors:
+- ERR-AUTH-002
 ---
 
 # การตรวจสิทธิ์

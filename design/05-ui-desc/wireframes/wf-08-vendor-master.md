@@ -4,6 +4,8 @@ screen: SCR-08
 caption: Wireframe ของหน้าจอ SCR-08 ทะเบียนผู้ขาย
 image: design/05-ui-desc/wireframes/img/wf-08-vendor-master.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+errors:
+- ERR-VND-001
 ---
 
 # Wireframe SCR-08 ทะเบียนผู้ขาย

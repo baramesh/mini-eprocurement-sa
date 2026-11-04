@@ -4,6 +4,9 @@ screen: SCR-05
 caption: Wireframe ของหน้าจอ SCR-05 บันทึกและเปรียบเทียบใบเสนอราคา
 image: design/05-ui-desc/wireframes/img/wf-05-quotation-compare.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+rules:
+- BR-06
+- BR-02
 ---
 
 # Wireframe SCR-05 บันทึกและเปรียบเทียบใบเสนอราคา

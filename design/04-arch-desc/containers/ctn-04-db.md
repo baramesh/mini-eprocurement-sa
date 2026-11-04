@@ -2,6 +2,8 @@
 doc_id: CTN-04
 technology: SQL Server 2022
 owner: ภายใน
+adrs:
+- ADR-01
 ---
 
 # ฐานข้อมูล

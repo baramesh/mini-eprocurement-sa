@@ -1,5 +1,7 @@
 ---
 doc_id: IAR-04
+errors:
+- ERR-AUTH-001
 ---
 
 # โทเค็นหมดอายุ

@@ -1,5 +1,9 @@
 ---
 doc_id: IDX-05
+nfr:
+- NFR-01
+operations:
+- listPurchaseRequests
 ---
 
 # Pagination แบบ keyset

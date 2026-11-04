@@ -2,6 +2,8 @@
 doc_id: CTN-02
 technology: React และ TypeScript
 owner: ภายใน
+adrs:
+- ADR-01
 ---
 
 # Web SPA

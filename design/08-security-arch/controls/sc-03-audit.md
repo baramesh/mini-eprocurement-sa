@@ -1,5 +1,7 @@
 ---
 doc_id: SC-03
+tables:
+- audit_log
 ---
 
 # audit trail

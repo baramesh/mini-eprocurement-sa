@@ -1,6 +1,15 @@
 ---
 doc_id: NAV-01
 caption: ผังการนำทางระหว่างหน้าจอ
+screens:
+- SCR-01
+- SCR-02
+- SCR-03
+- SCR-04
+- SCR-05
+- SCR-06
+- SCR-07
+- SCR-08
 ---
 
 # ผังการนำทาง

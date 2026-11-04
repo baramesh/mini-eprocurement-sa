@@ -4,6 +4,10 @@ screen: SCR-07
 caption: Wireframe ของหน้าจอ SCR-07 บันทึกการรับของ
 image: design/05-ui-desc/wireframes/img/wf-07-goods-receipt.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+rules:
+- BR-10
+errors:
+- ERR-GR-001
 ---
 
 # Wireframe SCR-07 บันทึกการรับของ

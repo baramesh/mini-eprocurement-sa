@@ -1,6 +1,8 @@
 ---
 doc_id: V-01
 caption: บริบทของระบบ
+containers:
+- CTN-06
 ---
 
 # บริบทของระบบ

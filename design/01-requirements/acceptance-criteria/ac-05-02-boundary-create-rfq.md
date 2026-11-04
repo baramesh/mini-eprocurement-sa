@@ -6,6 +6,8 @@ kind: Boundary
 operation: createRfq
 scenario: PR `APPROVED` วงเงิน 5,000.00
 expected: 422 `ERR-RFQ-006` (ให้ซื้อตรง)
+errors:
+- ERR-RFQ-006
 ---
 
 # สร้าง RFQ จาก PR วงเงิน 5,000.00

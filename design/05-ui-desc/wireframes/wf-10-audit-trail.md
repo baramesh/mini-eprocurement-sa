@@ -4,6 +4,8 @@ screen: SCR-10
 caption: Wireframe ของหน้าจอ SCR-10 Audit trail
 image: design/05-ui-desc/wireframes/img/wf-10-audit-trail.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+nfr:
+- NFR-02
 ---
 
 # Wireframe SCR-10 Audit trail

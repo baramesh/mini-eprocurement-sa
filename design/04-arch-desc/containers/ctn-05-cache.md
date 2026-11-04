@@ -2,6 +2,8 @@
 doc_id: CTN-05
 technology: Redis
 owner: ภายใน
+adrs:
+- ADR-04
 ---
 
 # แคช

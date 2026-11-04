@@ -4,6 +4,14 @@ actors: DEPT_APPROVER, PROCUREMENT_HEAD, COMMITTEE
 frs:
 - FR-04
 - FR-13
+rules:
+- BR-04
+errors:
+- ERR-SOD-001
+- ERR-STATE-001
+tables:
+- approval
+- audit_log
 ---
 
 # อนุมัติหรือปฏิเสธใบขอซื้อ

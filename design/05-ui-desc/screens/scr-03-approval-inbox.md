@@ -13,6 +13,8 @@ frs:
 operations:
 - listMyApprovals
 - decideApproval
+rules:
+- BR-04
 ---
 
 # กล่องอนุมัติ

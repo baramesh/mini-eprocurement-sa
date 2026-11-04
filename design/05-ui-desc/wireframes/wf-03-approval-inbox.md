@@ -4,6 +4,8 @@ screen: SCR-03
 caption: Wireframe ของหน้าจอ SCR-03 กล่องอนุมัติ
 image: design/05-ui-desc/wireframes/img/wf-03-approval-inbox.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+rules:
+- BR-04
 ---
 
 # Wireframe SCR-03 กล่องอนุมัติ

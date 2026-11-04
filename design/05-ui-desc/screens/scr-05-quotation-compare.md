@@ -13,6 +13,8 @@ operations:
 - recordQuotation
 - getQuotationComparison
 - awardRfq
+rules:
+- BR-02
 ---
 
 # บันทึกและเปรียบเทียบใบเสนอราคา

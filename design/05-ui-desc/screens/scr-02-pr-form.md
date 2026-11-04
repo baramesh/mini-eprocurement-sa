@@ -13,6 +13,10 @@ operations:
 - getPurchaseRequest
 - updatePurchaseRequest
 - submitPurchaseRequest
+rules:
+- BR-03
+errors:
+- ERR-CONC-001
 ---
 
 # แบบฟอร์มใบขอซื้อ

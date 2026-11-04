@@ -1,6 +1,10 @@
 ---
 doc_id: V-03
 caption: ลำดับการทำงานขณะส่งใบขอซื้อ
+usecases:
+- UC-02
+operations:
+- submitPurchaseRequest
 ---
 
 # ส่งใบขอซื้อเพื่ออนุมัติ

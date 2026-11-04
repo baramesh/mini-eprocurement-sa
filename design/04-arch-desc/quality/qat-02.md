@@ -3,6 +3,8 @@ doc_id: QAT-02
 nfr: NFR-02
 verified_by:
 - AC-13-02
+tables:
+- audit_log
 ---
 
 # audit trail แก้ไม่ได้

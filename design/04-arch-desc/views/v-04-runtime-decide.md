@@ -1,6 +1,10 @@
 ---
 doc_id: V-04
 caption: ลำดับการทำงานขณะอนุมัติขั้นสุดท้าย
+usecases:
+- UC-03
+operations:
+- decideApproval
 ---
 
 # อนุมัติขั้นสุดท้าย

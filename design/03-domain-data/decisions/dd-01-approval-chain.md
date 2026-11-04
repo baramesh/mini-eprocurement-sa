@@ -2,6 +2,10 @@
 doc_id: DD-01
 decision: ตาราง `approval` ตารางเดียว เก็บทีละขั้น (`step_no`, `required_role`) ใช้ทั้ง PR และผลเลือกผู้ชนะผ่าน `doc_type`
 reason: สายอนุมัติเป็นข้อมูลที่ระบบสร้างตอนส่ง ไม่ใช่โครงตายตัว ถ้าเกณฑ์วงเงินเปลี่ยน ไม่ต้องแก้โครงตาราง; ยอมแลกการไม่มี foreign key ไปยังเอกสารต้นทาง จึงบังคับด้วยตรรกะใน service และ unique `(doc_type, doc_id, step_no)`
+tables:
+- approval
+rules:
+- BR-03
 ---
 
 # สายอนุมัติ

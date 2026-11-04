@@ -1,5 +1,7 @@
 ---
 doc_id: CNV-06
+errors:
+- ERR-CONC-001
 ---
 
 # การแก้ไขซ้อน

@@ -4,6 +4,9 @@ screen: SCR-04
 caption: Wireframe ของหน้าจอ SCR-04 สร้าง RFQ และเชิญผู้ขาย
 image: design/05-ui-desc/wireframes/img/wf-04-rfq-create.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+rules:
+- BR-07
+- BR-11
 ---
 
 # Wireframe SCR-04 สร้าง RFQ และเชิญผู้ขาย

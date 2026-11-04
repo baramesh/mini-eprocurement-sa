@@ -1,5 +1,8 @@
 ---
 doc_id: SC-02
+errors:
+- ERR-AUTH-002
+- ERR-SOD-001
 ---
 
 # การให้สิทธิ์

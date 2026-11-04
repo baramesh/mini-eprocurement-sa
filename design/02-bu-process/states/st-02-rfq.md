@@ -2,6 +2,9 @@
 doc_id: ST-02
 document: RFQ
 states: '`OPEN` → `AWARD_PENDING` → `AWARDED`'
+frs:
+- FR-05
+- FR-08
 ---
 
 # สถานะ RFQ

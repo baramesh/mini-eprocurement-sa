@@ -1,6 +1,14 @@
 ---
 doc_id: SEQ-01
 caption: ลำดับการทำงานของการเปรียบเทียบราคาและเลือกผู้ชนะ
+rules:
+- BR-02
+- BR-06
+usecases:
+- UC-05
+operations:
+- getQuotationComparison
+- awardRfq
 ---
 
 # เปรียบเทียบราคาและเลือกผู้ชนะ

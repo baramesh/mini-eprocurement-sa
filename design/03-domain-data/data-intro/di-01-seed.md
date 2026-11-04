@@ -1,5 +1,8 @@
 ---
 doc_id: DI-01
+tables:
+- app_user
+- doc_sequence
 ---
 
 # ข้อมูลตั้งต้น (seed data)

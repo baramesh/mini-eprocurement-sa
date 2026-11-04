@@ -6,6 +6,8 @@ kind: Security
 operation: listPurchaseRequests
 scenario: เรียกด้วย token หมดอายุ
 expected: 401 `ERR-AUTH-001`
+errors:
+- ERR-AUTH-001
 ---
 
 # token หมดอายุ

@@ -1,6 +1,10 @@
 ---
 doc_id: ADR-05
 status: proposed
+containers:
+- CTN-06
+nfr:
+- NFR-03
 ---
 
 # การยืนยันตัวตน

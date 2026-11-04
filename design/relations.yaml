@@ -1,0 +1,52 @@
+# Relation policy: for each kind of piece (its folder), which front matter fields carry relations, to which kinds of target,
+# which are required, and whether a piece may stand alone. This is a schema, like a database schema: it never lists which id
+# is tied to which id. The relations themselves are written in each piece's front matter (a field holding ids is a foreign key).
+# The checker enforces: every id in a declared field exists and has an allowed kind; required fields are filled; an id that
+# appears in the text of a piece must also be declared in front matter unless its kind is listed under prose_ok.
+#   fields:      field name -> allowed target kinds (FR BR NFR UC SCR AC ERR ADR DD CMP CTN JNY PRC ASM WF api table)
+#   required:    fields that must be non-empty        required_any: at least one of these must be non-empty
+#   standalone:  the piece type may have no relations (definitions, glossary, narrative)
+#   prose: free  narrative documents that mention ids freely (process notes, cards)
+acceptance-criteria:       { fields: { verifies: [FR], operation: [api], errors: [ERR], rules: [BR], nfr: [NFR], decisions: [ADR, DD] }, required: [verifies] }
+acceptance-criteria-guide: { fields: { nfr: [NFR] }, standalone: true }
+actors:                    { fields: {}, standalone: true }
+assumptions:               { fields: { rules: [BR], containers: [CTN] }, standalone: true }
+breaking:                  { fields: {}, standalone: true }
+business-rules:            { fields: { applies_to: [FR] }, required: [applies_to] }
+cards:                     { prose: free, fields: { journey: [JNY], screen_ref: [SCR], depends_on: [PRC], acceptance_refs: [AC], source_refs: [BR, FR, JNY, NFR, SCR, UC, WF], owned_touchpoints: [api], consumed_touchpoints: [api], tables: [table], supports_journeys: [JNY] } }
+components:                { fields: { frs: [FR], operations: [api] }, required: [frs] }
+containers:                { fields: { adrs: [ADR] }, standalone: true }
+context:                   { fields: {}, standalone: true }
+controls:                  { fields: { errors: [ERR], tables: [table], nfr: [NFR] }, standalone: true }
+conventions:               { fields: { errors: [ERR] }, standalone: true }
+data-intro:                { fields: { tables: [table] }, standalone: true }
+decisions:                 { fields: { tables: [table], rules: [BR], nfr: [NFR], errors: [ERR], containers: [CTN], components: [CMP], operations: [api], assumptions: [ASM] }, required_any: [tables, rules, nfr, containers, components, assumptions] }
+diagrams:                  { fields: { tables: [table] }, required: [tables] }
+environments:              { fields: {}, standalone: true }
+errors:                    { fields: { rules: [BR, FR, NFR] }, standalone: true, prose_ok: [ERR] }
+findings:                  { prose: free, fields: {}, standalone: true }
+flows:                     { fields: { usecases: [UC] }, required: [usecases] }
+functional:                { fields: { rules: [BR] }, standalone: true }
+global-rules:              { fields: {}, standalone: true }
+glossary:                  { fields: {}, standalone: true }
+ia:                        { fields: { errors: [ERR] }, standalone: true }
+indexes:                   { fields: { tables: [table], operations: [api], nfr: [NFR] }, required_any: [tables, nfr] }
+intro:                     { fields: {}, standalone: true }
+journeys:                  { fields: { usecases: [UC] }, required: [usecases] }
+navigation:                { fields: { screens: [SCR] }, required: [screens] }
+nfr:                       { fields: { frs: [FR] }, standalone: true }
+operations:                { fields: { operation: [api], rules: [BR], errors: [ERR] }, required: [operation] }
+owasp:                     { fields: { evidence: [AC] }, required: [evidence] }
+pipeline:                  { prose: free, fields: {}, standalone: true }
+principles:                { prose: free, fields: {}, standalone: true }
+quality:                   { fields: { nfr: [NFR], verified_by: [AC], tables: [table] }, required: [nfr] }
+scope:                     { fields: {}, standalone: true }
+screens:                   { fields: { usecases: [UC], frs: [FR], operations: [api], rules: [BR], errors: [ERR] }, required: [usecases, frs, operations], prose_ok: [SCR] }
+sequences:                 { fields: { usecases: [UC], operations: [api], rules: [BR] }, required: [usecases] }
+states:                    { fields: { frs: [FR] }, required: [frs] }
+steps:                     { prose: free, fields: {}, standalone: true }
+tables:                    { fields: { table: [table], frs: [FR] }, required: [table, frs] }
+usecases:                  { fields: { frs: [FR], rules: [BR], errors: [ERR], tables: [table] }, required: [frs] }
+verification:              { prose: free, fields: {}, standalone: true }
+views:                     { fields: { containers: [CTN], usecases: [UC], operations: [api] }, required_any: [containers, usecases] }
+wireframes:                { fields: { screen: [SCR], rules: [BR], errors: [ERR], nfr: [NFR] }, required: [screen], prose_ok: [SCR] }

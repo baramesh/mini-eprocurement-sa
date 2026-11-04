@@ -4,6 +4,10 @@ screen: SCR-06
 caption: Wireframe ของหน้าจอ SCR-06 ใบสั่งซื้อ
 image: design/05-ui-desc/wireframes/img/wf-06-purchase-order.png
 source: design/05-ui-desc/wireframes/wireframes.figcraft
+rules:
+- BR-01
+- BR-09
+- BR-11
 ---
 
 # Wireframe SCR-06 ใบสั่งซื้อ

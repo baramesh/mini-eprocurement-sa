@@ -1,6 +1,8 @@
 ---
 doc_id: ADR-06
 status: proposed
+containers:
+- CTN-03
 ---
 
 # API แบบไม่เก็บสถานะ

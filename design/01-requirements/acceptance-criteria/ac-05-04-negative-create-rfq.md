@@ -7,6 +7,8 @@ kind: Negative
 operation: createRfq
 scenario: ผู้ขาย 1 ใน 3 สถานะ `SUSPENDED`
 expected: 422 `ERR-VND-002`
+errors:
+- ERR-VND-002
 ---
 
 # เชิญผู้ขายที่ถูกระงับ

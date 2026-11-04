@@ -1,6 +1,10 @@
 ---
 doc_id: ERD-01
 caption: แผนภาพความสัมพันธ์ของตารางข้อมูล
+tables:
+- approval
+- audit_log
+- doc_sequence
 ---
 
 # แผนภาพความสัมพันธ์
