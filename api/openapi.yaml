@@ -1,0 +1,690 @@
+openapi: 3.0.3
+info:
+  title: Mini e-Procurement API
+  version: 1.0.0
+  description: |
+    REST API ของระบบจัดซื้อจัดจ้างขนาดย่อ (โจทย์สมมติเพื่อแสดงงานออกแบบ)
+    ทุกการเรียกต้องมี Bearer token จาก SSO; บทบาทที่เรียกได้ระบุที่ `x-roles` ของแต่ละ operation
+    และ `x-fr` ระบุข้อกำหนดที่ operation นั้นรองรับ (ใช้ตรวจ traceability)
+servers:
+  - url: https://api.example.test/api/v1
+security:
+  - bearerAuth: []
+
+tags:
+  - name: purchase-requests
+  - name: approvals
+  - name: rfqs
+  - name: purchase-orders
+  - name: vendors
+  - name: reports
+
+paths:
+  /purchase-requests:
+    get:
+      tags: [purchase-requests]
+      operationId: listPurchaseRequests
+      summary: ค้นหารายการใบขอซื้อ
+      x-fr: [FR-02]
+      x-roles: [REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN]
+      parameters:
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/PrStatus' } }
+        - { name: createdFrom, in: query, schema: { type: string, format: date } }
+        - { name: createdTo, in: query, schema: { type: string, format: date } }
+        - { name: cursor, in: query, description: ตัวชี้หน้าถัดไปแบบ keyset, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 50 } }
+      responses:
+        '200':
+          description: รายการ PR ตามสิทธิ์ของผู้เรียก
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PrPage' }
+        '401': { $ref: '#/components/responses/Error' }
+    post:
+      tags: [purchase-requests]
+      operationId: createPurchaseRequest
+      summary: สร้างใบขอซื้อ (draft)
+      x-fr: [FR-01, FR-14]
+      x-roles: [REQUESTER]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PrInput' }
+      responses:
+        '201':
+          description: สร้างแล้ว ได้เลขที่ PR
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PurchaseRequest' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /purchase-requests/{prId}:
+    parameters:
+      - { $ref: '#/components/parameters/PrId' }
+    get:
+      tags: [purchase-requests]
+      operationId: getPurchaseRequest
+      summary: ดูรายละเอียดใบขอซื้อ
+      x-fr: [FR-02]
+      x-roles: [REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN]
+      responses:
+        '200':
+          description: รายละเอียด PR
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PurchaseRequest' }
+        '404': { $ref: '#/components/responses/Error' }
+    put:
+      tags: [purchase-requests]
+      operationId: updatePurchaseRequest
+      summary: แก้ไขใบขอซื้อที่เป็น draft
+      x-fr: [FR-01]
+      x-roles: [REQUESTER]
+      parameters:
+        - { name: If-Match, in: header, required: true, description: ค่า rowVersion ล่าสุดที่ผู้ใช้เห็น, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PrInput' }
+      responses:
+        '200':
+          description: แก้แล้ว
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PurchaseRequest' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /purchase-requests/{prId}/submit:
+    post:
+      tags: [purchase-requests]
+      operationId: submitPurchaseRequest
+      summary: ส่งใบขอซื้อเพื่ออนุมัติ
+      description: ตรวจความครบถ้วน คำนวณวงเงินรวม และสร้างสายอนุมัติตาม BR-03
+      x-fr: [FR-03, FR-13]
+      x-roles: [REQUESTER]
+      parameters:
+        - { $ref: '#/components/parameters/PrId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '200':
+          description: ส่งแล้ว สถานะ SUBMITTED พร้อมสายอนุมัติ
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PurchaseRequest' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /approvals:
+    get:
+      tags: [approvals]
+      operationId: listMyApprovals
+      summary: กล่องอนุมัติของผู้เรียก (เฉพาะขั้นที่ถึงบทบาทตน)
+      x-fr: [FR-04]
+      x-roles: [DEPT_APPROVER, PROCUREMENT_HEAD, COMMITTEE]
+      responses:
+        '200':
+          description: งานรออนุมัติ
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Approval' }
+
+  /approvals/{approvalId}/decision:
+    post:
+      tags: [approvals]
+      operationId: decideApproval
+      summary: อนุมัติหรือปฏิเสธ
+      description: ใช้กับทั้งการอนุมัติ PR และการอนุมัติผลเลือกผู้ชนะ (docType) ปฏิเสธต้องมีเหตุผล
+      x-fr: [FR-04, FR-08, FR-13]
+      x-roles: [DEPT_APPROVER, PROCUREMENT_HEAD, COMMITTEE]
+      parameters:
+        - { name: approvalId, in: path, required: true, schema: { type: integer, format: int64 } }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/DecisionInput' }
+      responses:
+        '200':
+          description: บันทึกผลแล้ว
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Approval' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /rfqs:
+    post:
+      tags: [rfqs]
+      operationId: createRfq
+      summary: สร้าง RFQ จาก PR ที่อนุมัติแล้วและเชิญผู้ขาย
+      x-fr: [FR-05, FR-14]
+      x-roles: [PROCUREMENT]
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RfqInput' }
+      responses:
+        '201':
+          description: สร้าง RFQ แล้ว
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Rfq' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /rfqs/{rfqId}/quotations:
+    post:
+      tags: [rfqs]
+      operationId: recordQuotation
+      summary: บันทึกใบเสนอราคาของผู้ขาย
+      description: บันทึกซ้ำจากผู้ขายรายเดิมจะแทนที่ฉบับเดิมและเก็บประวัติ (BR-08)
+      x-fr: [FR-06]
+      x-roles: [PROCUREMENT]
+      parameters:
+        - { $ref: '#/components/parameters/RfqId' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/QuotationInput' }
+      responses:
+        '201':
+          description: บันทึกแล้ว
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Quotation' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /rfqs/{rfqId}/comparison:
+    get:
+      tags: [rfqs]
+      operationId: getQuotationComparison
+      summary: ตารางเปรียบเทียบราคา
+      x-fr: [FR-07]
+      x-roles: [PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE]
+      parameters:
+        - { $ref: '#/components/parameters/RfqId' }
+      responses:
+        '200':
+          description: ราคาของทุกรายต่อรายการ พร้อมระบุรายที่ต่ำสุด
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Comparison' }
+
+  /rfqs/{rfqId}/award:
+    post:
+      tags: [rfqs]
+      operationId: awardRfq
+      summary: เสนอผลเลือกผู้ชนะเพื่ออนุมัติ
+      x-fr: [FR-08, FR-13]
+      x-roles: [PROCUREMENT]
+      parameters:
+        - { $ref: '#/components/parameters/RfqId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AwardInput' }
+      responses:
+        '202':
+          description: รับเรื่องแล้ว RFQ เป็น AWARD_PENDING รออนุมัติ
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Rfq' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /purchase-orders:
+    post:
+      tags: [purchase-orders]
+      operationId: createPurchaseOrder
+      summary: สร้าง PO (จากผลประกวดที่อนุมัติ หรือซื้อตรงวงเงินต่ำ)
+      x-fr: [FR-09, FR-14]
+      x-roles: [PROCUREMENT]
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PoInput' }
+      responses:
+        '201':
+          description: สร้าง PO สถานะ DRAFT
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PurchaseOrder' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /purchase-orders/{poId}/issue:
+    post:
+      tags: [purchase-orders]
+      operationId: issuePurchaseOrder
+      summary: ออก PO ให้ผู้ขาย
+      x-fr: [FR-09, FR-13]
+      x-roles: [PROCUREMENT]
+      parameters:
+        - { $ref: '#/components/parameters/PoId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '200':
+          description: ออกแล้ว สถานะ ISSUED
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PurchaseOrder' }
+        '409': { $ref: '#/components/responses/Error' }
+
+  /purchase-orders/{poId}/receipts:
+    post:
+      tags: [purchase-orders]
+      operationId: recordGoodsReceipt
+      summary: บันทึกการรับของ
+      x-fr: [FR-10, FR-14]
+      x-roles: [RECEIVER]
+      parameters:
+        - { $ref: '#/components/parameters/PoId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ReceiptInput' }
+      responses:
+        '201':
+          description: บันทึกแล้ว PO เป็น PARTIALLY_RECEIVED หรือ RECEIVED
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Receipt' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /vendors:
+    get:
+      tags: [vendors]
+      operationId: listVendors
+      summary: ค้นหาผู้ขาย
+      x-fr: [FR-11]
+      x-roles: [PROCUREMENT, PROCUREMENT_HEAD, ADMIN]
+      parameters:
+        - { name: q, in: query, description: คำค้นชื่อหรือเลขผู้เสียภาษี, schema: { type: string } }
+        - { name: status, in: query, schema: { type: string, enum: [ACTIVE, SUSPENDED] } }
+      responses:
+        '200':
+          description: รายการผู้ขาย
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Vendor' }
+    post:
+      tags: [vendors]
+      operationId: createVendor
+      summary: เพิ่มผู้ขาย
+      x-fr: [FR-11]
+      x-roles: [PROCUREMENT]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VendorInput' }
+      responses:
+        '201':
+          description: เพิ่มแล้ว
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Vendor' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /vendors/{vendorId}/status:
+    put:
+      tags: [vendors]
+      operationId: setVendorStatus
+      summary: ระงับหรือเปิดใช้ผู้ขาย
+      x-fr: [FR-11, FR-13]
+      x-roles: [PROCUREMENT_HEAD]
+      parameters:
+        - { name: vendorId, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: { type: string, enum: [ACTIVE, SUSPENDED] }
+                reason: { type: string, maxLength: 500 }
+      responses:
+        '200':
+          description: เปลี่ยนแล้ว
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Vendor' }
+
+  /reports/spend-summary:
+    get:
+      tags: [reports]
+      operationId: getSpendSummary
+      summary: รายงานสรุปการจัดซื้อ
+      x-fr: [FR-12]
+      x-roles: [PROCUREMENT_HEAD, ADMIN]
+      parameters:
+        - { name: from, in: query, required: true, schema: { type: string, format: date } }
+        - { name: to, in: query, required: true, schema: { type: string, format: date } }
+        - { name: groupBy, in: query, schema: { type: string, enum: [department, vendor, month], default: department } }
+      responses:
+        '200':
+          description: สรุปจำนวนเอกสารและมูลค่า
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SpendSummary' }
+
+  /audit-logs:
+    get:
+      tags: [reports]
+      operationId: listAuditLogs
+      summary: ตรวจ audit trail ของเอกสาร
+      x-fr: [FR-13]
+      x-roles: [ADMIN]
+      parameters:
+        - { name: entity, in: query, required: true, schema: { type: string, enum: [PR, RFQ, PO, GR, VENDOR] } }
+        - { name: entityId, in: query, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '200':
+          description: เหตุการณ์เรียงตามเวลา
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/AuditEntry' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    PrId: { name: prId, in: path, required: true, schema: { type: integer, format: int64 } }
+    RfqId: { name: rfqId, in: path, required: true, schema: { type: integer, format: int64 } }
+    PoId: { name: poId, in: path, required: true, schema: { type: integer, format: int64 } }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05)
+      schema: { type: string, format: uuid }
+
+  responses:
+    Error:
+      description: ข้อผิดพลาด (รหัสใน `code` ดูตารางรหัสข้อผิดพลาดในเอกสาร API)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Problem' }
+
+  schemas:
+    Problem:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string, example: ERR-SOD-001 }
+        message: { type: string, description: ข้อความภาษาไทยแสดงผู้ใช้ }
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              issue: { type: string }
+
+    PrStatus:
+      type: string
+      enum: [DRAFT, SUBMITTED, APPROVED, IN_SOURCING, ORDERED, CLOSED, CANCELLED]
+
+    PrItemInput:
+      type: object
+      required: [description, quantity, unit, estUnitPrice]
+      properties:
+        description: { type: string, maxLength: 300 }
+        quantity: { type: number, exclusiveMinimum: true, minimum: 0 }
+        unit: { type: string, maxLength: 30 }
+        estUnitPrice: { type: number, minimum: 0 }
+
+    PrInput:
+      type: object
+      required: [title, justification, neededByDate, items]
+      properties:
+        title: { type: string, maxLength: 200 }
+        justification: { type: string, maxLength: 1000 }
+        neededByDate: { type: string, format: date }
+        items:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items: { $ref: '#/components/schemas/PrItemInput' }
+
+    PurchaseRequest:
+      type: object
+      properties:
+        prId: { type: integer, format: int64 }
+        prNo: { type: string, example: PR-2026-00001 }
+        status: { $ref: '#/components/schemas/PrStatus' }
+        title: { type: string }
+        justification: { type: string }
+        neededByDate: { type: string, format: date }
+        totalEstimated: { type: number }
+        rowVersion: { type: string, description: ใช้เป็นค่า If-Match ตอนแก้ }
+        items:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/PrItemInput'
+              - type: object
+                properties:
+                  prItemId: { type: integer, format: int64 }
+                  lineNo: { type: integer }
+        approvals:
+          type: array
+          items: { $ref: '#/components/schemas/Approval' }
+
+    PrPage:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/PurchaseRequest' }
+        nextCursor: { type: string, nullable: true }
+
+    Approval:
+      type: object
+      properties:
+        approvalId: { type: integer, format: int64 }
+        docType: { type: string, enum: [PR, AWARD] }
+        docId: { type: integer, format: int64 }
+        stepNo: { type: integer }
+        requiredRole: { type: string }
+        decision: { type: string, enum: [PENDING, APPROVED, REJECTED] }
+        comment: { type: string, nullable: true }
+        decidedAt: { type: string, format: date-time, nullable: true }
+
+    DecisionInput:
+      type: object
+      required: [decision]
+      properties:
+        decision: { type: string, enum: [APPROVED, REJECTED] }
+        comment: { type: string, maxLength: 500, description: บังคับเมื่อ REJECTED }
+
+    RfqInput:
+      type: object
+      required: [prId, dueAt, vendorIds]
+      properties:
+        prId: { type: integer, format: int64 }
+        dueAt: { type: string, format: date-time }
+        vendorIds:
+          type: array
+          minItems: 3
+          uniqueItems: true
+          items: { type: integer }
+
+    Rfq:
+      type: object
+      properties:
+        rfqId: { type: integer, format: int64 }
+        rfqNo: { type: string, example: RFQ-2026-00001 }
+        prId: { type: integer, format: int64 }
+        status: { type: string, enum: [OPEN, AWARD_PENDING, AWARDED] }
+        dueAt: { type: string, format: date-time }
+        vendorIds:
+          type: array
+          items: { type: integer }
+
+    QuotationInput:
+      type: object
+      required: [vendorId, leadTimeDays, items]
+      properties:
+        vendorId: { type: integer }
+        leadTimeDays: { type: integer, minimum: 0 }
+        items:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [prItemId, unitPrice]
+            properties:
+              prItemId: { type: integer, format: int64 }
+              unitPrice: { type: number, minimum: 0 }
+
+    Quotation:
+      type: object
+      properties:
+        quotationId: { type: integer, format: int64 }
+        vendorId: { type: integer }
+        totalAmount: { type: number }
+        leadTimeDays: { type: integer }
+        isActive: { type: boolean }
+        submittedAt: { type: string, format: date-time }
+
+    Comparison:
+      type: object
+      properties:
+        rfqId: { type: integer, format: int64 }
+        lowestQuotationId: { type: integer, format: int64, nullable: true }
+        quotations:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Quotation'
+              - type: object
+                properties:
+                  itemPrices:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        prItemId: { type: integer, format: int64 }
+                        unitPrice: { type: number }
+
+    AwardInput:
+      type: object
+      required: [quotationId]
+      properties:
+        quotationId: { type: integer, format: int64 }
+        reason: { type: string, maxLength: 500, description: บังคับ (อย่างน้อย 20 ตัวอักษร) เมื่อไม่ใช่ราคาต่ำสุด }
+
+    PoInput:
+      type: object
+      required: [prId]
+      properties:
+        prId: { type: integer, format: int64 }
+        vendorId: { type: integer, description: ใช้เฉพาะซื้อตรง (PR ไม่เกิน 5,000 บาท) }
+        rfqId: { type: integer, format: int64, description: ใช้เมื่อออกจากผลประกวดที่อนุมัติแล้ว }
+
+    PurchaseOrder:
+      type: object
+      properties:
+        poId: { type: integer, format: int64 }
+        poNo: { type: string, example: PO-2026-00001 }
+        prId: { type: integer, format: int64 }
+        vendorId: { type: integer }
+        totalAmount: { type: number }
+        status: { type: string, enum: [DRAFT, ISSUED, PARTIALLY_RECEIVED, RECEIVED, CANCELLED] }
+
+    ReceiptInput:
+      type: object
+      required: [items]
+      properties:
+        note: { type: string, maxLength: 500 }
+        items:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [poItemId, qtyReceived]
+            properties:
+              poItemId: { type: integer, format: int64 }
+              qtyReceived: { type: number, minimum: 0 }
+              qtyRejected: { type: number, minimum: 0, default: 0 }
+
+    Receipt:
+      type: object
+      properties:
+        grId: { type: integer, format: int64 }
+        grNo: { type: string, example: GR-2026-00001 }
+        poStatus: { type: string, enum: [PARTIALLY_RECEIVED, RECEIVED] }
+
+    VendorInput:
+      type: object
+      required: [nameTh, taxId]
+      properties:
+        nameTh: { type: string, maxLength: 200 }
+        taxId: { type: string, pattern: '^[0-9]{13}$' }
+        email: { type: string, format: email }
+
+    Vendor:
+      allOf:
+        - $ref: '#/components/schemas/VendorInput'
+        - type: object
+          properties:
+            vendorId: { type: integer }
+            vendorCode: { type: string }
+            status: { type: string, enum: [ACTIVE, SUSPENDED] }
+
+    SpendSummary:
+      type: object
+      properties:
+        from: { type: string, format: date }
+        to: { type: string, format: date }
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              group: { type: string }
+              prCount: { type: integer }
+              poCount: { type: integer }
+              estimatedTotal: { type: number }
+              orderedTotal: { type: number }
+              savingVsEstimate: { type: number, description: ประมาณการ ลบ มูลค่าที่สั่งจริง }
+
+    AuditEntry:
+      type: object
+      properties:
+        auditId: { type: integer, format: int64 }
+        action: { type: string }
+        actorId: { type: integer }
+        detail: { type: string }
+        createdAt: { type: string, format: date-time }
