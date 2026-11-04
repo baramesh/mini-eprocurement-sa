@@ -54,6 +54,7 @@ documents:
       - { title: การตัดการ์ด, render: generated, source: plan-slicing }
       - { title: ผลตรวจ gate ของ Journey, render: generated, source: plan-gate }
       - { title: Backlog, render: generated, source: plan-backlog }
+      - { title: ความคืบหน้าและความหมายของสถานะ, render: generated, source: plan-progress }
   - id: 02-user-requirement
     title: ข้อกำหนดความต้องการ
     subtitle: User Requirement
@@ -302,6 +303,7 @@ documents:
     landscape: true
     chapters:
       - { title: สรุปความครอบคลุม, render: generated, source: trace-summary }
-      - { title: FR ไปยัง Use Case หน้าจอ API และเกณฑ์ตรวจรับ, render: generated, source: trace-fr }
-      - { title: API operation ไปยังเกณฑ์ตรวจรับ, render: generated, source: trace-op }
+      - { title: FR ไปยัง Use Case หน้าจอ API เกณฑ์ตรวจรับ และการ์ดงาน, render: generated, source: trace-fr }
+      - { title: API operation ไปยังเกณฑ์ตรวจรับและการ์ดเจ้าของ, render: generated, source: trace-op }
+      - { title: เกณฑ์ตรวจรับไปยังการ์ดงาน, render: generated, source: trace-ac-card }
 

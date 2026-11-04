@@ -7,7 +7,7 @@
 ## โครงของ repository
 
 ```text
-design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (337 ไฟล์ ณ รุ่น 1.0 ไม่นับภาพ) แบ่งตามพื้นที่ของงานออกแบบ
+design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (338 ไฟล์ ณ รุ่น 1.0 ไม่นับภาพ) แบ่งตามพื้นที่ของงานออกแบบ
   01-requirements/  02-bu-process/  03-domain-data/  04-arch-desc/  05-ui-desc/
   06-api-contract/  08-security-arch/  00-overview/  10-plan/
   _generated/       เนื้อหาที่สร้างอัตโนมัติ (ดัชนี endpoint, พจนานุกรมข้อมูล, เมทริกซ์การสืบกลับ, เมทริกซ์ IA, ตารางแผน)
@@ -25,7 +25,7 @@ output/      PDF แยกรายเล่ม
 
 | เล่ม | เนื้อหา | PDF |
 |---|---|---|
-| 01 แผนการดำเนินงานและระยะเวลา (Timeline and Implementation Plan) | การ์ด 13 ใบ, Journey 4 รอบ, Sprint, ผล gate, backlog | [01-timeline-and-plan.pdf](output/01-timeline-and-plan.pdf), [plan/](plan) |
+| 01 แผนการดำเนินงานและระยะเวลา (Timeline and Implementation Plan) | การ์ด 13 ใบ, Journey 4 รอบ, Sprint, ผล gate, backlog, ความคืบหน้าตาม Journey และความหมายของสถานะการ์ด | [01-timeline-and-plan.pdf](output/01-timeline-and-plan.pdf), [plan/](plan) |
 | 02 ข้อกำหนดความต้องการ (User Requirement) | FR 14, กฎธุรกิจ 12, NFR 6, ผู้เกี่ยวข้อง, สมมติฐาน | [02-user-requirement.pdf](output/02-user-requirement.pdf) |
 | 03 การออกแบบ User Flow | Journey 4, ผังกระบวนการ, สถานะเอกสาร, Use Case 10, sequence diagram | [03-user-flow.pdf](output/03-user-flow.pdf) |
 | 04 โครงสร้างข้อมูลของส่วนติดต่อผู้ใช้ (Information Architecture) | กลุ่มผู้ใช้, ผังการนำทาง, ทะเบียนหน้าจอ, เมทริกซ์สิทธิ์, เมทริกซ์ข้อมูลรายหน้าจอ, glossary, กรณีขอบเขต | [04-information-architecture.pdf](output/04-information-architecture.pdf) |
@@ -34,7 +34,7 @@ output/      PDF แยกรายเล่ม
 | 07 การออกแบบ UX/UI | Design System (กติกากลาง), wireframe 10 หน้าจอ (สร้างด้วย FigCraft) พร้อมเลขกำกับ, หน้าจอ 10 หน้า พร้อมฟิลด์และกติกา | [07-ux-ui.pdf](output/07-ux-ui.pdf) |
 | 08 ข้อกำหนด API (API Specification) | OpenAPI 19 operation, รหัสข้อผิดพลาด 18 รหัส, กฎต่อ operation | [08-api-specification.pdf](output/08-api-specification.pdf) |
 | 09 เกณฑ์ตรวจรับ (Acceptance Criteria) | 52 ข้อ ผูกกับ FR ใช้การวิเคราะห์ค่าขอบกับเกณฑ์วงเงิน เพื่อส่งต่อให้ QA ออกแบบ test case | [09-acceptance-criteria.pdf](output/09-acceptance-criteria.pdf) |
-| 10 เมทริกซ์การสืบกลับ (Traceability Matrix) | FR → Use Case → หน้าจอ → API → เกณฑ์ตรวจรับ (สร้างอัตโนมัติ) | [10-traceability-matrix.pdf](output/10-traceability-matrix.pdf) |
+| 10 เมทริกซ์การสืบกลับ (Traceability Matrix) | FR → Use Case → หน้าจอ → API → เกณฑ์ตรวจรับ → การ์ดงานและสถานะ (สร้างอัตโนมัติ ทั้งสองทิศทางระหว่างเอกสารออกแบบกับแผน) | [10-traceability-matrix.pdf](output/10-traceability-matrix.pdf) |
 | 00 การทำงานกับ AI | ขั้นตอน บทบาทคนและ AI ปัญหาที่พบระหว่างทาง สิ่งที่ตรวจแล้วและยังไม่ได้ตรวจ | [00-ai-workflow.pdf](output/00-ai-workflow.pdf) |
 
 ไฟล์ต้นฉบับที่อ่านด้วยเครื่องได้: [api/openapi.yaml](api/openapi.yaml), [sql/schema.sql](sql/schema.sql) ผลตรวจสอบ schema บน SQL Server 2022 อยู่ที่ [tests/db/RESULTS.md](tests/db/RESULTS.md)
