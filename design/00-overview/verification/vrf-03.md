@@ -5,4 +5,4 @@ unchecked: การออกเลขทดสอบด้วย 20 การ�
 
 # รายการตรวจ 3
 
-`sql/schema.sql` รันผ่านบน SQL Server 2022 และชุดทดสอบฐานข้อมูลผ่านทั้งหมด (`tests/db/RESULTS.md`)
+`sql/schema.sql` รันผ่านบน SQL Server 2022 และชุดตรวจสอบ schema ผ่านทั้งหมด (`tests/db/RESULTS.md`)

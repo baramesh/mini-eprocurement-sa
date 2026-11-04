@@ -15,13 +15,14 @@ estimate:
 depends_on:
 - PRC-S3
 acceptance_refs:
-- TC-46
-- TC-47
+- AC-13-01
+- AC-13-02
 source_refs:
 - JNY-04
 - UC-10
 - FR-13
 - SCR-10
+- WF-10
 owned_touchpoints:
 - listAuditLogs
 consumed_touchpoints: []
@@ -45,10 +46,10 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-46](../../design/09-qa-and-test/cases/tc-46-positive-list-audit-logs.md) | ตรวจ audit ของ PR | Positive | เห็นเหตุการณ์ครบเรียงตามเวลา |
-| [TC-47](../../design/09-qa-and-test/cases/tc-47-security-list-audit-logs.md) | บัญชีแอปแก้ audit ไม่ได้ | Security | ถูกปฏิเสธโดยฐานข้อมูล (NFR-02) |
+| [AC-13-01](../../design/01-requirements/acceptance-criteria/ac-13-01-positive-list-audit-logs.md) | ตรวจ audit ของ PR | Positive | เห็นเหตุการณ์ครบเรียงตามเวลา |
+| [AC-13-02](../../design/01-requirements/acceptance-criteria/ac-13-02-security-list-audit-logs.md) | บัญชีแอปแก้ audit ไม่ได้ | Security | ถูกปฏิเสธโดยฐานข้อมูล (NFR-02) |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -70,6 +71,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [UC-10](../../design/02-bu-process/usecases/uc-10-audit-trail.md) | Use Case | ตรวจ audit trail |
 | [FR-13](../../design/01-requirements/functional/fr-13-audit-trail.md) | ข้อกำหนดเชิงหน้าที่ | บันทึก audit trail |
 | [SCR-10](../../design/05-ui-desc/screens/scr-10-audit-trail.md) | หน้าจอ | Audit trail |
+| [WF-10](../../design/05-ui-desc/wireframes/wf-10-audit-trail.md) | Wireframe | Wireframe SCR-10 Audit trail |
 <!-- /generated -->
 
 ## Implementation Touchpoints

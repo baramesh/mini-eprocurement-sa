@@ -16,14 +16,14 @@ depends_on:
 - PRC-04
 - PRC-S3
 acceptance_refs:
-- TC-22
-- TC-23
-- TC-24
-- TC-25
-- TC-26
-- TC-27
-- TC-28
-- TC-29
+- AC-06-01
+- AC-06-02
+- AC-06-03
+- AC-07-01
+- AC-08-01
+- AC-08-02
+- AC-08-03
+- AC-08-04
 source_refs:
 - JNY-02
 - UC-04
@@ -38,6 +38,7 @@ source_refs:
 - BR-07
 - BR-08
 - SCR-05
+- WF-05
 owned_touchpoints:
 - recordQuotation
 - getQuotationComparison
@@ -67,16 +68,16 @@ slicing_reason: หน้าจอเดียวที่รวมการบ�
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-22](../../design/09-qa-and-test/cases/tc-22-negative-record-quotation.md) | บันทึกใบเสนอราคาจากผู้ขายที่ไม่ได้รับเชิญ | Negative | 422 `ERR-RFQ-002` |
-| [TC-23](../../design/09-qa-and-test/cases/tc-23-negative-record-quotation.md) | บันทึกใบเสนอราคาหลังปิดรับ | Negative | 409 `ERR-RFQ-003` |
-| [TC-24](../../design/09-qa-and-test/cases/tc-24-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับแรก `isActive` = false ฉบับหลัง true เหลือฉบับที่ใช้งาน 1 ฉบับ |
-| [TC-25](../../design/09-qa-and-test/cases/tc-25-positive-get-quotation-comparison.md) | ตารางเทียบราคาระบุรายต่ำสุด | Positive | `lowestQuotationId` ชี้ใบ 90 |
-| [TC-26](../../design/09-qa-and-test/cases/tc-26-negative-award-rfq.md) | เสนอผลโดยมีใบเสนอราคารายเดียว | Negative | 422 `ERR-RFQ-005` |
-| [TC-27](../../design/09-qa-and-test/cases/tc-27-negative-award-rfq.md) | เลือกไม่ใช่ราคาต่ำสุด ไม่มีเหตุผล | Negative | 422 `ERR-RFQ-004` |
-| [TC-28](../../design/09-qa-and-test/cases/tc-28-boundary-award-rfq.md) | เลือกไม่ใช่ต่ำสุด เหตุผล 19 ตัวอักษร | Boundary | 422 `ERR-RFQ-004` |
-| [TC-29](../../design/09-qa-and-test/cases/tc-29-boundary-award-rfq.md) | เลือกไม่ใช่ต่ำสุด เหตุผล 20 ตัวอักษร | Boundary | 202 RFQ เป็น `AWARD_PENDING` |
+| [AC-06-01](../../design/01-requirements/acceptance-criteria/ac-06-01-negative-record-quotation.md) | บันทึกใบเสนอราคาจากผู้ขายที่ไม่ได้รับเชิญ | Negative | 422 `ERR-RFQ-002` |
+| [AC-06-02](../../design/01-requirements/acceptance-criteria/ac-06-02-negative-record-quotation.md) | บันทึกใบเสนอราคาหลังปิดรับ | Negative | 409 `ERR-RFQ-003` |
+| [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับแรก `isActive` = false ฉบับหลัง true เหลือฉบับที่ใช้งาน 1 ฉบับ |
+| [AC-07-01](../../design/01-requirements/acceptance-criteria/ac-07-01-positive-get-quotation-comparison.md) | ตารางเทียบราคาระบุรายต่ำสุด | Positive | `lowestQuotationId` ชี้ใบ 90 |
+| [AC-08-01](../../design/01-requirements/acceptance-criteria/ac-08-01-negative-award-rfq.md) | เสนอผลโดยมีใบเสนอราคารายเดียว | Negative | 422 `ERR-RFQ-005` |
+| [AC-08-02](../../design/01-requirements/acceptance-criteria/ac-08-02-negative-award-rfq.md) | เลือกไม่ใช่ราคาต่ำสุด ไม่มีเหตุผล | Negative | 422 `ERR-RFQ-004` |
+| [AC-08-03](../../design/01-requirements/acceptance-criteria/ac-08-03-boundary-award-rfq.md) | เลือกไม่ใช่ต่ำสุด เหตุผล 19 ตัวอักษร | Boundary | 422 `ERR-RFQ-004` |
+| [AC-08-04](../../design/01-requirements/acceptance-criteria/ac-08-04-boundary-award-rfq.md) | เลือกไม่ใช่ต่ำสุด เหตุผล 20 ตัวอักษร | Boundary | 202 RFQ เป็น `AWARD_PENDING` |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -108,6 +109,7 @@ slicing_reason: หน้าจอเดียวที่รวมการบ�
 | [BR-07](../../design/01-requirements/business-rules/br-07-quotation-invited-only.md) | กฎธุรกิจ | รับใบเสนอราคาเฉพาะผู้ที่ได้รับเชิญ |
 | [BR-08](../../design/01-requirements/business-rules/br-08-one-active-quotation.md) | กฎธุรกิจ | ใบเสนอราคาที่ใช้งานได้ฉบับเดียว |
 | [SCR-05](../../design/05-ui-desc/screens/scr-05-quotation-compare.md) | หน้าจอ | บันทึกและเปรียบเทียบใบเสนอราคา |
+| [WF-05](../../design/05-ui-desc/wireframes/wf-05-quotation-compare.md) | Wireframe | Wireframe SCR-05 บันทึกและเปรียบเทียบใบเสนอราคา |
 <!-- /generated -->
 
 ## Implementation Touchpoints

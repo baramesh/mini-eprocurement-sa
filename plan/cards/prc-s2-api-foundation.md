@@ -14,8 +14,8 @@ estimate:
 depends_on:
 - PRC-S1
 acceptance_refs:
-- TC-10
-- TC-49
+- AC-03-05
+- AC-02-02
 source_refs:
 - JNY-01
 - NFR-03
@@ -41,10 +41,10 @@ slicing_reason: งานข้ามส่วนที่ทุก endpoint ใ
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-10](../../design/09-qa-and-test/cases/tc-10-idempotency-submit-purchase-request.md) | ส่งซ้ำด้วย Idempotency-Key เดิม | Idempotency | ได้ผลเดิม สร้างอนุมัติและ audit ชุดเดียว |
-| [TC-49](../../design/09-qa-and-test/cases/tc-49-security-list-purchase-requests.md) | token หมดอายุ | Security | 401 `ERR-AUTH-001` |
+| [AC-03-05](../../design/01-requirements/acceptance-criteria/ac-03-05-idempotency-submit-purchase-request.md) | ส่งซ้ำด้วย Idempotency-Key เดิม | Idempotency | ได้ผลเดิม สร้างอนุมัติและ audit ชุดเดียว |
+| [AC-02-02](../../design/01-requirements/acceptance-criteria/ac-02-02-security-list-purchase-requests.md) | token หมดอายุ | Security | 401 `ERR-AUTH-001` |
 <!-- /generated -->
 
 ## Dependency / Assumption

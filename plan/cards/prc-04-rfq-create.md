@@ -16,11 +16,11 @@ depends_on:
 - PRC-03
 - PRC-08
 acceptance_refs:
-- TC-17
-- TC-18
-- TC-19
-- TC-20
-- TC-21
+- AC-05-01
+- AC-05-02
+- AC-05-03
+- AC-05-04
+- AC-05-05
 source_refs:
 - JNY-02
 - UC-04
@@ -29,6 +29,7 @@ source_refs:
 - BR-02
 - BR-11
 - SCR-04
+- WF-04
 owned_touchpoints:
 - createRfq
 consumed_touchpoints:
@@ -55,13 +56,13 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-17](../../design/09-qa-and-test/cases/tc-17-boundary-create-rfq.md) | สร้าง RFQ จาก PR วงเงิน 5,000.01 | Boundary | 201 `rfqNo` ถูกรูปแบบ PR เป็น `IN_SOURCING` |
-| [TC-18](../../design/09-qa-and-test/cases/tc-18-boundary-create-rfq.md) | สร้าง RFQ จาก PR วงเงิน 5,000.00 | Boundary | 422 `ERR-RFQ-006` (ให้ซื้อตรง) |
-| [TC-19](../../design/09-qa-and-test/cases/tc-19-negative-create-rfq.md) | เชิญผู้ขายเพียง 2 ราย | Negative | 422 `ERR-RFQ-001` |
-| [TC-20](../../design/09-qa-and-test/cases/tc-20-negative-create-rfq.md) | เชิญผู้ขายที่ถูกระงับ | Negative | 422 `ERR-VND-002` |
-| [TC-21](../../design/09-qa-and-test/cases/tc-21-negative-create-rfq.md) | สร้าง RFQ จาก PR ที่ยังไม่อนุมัติ | Negative | 409 `ERR-STATE-002` |
+| [AC-05-01](../../design/01-requirements/acceptance-criteria/ac-05-01-boundary-create-rfq.md) | สร้าง RFQ จาก PR วงเงิน 5,000.01 | Boundary | 201 `rfqNo` ถูกรูปแบบ PR เป็น `IN_SOURCING` |
+| [AC-05-02](../../design/01-requirements/acceptance-criteria/ac-05-02-boundary-create-rfq.md) | สร้าง RFQ จาก PR วงเงิน 5,000.00 | Boundary | 422 `ERR-RFQ-006` (ให้ซื้อตรง) |
+| [AC-05-03](../../design/01-requirements/acceptance-criteria/ac-05-03-negative-create-rfq.md) | เชิญผู้ขายเพียง 2 ราย | Negative | 422 `ERR-RFQ-001` |
+| [AC-05-04](../../design/01-requirements/acceptance-criteria/ac-05-04-negative-create-rfq.md) | เชิญผู้ขายที่ถูกระงับ | Negative | 422 `ERR-VND-002` |
+| [AC-05-05](../../design/01-requirements/acceptance-criteria/ac-05-05-negative-create-rfq.md) | สร้าง RFQ จาก PR ที่ยังไม่อนุมัติ | Negative | 409 `ERR-STATE-002` |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -87,6 +88,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [BR-02](../../design/01-requirements/business-rules/br-02-rfq-min-vendors.md) | กฎธุรกิจ | RFQ เชิญผู้ขายอย่างน้อย 3 ราย |
 | [BR-11](../../design/01-requirements/business-rules/br-11-suspended-vendor.md) | กฎธุรกิจ | ผู้ขายถูกระงับ |
 | [SCR-04](../../design/05-ui-desc/screens/scr-04-rfq-create.md) | หน้าจอ | สร้าง RFQ และเชิญผู้ขาย |
+| [WF-04](../../design/05-ui-desc/wireframes/wf-04-rfq-create.md) | Wireframe | Wireframe SCR-04 สร้าง RFQ และเชิญผู้ขาย |
 <!-- /generated -->
 
 ## Implementation Touchpoints

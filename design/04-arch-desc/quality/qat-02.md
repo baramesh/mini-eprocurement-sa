@@ -2,7 +2,7 @@
 doc_id: QAT-02
 nfr: NFR-02
 verified_by:
-- TC-47
+- AC-13-02
 ---
 
 # audit trail แก้ไม่ได้

@@ -1,4 +1,4 @@
--- Database tests for sql/schema.sql. Run on an empty database right after the schema:
+-- Schema validation checks for sql/schema.sql (proves the DDL and its constraints work; not a QA test plan). Run on an empty database right after the schema:
 --   sqlcmd -b -d <db> -i sql/tests.sql
 -- Each "expect failure" block passes only when the statement is rejected by the database.
 -- A failing test raises error 50000 and stops the run (-b).
@@ -47,14 +47,14 @@ BEGIN CATCH
   IF ERROR_NUMBER() = 50000 THROW;
   PRINT 'PASS BR-08 second active quotation rejected (error ' + CAST(ERROR_NUMBER() AS varchar) + ')';
 END CATCH;
--- replacing: deactivate the old one, then the new active one is allowed (TC-24)
+-- replacing: deactivate the old one, then the new active one is allowed (AC-06-03)
 UPDATE quotation SET is_active = 0 WHERE rfq_id = 1 AND vendor_id = 1 AND is_active = 1;  -- by key, not by id: failed inserts above still consume identity values
 INSERT quotation (rfq_id, vendor_id, total_amount, lead_time_days, is_active) VALUES (1, 1, 5400, 7, 1);
 IF (SELECT COUNT(*) FROM quotation WHERE rfq_id = 1 AND vendor_id = 1 AND is_active = 1) <> 1
-  THROW 50000, 'FAIL TC-24: expected exactly one active quotation after replacement', 1;
+  THROW 50000, 'FAIL AC-06-03: expected exactly one active quotation after replacement', 1;
 IF (SELECT COUNT(*) FROM quotation WHERE rfq_id = 1 AND vendor_id = 1) <> 2
-  THROW 50000, 'FAIL TC-24: history of the replaced quotation was lost', 1;
-PRINT 'PASS TC-24 replacement keeps history, one active';
+  THROW 50000, 'FAIL AC-06-03: history of the replaced quotation was lost', 1;
+PRINT 'PASS AC-06-03 replacement keeps history, one active';
 GO
 
 -- ---------- FR-11: vendor tax id unique ----------
@@ -71,11 +71,11 @@ GO
 -- ---------- CHECK constraints ----------
 BEGIN TRY
   INSERT pr_item (pr_id, line_no, description, quantity, unit, est_unit_price) VALUES (1, 2, N'x', 0, N'ชิ้น', 1);
-  THROW 50000, 'FAIL TC-03: quantity 0 accepted', 1;
+  THROW 50000, 'FAIL AC-01-03: quantity 0 accepted', 1;
 END TRY
 BEGIN CATCH
   IF ERROR_NUMBER() = 50000 THROW;
-  PRINT 'PASS TC-03 quantity 0 rejected';
+  PRINT 'PASS AC-01-03 quantity 0 rejected';
 END CATCH;
 BEGIN TRY
   INSERT app_user (department_id, full_name, email, role_code) VALUES (1, N'x', 'bad@example.test', 'SUPERUSER');
@@ -111,11 +111,11 @@ GO
 DECLARE @v1 BINARY(8) = (SELECT row_version FROM purchase_request WHERE pr_id = 1);
 UPDATE purchase_request SET title = N'แก้ไข' WHERE pr_id = 1;
 DECLARE @v2 BINARY(8) = (SELECT row_version FROM purchase_request WHERE pr_id = 1);
-IF @v1 = @v2 THROW 50000, 'FAIL TC-04: row_version did not change after update', 1;
-PRINT 'PASS TC-04 row_version changes on update';
+IF @v1 = @v2 THROW 50000, 'FAIL AC-01-04: row_version did not change after update', 1;
+PRINT 'PASS AC-01-04 row_version changes on update';
 GO
 
--- ---------- NFR-02 / TC-47: application account cannot UPDATE or DELETE audit_log ----------
+-- ---------- NFR-02 / AC-13-02: application account cannot UPDATE or DELETE audit_log ----------
 IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE name = 'app_runtime')
   CREATE USER app_runtime WITHOUT LOGIN;
 GRANT SELECT, INSERT, UPDATE, DELETE ON audit_log TO app_runtime;   -- broad grant; the DENY on PUBLIC must still win
@@ -123,29 +123,29 @@ INSERT audit_log (entity, entity_id, action, actor_id, detail) VALUES ('PR', 1, 
 EXECUTE AS USER = 'app_runtime';
   BEGIN TRY
     INSERT audit_log (entity, entity_id, action, actor_id) VALUES ('PR', 1, 'APPROVE', 1);
-    PRINT 'PASS TC-47 app account can INSERT audit rows';
+    PRINT 'PASS AC-13-02 app account can INSERT audit rows';
   END TRY
   BEGIN CATCH
     REVERT;
-    THROW 50000, 'FAIL TC-47: app account could not INSERT into audit_log', 1;
+    THROW 50000, 'FAIL AC-13-02: app account could not INSERT into audit_log', 1;
   END CATCH;
   BEGIN TRY
     UPDATE audit_log SET detail = N'tampered' WHERE audit_id = 1;
     REVERT;
-    THROW 50000, 'FAIL TC-47: app account could UPDATE audit_log', 1;
+    THROW 50000, 'FAIL AC-13-02: app account could UPDATE audit_log', 1;
   END TRY
   BEGIN CATCH
     IF ERROR_NUMBER() = 50000 THROW;
-    PRINT 'PASS TC-47 UPDATE denied (error ' + CAST(ERROR_NUMBER() AS varchar) + ')';
+    PRINT 'PASS AC-13-02 UPDATE denied (error ' + CAST(ERROR_NUMBER() AS varchar) + ')';
   END CATCH;
   BEGIN TRY
     DELETE audit_log WHERE audit_id = 1;
     REVERT;
-    THROW 50000, 'FAIL TC-47: app account could DELETE from audit_log', 1;
+    THROW 50000, 'FAIL AC-13-02: app account could DELETE from audit_log', 1;
   END TRY
   BEGIN CATCH
     IF ERROR_NUMBER() = 50000 THROW;
-    PRINT 'PASS TC-47 DELETE denied (error ' + CAST(ERROR_NUMBER() AS varchar) + ')';
+    PRINT 'PASS AC-13-02 DELETE denied (error ' + CAST(ERROR_NUMBER() AS varchar) + ')';
   END CATCH;
 REVERT;
 GO

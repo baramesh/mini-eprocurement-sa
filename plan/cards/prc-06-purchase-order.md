@@ -16,11 +16,11 @@ depends_on:
 - PRC-05
 - PRC-03
 acceptance_refs:
-- TC-31
-- TC-32
-- TC-33
-- TC-34
-- TC-35
+- AC-09-01
+- AC-09-02
+- AC-09-03
+- AC-09-04
+- AC-09-05
 source_refs:
 - JNY-03
 - UC-06
@@ -29,6 +29,7 @@ source_refs:
 - BR-09
 - BR-11
 - SCR-06
+- WF-06
 owned_touchpoints:
 - createPurchaseOrder
 - issuePurchaseOrder
@@ -55,13 +56,13 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-31](../../design/09-qa-and-test/cases/tc-31-boundary-create-purchase-order.md) | ซื้อตรงวงเงิน 5,000.00 | Boundary | 201 `poNo` ถูกรูปแบบ PR เป็น `ORDERED` |
-| [TC-32](../../design/09-qa-and-test/cases/tc-32-boundary-create-purchase-order.md) | ซื้อตรงวงเงิน 5,000.01 | Boundary | 422 `ERR-PO-001` |
-| [TC-33](../../design/09-qa-and-test/cases/tc-33-negative-create-purchase-order.md) | ออก PO ให้ผู้ขายที่ถูกระงับ | Negative | 422 `ERR-VND-002` |
-| [TC-34](../../design/09-qa-and-test/cases/tc-34-positive-issue-purchase-order.md) | ออก PO จาก DRAFT เป็น ISSUED | Positive | 200 `ISSUED` มี audit |
-| [TC-35](../../design/09-qa-and-test/cases/tc-35-negative-issue-purchase-order.md) | ออก PO ซ้ำ | Negative | 409 `ERR-STATE-001` |
+| [AC-09-01](../../design/01-requirements/acceptance-criteria/ac-09-01-boundary-create-purchase-order.md) | ซื้อตรงวงเงิน 5,000.00 | Boundary | 201 `poNo` ถูกรูปแบบ PR เป็น `ORDERED` |
+| [AC-09-02](../../design/01-requirements/acceptance-criteria/ac-09-02-boundary-create-purchase-order.md) | ซื้อตรงวงเงิน 5,000.01 | Boundary | 422 `ERR-PO-001` |
+| [AC-09-03](../../design/01-requirements/acceptance-criteria/ac-09-03-negative-create-purchase-order.md) | ออก PO ให้ผู้ขายที่ถูกระงับ | Negative | 422 `ERR-VND-002` |
+| [AC-09-04](../../design/01-requirements/acceptance-criteria/ac-09-04-positive-issue-purchase-order.md) | ออก PO จาก DRAFT เป็น ISSUED | Positive | 200 `ISSUED` มี audit |
+| [AC-09-05](../../design/01-requirements/acceptance-criteria/ac-09-05-negative-issue-purchase-order.md) | ออก PO ซ้ำ | Negative | 409 `ERR-STATE-001` |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -87,6 +88,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [BR-09](../../design/01-requirements/business-rules/br-09-po-within-pr-amount.md) | กฎธุรกิจ | PO ไม่เกินวงเงิน PR |
 | [BR-11](../../design/01-requirements/business-rules/br-11-suspended-vendor.md) | กฎธุรกิจ | ผู้ขายถูกระงับ |
 | [SCR-06](../../design/05-ui-desc/screens/scr-06-po.md) | หน้าจอ | ใบสั่งซื้อ |
+| [WF-06](../../design/05-ui-desc/wireframes/wf-06-purchase-order.md) | Wireframe | Wireframe SCR-06 ใบสั่งซื้อ |
 <!-- /generated -->
 
 ## Implementation Touchpoints

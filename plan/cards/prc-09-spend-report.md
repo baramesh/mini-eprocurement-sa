@@ -16,13 +16,14 @@ depends_on:
 - PRC-06
 - PRC-07
 acceptance_refs:
-- TC-44
-- TC-45
+- AC-12-01
+- AC-12-02
 source_refs:
 - JNY-04
 - UC-09
 - FR-12
 - SCR-09
+- WF-09
 owned_touchpoints:
 - getSpendSummary
 consumed_touchpoints: []
@@ -45,10 +46,10 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-44](../../design/09-qa-and-test/cases/tc-44-positive-get-spend-summary.md) | รายงานสรุปแยกหน่วยงาน | Positive | ผลรวมตรงกับข้อมูลต้นทาง `savingVsEstimate` = ประมาณการ − สั่งจริง |
-| [TC-45](../../design/09-qa-and-test/cases/tc-45-security-get-spend-summary.md) | ผู้ขอซื้อเรียกรายงาน | Security | 403 `ERR-AUTH-002` |
+| [AC-12-01](../../design/01-requirements/acceptance-criteria/ac-12-01-positive-get-spend-summary.md) | รายงานสรุปแยกหน่วยงาน | Positive | ผลรวมตรงกับข้อมูลต้นทาง `savingVsEstimate` = ประมาณการ − สั่งจริง |
+| [AC-12-02](../../design/01-requirements/acceptance-criteria/ac-12-02-security-get-spend-summary.md) | ผู้ขอซื้อเรียกรายงาน | Security | 403 `ERR-AUTH-002` |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -71,6 +72,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [UC-09](../../design/02-bu-process/usecases/uc-09-spend-report.md) | Use Case | ดูรายงานสรุปการจัดซื้อ |
 | [FR-12](../../design/01-requirements/functional/fr-12-spend-report.md) | ข้อกำหนดเชิงหน้าที่ | รายงานสรุปการจัดซื้อ |
 | [SCR-09](../../design/05-ui-desc/screens/scr-09-spend-report.md) | หน้าจอ | รายงานสรุปการจัดซื้อ |
+| [WF-09](../../design/05-ui-desc/wireframes/wf-09-spend-report.md) | Wireframe | Wireframe SCR-09 รายงานสรุปการจัดซื้อ |
 <!-- /generated -->
 
 ## Implementation Touchpoints

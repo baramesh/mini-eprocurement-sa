@@ -13,12 +13,12 @@ estimate:
   qa: 3
 depends_on: []
 acceptance_refs:
-- TC-03
-- TC-04
-- TC-24
-- TC-40
-- TC-47
-- TC-48
+- AC-01-03
+- AC-01-04
+- AC-06-03
+- AC-11-01
+- AC-13-02
+- AC-14-01
 source_refs:
 - JNY-01
 - FR-13
@@ -63,14 +63,14 @@ slicing_reason: งานไม่มีหน้าจอ ต้องเสร
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-03](../../design/09-qa-and-test/cases/tc-03-negative-create-purchase-request.md) | จำนวนเป็นศูนย์ | Negative | 422 `ERR-VAL-001` ที่ `items[0].quantity` |
-| [TC-04](../../design/09-qa-and-test/cases/tc-04-negative-update-purchase-request.md) | แก้ draft ด้วยเวอร์ชันล้าสมัย | Negative | B ได้ 409 `ERR-CONC-001` |
-| [TC-24](../../design/09-qa-and-test/cases/tc-24-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับแรก `isActive` = false ฉบับหลัง true เหลือฉบับที่ใช้งาน 1 ฉบับ |
-| [TC-40](../../design/09-qa-and-test/cases/tc-40-negative-create-vendor.md) | เพิ่มผู้ขายเลขภาษีซ้ำ | Negative | 409 `ERR-VND-001` |
-| [TC-47](../../design/09-qa-and-test/cases/tc-47-security-list-audit-logs.md) | บัญชีแอปแก้ audit ไม่ได้ | Security | ถูกปฏิเสธโดยฐานข้อมูล (NFR-02) |
-| [TC-48](../../design/09-qa-and-test/cases/tc-48-concurrency-create-purchase-request.md) | ออกเลขเอกสารพร้อมกัน | Concurrency | เลข 1,000 ค่าไม่ซ้ำ ต่อเนื่อง (NFR-04) |
+| [AC-01-03](../../design/01-requirements/acceptance-criteria/ac-01-03-negative-create-purchase-request.md) | จำนวนเป็นศูนย์ | Negative | 422 `ERR-VAL-001` ที่ `items[0].quantity` |
+| [AC-01-04](../../design/01-requirements/acceptance-criteria/ac-01-04-negative-update-purchase-request.md) | แก้ draft ด้วยเวอร์ชันล้าสมัย | Negative | B ได้ 409 `ERR-CONC-001` |
+| [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับแรก `isActive` = false ฉบับหลัง true เหลือฉบับที่ใช้งาน 1 ฉบับ |
+| [AC-11-01](../../design/01-requirements/acceptance-criteria/ac-11-01-negative-create-vendor.md) | เพิ่มผู้ขายเลขภาษีซ้ำ | Negative | 409 `ERR-VND-001` |
+| [AC-13-02](../../design/01-requirements/acceptance-criteria/ac-13-02-security-list-audit-logs.md) | บัญชีแอปแก้ audit ไม่ได้ | Security | ถูกปฏิเสธโดยฐานข้อมูล (NFR-02) |
+| [AC-14-01](../../design/01-requirements/acceptance-criteria/ac-14-01-concurrency-create-purchase-request.md) | ออกเลขเอกสารพร้อมกัน | Concurrency | เลข 1,000 ค่าไม่ซ้ำ ต่อเนื่อง (NFR-04) |
 <!-- /generated -->
 
 ## Dependency / Assumption

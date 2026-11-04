@@ -17,12 +17,12 @@ depends_on:
 - PRC-02
 - PRC-S3
 acceptance_refs:
-- TC-12
-- TC-13
-- TC-14
-- TC-15
-- TC-16
-- TC-30
+- AC-04-01
+- AC-04-02
+- AC-04-03
+- AC-04-04
+- AC-04-05
+- AC-08-05
 source_refs:
 - JNY-01
 - UC-03
@@ -36,6 +36,7 @@ source_refs:
 - BR-06
 - BR-12
 - SCR-03
+- WF-03
 owned_touchpoints:
 - listMyApprovals
 - decideApproval
@@ -64,14 +65,14 @@ slicing_reason: หน้าจอที่สองจาก Journey ใช้�
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-12](../../design/09-qa-and-test/cases/tc-12-security-decide-approval.md) | ผู้ขอซื้ออนุมัติ PR ตนเอง | Security | 403 `ERR-SOD-001` |
-| [TC-13](../../design/09-qa-and-test/cases/tc-13-negative-decide-approval.md) | ปฏิเสธโดยไม่ระบุเหตุผล | Negative | 422 `ERR-VAL-001` |
-| [TC-14](../../design/09-qa-and-test/cases/tc-14-positive-decide-approval.md) | อนุมัติครบทุกขั้น | Positive | PR เป็น `APPROVED` มี audit ครบทุกขั้น |
-| [TC-15](../../design/09-qa-and-test/cases/tc-15-positive-decide-approval.md) | ปฏิเสธแล้วกลับ draft | Positive | PR เป็น `DRAFT` แก้ไขได้ |
-| [TC-16](../../design/09-qa-and-test/cases/tc-16-security-list-my-approvals.md) | กล่องอนุมัติแสดงเฉพาะขั้นของตน | Security | ไม่เห็น PR นั้น |
-| [TC-30](../../design/09-qa-and-test/cases/tc-30-positive-decide-approval.md) | อนุมัติผลเลือกวงเงินเกิน 200,000 | Positive | RFQ เป็น `AWARDED` (BR-05) |
+| [AC-04-01](../../design/01-requirements/acceptance-criteria/ac-04-01-security-decide-approval.md) | ผู้ขอซื้ออนุมัติ PR ตนเอง | Security | 403 `ERR-SOD-001` |
+| [AC-04-02](../../design/01-requirements/acceptance-criteria/ac-04-02-negative-decide-approval.md) | ปฏิเสธโดยไม่ระบุเหตุผล | Negative | 422 `ERR-VAL-001` |
+| [AC-04-03](../../design/01-requirements/acceptance-criteria/ac-04-03-positive-decide-approval.md) | อนุมัติครบทุกขั้น | Positive | PR เป็น `APPROVED` มี audit ครบทุกขั้น |
+| [AC-04-04](../../design/01-requirements/acceptance-criteria/ac-04-04-positive-decide-approval.md) | ปฏิเสธแล้วกลับ draft | Positive | PR เป็น `DRAFT` แก้ไขได้ |
+| [AC-04-05](../../design/01-requirements/acceptance-criteria/ac-04-05-security-list-my-approvals.md) | กล่องอนุมัติแสดงเฉพาะขั้นของตน | Security | ไม่เห็น PR นั้น |
+| [AC-08-05](../../design/01-requirements/acceptance-criteria/ac-08-05-positive-decide-approval.md) | อนุมัติผลเลือกวงเงินเกิน 200,000 | Positive | RFQ เป็น `AWARDED` (BR-05) |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -102,6 +103,7 @@ slicing_reason: หน้าจอที่สองจาก Journey ใช้�
 | [BR-06](../../design/01-requirements/business-rules/br-06-non-lowest-reason.md) | กฎธุรกิจ | เหตุผลเมื่อไม่เลือกราคาต่ำสุด |
 | [BR-12](../../design/01-requirements/business-rules/br-12-approved-doc-immutable.md) | กฎธุรกิจ | เอกสารที่อนุมัติแล้วแก้ไม่ได้ |
 | [SCR-03](../../design/05-ui-desc/screens/scr-03-approval-inbox.md) | หน้าจอ | กล่องอนุมัติ |
+| [WF-03](../../design/05-ui-desc/wireframes/wf-03-approval-inbox.md) | Wireframe | Wireframe SCR-03 กล่องอนุมัติ |
 <!-- /generated -->
 
 ## Implementation Touchpoints

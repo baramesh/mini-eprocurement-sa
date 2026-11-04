@@ -17,19 +17,20 @@ depends_on:
 - PRC-S2
 - PRC-01
 acceptance_refs:
-- TC-01
-- TC-02
-- TC-03
-- TC-04
-- TC-06
-- TC-07
-- TC-08
-- TC-09
-- TC-10
-- TC-11
-- TC-48
-- TC-50
-- TC-51
+- AC-01-01
+- AC-01-02
+- AC-01-03
+- AC-01-04
+- AC-03-01
+- AC-03-02
+- AC-03-03
+- AC-03-04
+- AC-03-05
+- AC-03-06
+- AC-03-07
+- AC-14-01
+- AC-02-03
+- AC-02-04
 source_refs:
 - JNY-01
 - UC-01
@@ -38,6 +39,7 @@ source_refs:
 - FR-03
 - BR-12
 - SCR-02
+- WF-02
 owned_touchpoints:
 - createPurchaseRequest
 - getPurchaseRequest
@@ -66,21 +68,22 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-01](../../design/09-qa-and-test/cases/tc-01-positive-create-purchase-request.md) | สร้าง PR ถูกต้อง | Positive | 201, `prNo` รูปแบบ `PR-YYYY-NNNNN`, status `DRAFT`, `totalEstimated` = ผลรวม |
-| [TC-02](../../design/09-qa-and-test/cases/tc-02-negative-create-purchase-request.md) | สร้าง PR ไม่มีรายการ | Negative | 422 `ERR-VAL-001` |
-| [TC-03](../../design/09-qa-and-test/cases/tc-03-negative-create-purchase-request.md) | จำนวนเป็นศูนย์ | Negative | 422 `ERR-VAL-001` ที่ `items[0].quantity` |
-| [TC-04](../../design/09-qa-and-test/cases/tc-04-negative-update-purchase-request.md) | แก้ draft ด้วยเวอร์ชันล้าสมัย | Negative | B ได้ 409 `ERR-CONC-001` |
-| [TC-06](../../design/09-qa-and-test/cases/tc-06-boundary-submit-purchase-request.md) | ส่ง PR ไม่เกิน 20,000 | Boundary | สร้างอนุมัติ 1 ขั้น (`DEPT_APPROVER`) |
-| [TC-07](../../design/09-qa-and-test/cases/tc-07-boundary-submit-purchase-request.md) | ส่ง PR เกิน 20,000 หนึ่งสตางค์ | Boundary | สร้างอนุมัติ 2 ขั้น (`DEPT_APPROVER`, `PROCUREMENT_HEAD`) |
-| [TC-08](../../design/09-qa-and-test/cases/tc-08-boundary-submit-purchase-request.md) | ส่ง PR ที่ 200,000 | Boundary | อนุมัติ 2 ขั้น |
-| [TC-09](../../design/09-qa-and-test/cases/tc-09-boundary-submit-purchase-request.md) | ส่ง PR เกิน 200,000 | Boundary | อนุมัติ 3 ขั้น (เพิ่ม `COMMITTEE`) |
-| [TC-10](../../design/09-qa-and-test/cases/tc-10-idempotency-submit-purchase-request.md) | ส่งซ้ำด้วย Idempotency-Key เดิม | Idempotency | ได้ผลเดิม สร้างอนุมัติและ audit ชุดเดียว |
-| [TC-11](../../design/09-qa-and-test/cases/tc-11-negative-submit-purchase-request.md) | ส่ง PR ที่ไม่ใช่ draft | Negative | 409 `ERR-STATE-001` |
-| [TC-48](../../design/09-qa-and-test/cases/tc-48-concurrency-create-purchase-request.md) | ออกเลขเอกสารพร้อมกัน | Concurrency | เลข 1,000 ค่าไม่ซ้ำ ต่อเนื่อง (NFR-04) |
-| [TC-50](../../design/09-qa-and-test/cases/tc-50-positive-get-purchase-request.md) | ดูรายละเอียด PR พร้อมสายอนุมัติ | Positive | 200 มี `items` ครบและ `approvals` 2 ขั้นตามลำดับ |
-| [TC-51](../../design/09-qa-and-test/cases/tc-51-security-get-purchase-request.md) | ดู PR ของหน่วยงานอื่น | Security | 403 `ERR-AUTH-002` |
+| [AC-01-01](../../design/01-requirements/acceptance-criteria/ac-01-01-positive-create-purchase-request.md) | สร้าง PR ถูกต้อง | Positive | 201, `prNo` รูปแบบ `PR-YYYY-NNNNN`, status `DRAFT`, `totalEstimated` = ผลรวม |
+| [AC-01-02](../../design/01-requirements/acceptance-criteria/ac-01-02-negative-create-purchase-request.md) | สร้าง PR ไม่มีรายการ | Negative | 422 `ERR-VAL-001` |
+| [AC-01-03](../../design/01-requirements/acceptance-criteria/ac-01-03-negative-create-purchase-request.md) | จำนวนเป็นศูนย์ | Negative | 422 `ERR-VAL-001` ที่ `items[0].quantity` |
+| [AC-01-04](../../design/01-requirements/acceptance-criteria/ac-01-04-negative-update-purchase-request.md) | แก้ draft ด้วยเวอร์ชันล้าสมัย | Negative | B ได้ 409 `ERR-CONC-001` |
+| [AC-03-01](../../design/01-requirements/acceptance-criteria/ac-03-01-boundary-submit-purchase-request.md) | ส่ง PR ไม่เกิน 20,000 | Boundary | สร้างอนุมัติ 1 ขั้น (`DEPT_APPROVER`) |
+| [AC-03-02](../../design/01-requirements/acceptance-criteria/ac-03-02-boundary-submit-purchase-request.md) | ส่ง PR เกิน 20,000 หนึ่งสตางค์ | Boundary | สร้างอนุมัติ 2 ขั้น (`DEPT_APPROVER`, `PROCUREMENT_HEAD`) |
+| [AC-03-03](../../design/01-requirements/acceptance-criteria/ac-03-03-boundary-submit-purchase-request.md) | ส่ง PR ที่ 200,000 | Boundary | อนุมัติ 2 ขั้น |
+| [AC-03-04](../../design/01-requirements/acceptance-criteria/ac-03-04-boundary-submit-purchase-request.md) | ส่ง PR เกิน 200,000 | Boundary | อนุมัติ 3 ขั้น (เพิ่ม `COMMITTEE`) |
+| [AC-03-05](../../design/01-requirements/acceptance-criteria/ac-03-05-idempotency-submit-purchase-request.md) | ส่งซ้ำด้วย Idempotency-Key เดิม | Idempotency | ได้ผลเดิม สร้างอนุมัติและ audit ชุดเดียว |
+| [AC-03-06](../../design/01-requirements/acceptance-criteria/ac-03-06-negative-submit-purchase-request.md) | ส่ง PR ที่ไม่ใช่ draft | Negative | 409 `ERR-STATE-001` |
+| [AC-03-07](../../design/01-requirements/acceptance-criteria/ac-03-07-resilience-submit-purchase-request.md) | ส่งซ้ำหลังแคช Idempotency หาย | Resilience | 409 `ERR-STATE-001` ไม่สร้างแถวอนุมัติและ audit ซ้ำ (กฎสถานะของเอกสารเป็นด่านที่สอง ตาม ADR-04) |
+| [AC-14-01](../../design/01-requirements/acceptance-criteria/ac-14-01-concurrency-create-purchase-request.md) | ออกเลขเอกสารพร้อมกัน | Concurrency | เลข 1,000 ค่าไม่ซ้ำ ต่อเนื่อง (NFR-04) |
+| [AC-02-03](../../design/01-requirements/acceptance-criteria/ac-02-03-positive-get-purchase-request.md) | ดูรายละเอียด PR พร้อมสายอนุมัติ | Positive | 200 มี `items` ครบและ `approvals` 2 ขั้นตามลำดับ |
+| [AC-02-04](../../design/01-requirements/acceptance-criteria/ac-02-04-security-get-purchase-request.md) | ดู PR ของหน่วยงานอื่น | Security | 403 `ERR-AUTH-002` |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -107,6 +110,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [FR-03](../../design/01-requirements/functional/fr-03-submit-pr.md) | ข้อกำหนดเชิงหน้าที่ | ส่งใบขอซื้อเพื่ออนุมัติ |
 | [BR-12](../../design/01-requirements/business-rules/br-12-approved-doc-immutable.md) | กฎธุรกิจ | เอกสารที่อนุมัติแล้วแก้ไม่ได้ |
 | [SCR-02](../../design/05-ui-desc/screens/scr-02-pr-form.md) | หน้าจอ | แบบฟอร์มใบขอซื้อ |
+| [WF-02](../../design/05-ui-desc/wireframes/wf-02-pr-form.md) | Wireframe | Wireframe SCR-02 แบบฟอร์มใบขอซื้อ |
 <!-- /generated -->
 
 ## Implementation Touchpoints

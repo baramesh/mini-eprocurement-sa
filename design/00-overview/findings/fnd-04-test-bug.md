@@ -1,6 +1,6 @@
 ---
 doc_id: FND-04
-what: TC-24 ล้มเหลวครั้งแรก เพราะอ้าง `quotation_id = 1` แต่ insert ที่ล้มเหลวก่อนหน้าใช้เลข identity ไปแล้ว
+what: AC-06-03 ล้มเหลวครั้งแรก เพราะอ้าง `quotation_id = 1` แต่ insert ที่ล้มเหลวก่อนหน้าใช้เลข identity ไปแล้ว
 fix: แก้ให้ UPDATE ตามคีย์ธุรกิจแทนเลข id schema ไม่ได้ผิด
 ---
 

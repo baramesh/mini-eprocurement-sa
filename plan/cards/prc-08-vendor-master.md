@@ -16,16 +16,17 @@ depends_on:
 - PRC-S1
 - PRC-S2
 acceptance_refs:
-- TC-40
-- TC-41
-- TC-42
-- TC-43
+- AC-11-01
+- AC-11-02
+- AC-11-03
+- AC-11-04
 source_refs:
 - JNY-02
 - UC-08
 - FR-11
 - BR-11
 - SCR-08
+- WF-08
 owned_touchpoints:
 - listVendors
 - createVendor
@@ -52,12 +53,12 @@ slicing_reason: เป็นข้อมูลตั้งต้นที่ RFQ
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-40](../../design/09-qa-and-test/cases/tc-40-negative-create-vendor.md) | เพิ่มผู้ขายเลขภาษีซ้ำ | Negative | 409 `ERR-VND-001` |
-| [TC-41](../../design/09-qa-and-test/cases/tc-41-negative-create-vendor.md) | เลขภาษีไม่ครบ 13 หลัก | Negative | 422 `ERR-VAL-001` |
-| [TC-42](../../design/09-qa-and-test/cases/tc-42-positive-set-vendor-status.md) | ระงับผู้ขาย | Positive | 200 มี audit |
-| [TC-43](../../design/09-qa-and-test/cases/tc-43-positive-list-vendors.md) | ค้นหาผู้ขายตามชื่อ | Positive | ได้เฉพาะผู้ขายที่ตรง |
+| [AC-11-01](../../design/01-requirements/acceptance-criteria/ac-11-01-negative-create-vendor.md) | เพิ่มผู้ขายเลขภาษีซ้ำ | Negative | 409 `ERR-VND-001` |
+| [AC-11-02](../../design/01-requirements/acceptance-criteria/ac-11-02-negative-create-vendor.md) | เลขภาษีไม่ครบ 13 หลัก | Negative | 422 `ERR-VAL-001` |
+| [AC-11-03](../../design/01-requirements/acceptance-criteria/ac-11-03-positive-set-vendor-status.md) | ระงับผู้ขาย | Positive | 200 มี audit |
+| [AC-11-04](../../design/01-requirements/acceptance-criteria/ac-11-04-positive-list-vendors.md) | ค้นหาผู้ขายตามชื่อ | Positive | ได้เฉพาะผู้ขายที่ตรง |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -81,6 +82,7 @@ slicing_reason: เป็นข้อมูลตั้งต้นที่ RFQ
 | [FR-11](../../design/01-requirements/functional/fr-11-vendor-master.md) | ข้อกำหนดเชิงหน้าที่ | จัดการทะเบียนผู้ขาย |
 | [BR-11](../../design/01-requirements/business-rules/br-11-suspended-vendor.md) | กฎธุรกิจ | ผู้ขายถูกระงับ |
 | [SCR-08](../../design/05-ui-desc/screens/scr-08-vendor-master.md) | หน้าจอ | ทะเบียนผู้ขาย |
+| [WF-08](../../design/05-ui-desc/wireframes/wf-08-vendor-master.md) | Wireframe | Wireframe SCR-08 ทะเบียนผู้ขาย |
 <!-- /generated -->
 
 ## Implementation Touchpoints

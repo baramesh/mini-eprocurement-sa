@@ -15,14 +15,14 @@ depends_on:
 - PRC-S1
 - PRC-S2
 acceptance_refs:
-- TC-06
-- TC-07
-- TC-08
-- TC-09
-- TC-12
-- TC-14
-- TC-30
-- TC-46
+- AC-03-01
+- AC-03-02
+- AC-03-03
+- AC-03-04
+- AC-04-01
+- AC-04-03
+- AC-08-05
+- AC-13-01
 source_refs:
 - JNY-01
 - FR-04
@@ -55,16 +55,16 @@ slicing_reason: ตรรกะที่ใช้ร่วมระหว่า�
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-06](../../design/09-qa-and-test/cases/tc-06-boundary-submit-purchase-request.md) | ส่ง PR ไม่เกิน 20,000 | Boundary | สร้างอนุมัติ 1 ขั้น (`DEPT_APPROVER`) |
-| [TC-07](../../design/09-qa-and-test/cases/tc-07-boundary-submit-purchase-request.md) | ส่ง PR เกิน 20,000 หนึ่งสตางค์ | Boundary | สร้างอนุมัติ 2 ขั้น (`DEPT_APPROVER`, `PROCUREMENT_HEAD`) |
-| [TC-08](../../design/09-qa-and-test/cases/tc-08-boundary-submit-purchase-request.md) | ส่ง PR ที่ 200,000 | Boundary | อนุมัติ 2 ขั้น |
-| [TC-09](../../design/09-qa-and-test/cases/tc-09-boundary-submit-purchase-request.md) | ส่ง PR เกิน 200,000 | Boundary | อนุมัติ 3 ขั้น (เพิ่ม `COMMITTEE`) |
-| [TC-12](../../design/09-qa-and-test/cases/tc-12-security-decide-approval.md) | ผู้ขอซื้ออนุมัติ PR ตนเอง | Security | 403 `ERR-SOD-001` |
-| [TC-14](../../design/09-qa-and-test/cases/tc-14-positive-decide-approval.md) | อนุมัติครบทุกขั้น | Positive | PR เป็น `APPROVED` มี audit ครบทุกขั้น |
-| [TC-30](../../design/09-qa-and-test/cases/tc-30-positive-decide-approval.md) | อนุมัติผลเลือกวงเงินเกิน 200,000 | Positive | RFQ เป็น `AWARDED` (BR-05) |
-| [TC-46](../../design/09-qa-and-test/cases/tc-46-positive-list-audit-logs.md) | ตรวจ audit ของ PR | Positive | เห็นเหตุการณ์ครบเรียงตามเวลา |
+| [AC-03-01](../../design/01-requirements/acceptance-criteria/ac-03-01-boundary-submit-purchase-request.md) | ส่ง PR ไม่เกิน 20,000 | Boundary | สร้างอนุมัติ 1 ขั้น (`DEPT_APPROVER`) |
+| [AC-03-02](../../design/01-requirements/acceptance-criteria/ac-03-02-boundary-submit-purchase-request.md) | ส่ง PR เกิน 20,000 หนึ่งสตางค์ | Boundary | สร้างอนุมัติ 2 ขั้น (`DEPT_APPROVER`, `PROCUREMENT_HEAD`) |
+| [AC-03-03](../../design/01-requirements/acceptance-criteria/ac-03-03-boundary-submit-purchase-request.md) | ส่ง PR ที่ 200,000 | Boundary | อนุมัติ 2 ขั้น |
+| [AC-03-04](../../design/01-requirements/acceptance-criteria/ac-03-04-boundary-submit-purchase-request.md) | ส่ง PR เกิน 200,000 | Boundary | อนุมัติ 3 ขั้น (เพิ่ม `COMMITTEE`) |
+| [AC-04-01](../../design/01-requirements/acceptance-criteria/ac-04-01-security-decide-approval.md) | ผู้ขอซื้ออนุมัติ PR ตนเอง | Security | 403 `ERR-SOD-001` |
+| [AC-04-03](../../design/01-requirements/acceptance-criteria/ac-04-03-positive-decide-approval.md) | อนุมัติครบทุกขั้น | Positive | PR เป็น `APPROVED` มี audit ครบทุกขั้น |
+| [AC-08-05](../../design/01-requirements/acceptance-criteria/ac-08-05-positive-decide-approval.md) | อนุมัติผลเลือกวงเงินเกิน 200,000 | Positive | RFQ เป็น `AWARDED` (BR-05) |
+| [AC-13-01](../../design/01-requirements/acceptance-criteria/ac-13-01-positive-list-audit-logs.md) | ตรวจ audit ของ PR | Positive | เห็นเหตุการณ์ครบเรียงตามเวลา |
 <!-- /generated -->
 
 ## Dependency / Assumption

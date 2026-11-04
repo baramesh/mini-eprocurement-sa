@@ -15,16 +15,17 @@ estimate:
 depends_on:
 - PRC-06
 acceptance_refs:
-- TC-36
-- TC-37
-- TC-38
-- TC-39
+- AC-10-01
+- AC-10-02
+- AC-10-03
+- AC-10-04
 source_refs:
 - JNY-03
 - UC-07
 - FR-10
 - BR-10
 - SCR-07
+- WF-07
 owned_touchpoints:
 - recordGoodsReceipt
 consumed_touchpoints: []
@@ -50,12 +51,12 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 ## Acceptance Criteria
 
 <!-- generated:ac -->
-| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+| Ref | เกณฑ์ตรวจรับ | ประเภท | ผลที่คาดหวัง |
 |---|---|---|---|
-| [TC-36](../../design/09-qa-and-test/cases/tc-36-positive-record-goods-receipt.md) | รับของบางส่วน | Positive | 201 `grNo` ถูกรูปแบบ PO เป็น `PARTIALLY_RECEIVED` |
-| [TC-37](../../design/09-qa-and-test/cases/tc-37-positive-record-goods-receipt.md) | รับของครบด้วยการรับหลายครั้ง | Positive | PO เป็น `RECEIVED` PR เป็น `CLOSED` |
-| [TC-38](../../design/09-qa-and-test/cases/tc-38-boundary-record-goods-receipt.md) | รับของเกินจำนวนสั่ง | Boundary | 422 `ERR-GR-001` |
-| [TC-39](../../design/09-qa-and-test/cases/tc-39-positive-record-goods-receipt.md) | จำนวนที่ปฏิเสธไม่นับเป็นรับ | Positive | ยอดรับสะสมนับ 5 ไม่ใช่ 6 |
+| [AC-10-01](../../design/01-requirements/acceptance-criteria/ac-10-01-positive-record-goods-receipt.md) | รับของบางส่วน | Positive | 201 `grNo` ถูกรูปแบบ PO เป็น `PARTIALLY_RECEIVED` |
+| [AC-10-02](../../design/01-requirements/acceptance-criteria/ac-10-02-positive-record-goods-receipt.md) | รับของครบด้วยการรับหลายครั้ง | Positive | PO เป็น `RECEIVED` PR เป็น `CLOSED` |
+| [AC-10-03](../../design/01-requirements/acceptance-criteria/ac-10-03-boundary-record-goods-receipt.md) | รับของเกินจำนวนสั่ง | Boundary | 422 `ERR-GR-001` |
+| [AC-10-04](../../design/01-requirements/acceptance-criteria/ac-10-04-positive-record-goods-receipt.md) | จำนวนที่ปฏิเสธไม่นับเป็นรับ | Positive | ยอดรับสะสมนับ 5 ไม่ใช่ 6 |
 <!-- /generated -->
 
 ## Dependency / Assumption
@@ -78,6 +79,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | [FR-10](../../design/01-requirements/functional/fr-10-receive-goods.md) | ข้อกำหนดเชิงหน้าที่ | รับของตามใบสั่งซื้อ |
 | [BR-10](../../design/01-requirements/business-rules/br-10-receipt-not-over-order.md) | กฎธุรกิจ | รับของไม่เกินจำนวนสั่ง |
 | [SCR-07](../../design/05-ui-desc/screens/scr-07-goods-receipt.md) | หน้าจอ | บันทึกการรับของ |
+| [WF-07](../../design/05-ui-desc/wireframes/wf-07-goods-receipt.md) | Wireframe | Wireframe SCR-07 บันทึกการรับของ |
 <!-- /generated -->
 
 ## Implementation Touchpoints

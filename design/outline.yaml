@@ -193,7 +193,7 @@ documents:
             render: table
             caption: ความเสี่ยงตาม OWASP และมาตรการ
             pieces: [08-security-arch/owasp]
-            columns: [{ title: ความเสี่ยง, field: title }, { title: มาตรการ, field: control }, { title: กรณีทดสอบที่รองรับ, field: evidence }]
+            columns: [{ title: ความเสี่ยง, field: title }, { title: มาตรการ, field: control }, { title: เกณฑ์ตรวจรับที่รองรับ, field: evidence }]
       - title: คุณลักษณะคุณภาพและมาตรการเชิงสถาปัตยกรรม
         render: table
         caption: คุณลักษณะคุณภาพและมาตรการ
@@ -234,6 +234,7 @@ documents:
     title: การออกแบบ UX/UI
     subtitle: UX/UI Design
     doc_code: MEP-UXU-001
+    landscape: true
     chapters:
       - title: Design System
         render: table
@@ -247,6 +248,7 @@ documents:
             caption: ภาพรวมหน้าจอ
             pieces: [05-ui-desc/screens]
             columns: [{ title: รหัส, field: id }, { title: หน้าจอ, field: title }, { title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: API (operationId), field: operations }]
+          - { title: Wireframe, render: figure, pieces: [05-ui-desc/wireframes] }
           - title: รายละเอียดหน้าจอ
             render: items
             pieces: [05-ui-desc/screens]
@@ -280,32 +282,18 @@ documents:
       - { title: การเปลี่ยนแปลงที่ทำให้ client พัง, render: list, pieces: [06-api-contract/breaking], bold_title: true }
       - { title: ดัชนี Endpoint, render: generated, source: endpoint-index }
 
-  - id: 09-test-cases
-    title: กรณีทดสอบ
-    subtitle: Test Cases
-    doc_code: MEP-TST-001
+  - id: 09-acceptance-criteria
+    title: เกณฑ์ตรวจรับ
+    subtitle: Acceptance Criteria
+    doc_code: MEP-ACR-001
     landscape: true
     chapters:
-      - title: กลยุทธ์การทดสอบ
-        children:
-          - title: ระดับการทดสอบ
-            render: table
-            caption: ระดับการทดสอบ
-            pieces: ["09-qa-and-test/strategy/stg-0[1-3]*"]
-            columns: [{ title: ระดับ, field: title }, { title: ทดสอบอะไร, field: covers }, { title: หมายเหตุ, field: note }]
-          - { title: การวิเคราะห์ค่าขอบ, render: prose, pieces: ["09-qa-and-test/strategy/stg-04-*"] }
-      - title: กรณีทดสอบ
+      - { title: วัตถุประสงค์และวิธีใช้, render: prose, pieces: [01-requirements/acceptance-criteria-guide] }
+      - title: เกณฑ์ตรวจรับรายข้อกำหนด
         render: table
-        caption: กรณีทดสอบ
-        pieces: [09-qa-and-test/cases]
-        columns: [{ title: รหัส, field: id }, { title: ชื่อกรณีทดสอบ, field: title }, { title: ประเภท, field: type }, { title: FR, field: frs }, { title: API (operationId), field: operation }, { title: ขั้นตอนและข้อมูล, field: steps }, { title: ผลที่คาดหวัง, field: expected }]
-      - title: ผลการรันส่วนที่ทดสอบระดับฐานข้อมูล
-        lead: ["09-qa-and-test/db-results/dbr-00-*"]
-        render: table
-        caption: ผลการรันชุดทดสอบฐานข้อมูล
-        pieces: ["09-qa-and-test/db-results/dbr-0[1-9]*"]
-        columns: [{ title: กรณีทดสอบ, field: title }, { title: สิ่งที่รันจริงที่ระดับฐานข้อมูล, field: run }, { title: ผล, field: result }]
-      - { title: ข้อจำกัดของชุดทดสอบ, render: list, pieces: [09-qa-and-test/limits] }
+        caption: เกณฑ์ตรวจรับของข้อกำหนดเชิงหน้าที่
+        pieces: [01-requirements/acceptance-criteria]
+        columns: [{ title: รหัส, field: id }, { title: เกณฑ์, field: title }, { title: ชนิด, field: kind }, { title: ตรวจข้อกำหนด, field: verifies }, { title: API (operationId), field: operation }, { title: สถานการณ์และข้อมูล, field: scenario }, { title: ผลที่ต้องเป็นจริง, field: expected }]
 
   - id: 10-traceability-matrix
     title: เมทริกซ์การสืบกลับ
@@ -314,6 +302,6 @@ documents:
     landscape: true
     chapters:
       - { title: สรุปความครอบคลุม, render: generated, source: trace-summary }
-      - { title: FR ไปยัง Use Case หน้าจอ API และกรณีทดสอบ, render: generated, source: trace-fr }
-      - { title: API operation ไปยังกรณีทดสอบ, render: generated, source: trace-op }
+      - { title: FR ไปยัง Use Case หน้าจอ API และเกณฑ์ตรวจรับ, render: generated, source: trace-fr }
+      - { title: API operation ไปยังเกณฑ์ตรวจรับ, render: generated, source: trace-op }
 
