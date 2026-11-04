@@ -1,0 +1,107 @@
+---
+code: PRC-06
+module: PRC
+card_type: screen
+journey: JNY-03
+journey_phase: 1
+screen_ref: SCR-06
+supports_journeys: []
+status: draft
+sprint: 3
+priority: must
+estimate:
+  dev: 5
+  qa: 3
+depends_on:
+- PRC-05
+- PRC-03
+acceptance_refs:
+- TC-31
+- TC-32
+- TC-33
+- TC-34
+- TC-35
+source_refs:
+- JNY-03
+- UC-06
+- FR-09
+- BR-01
+- BR-09
+- BR-11
+- SCR-06
+owned_touchpoints:
+- createPurchaseOrder
+- issuePurchaseOrder
+consumed_touchpoints: []
+tables:
+- po_item
+- purchase_order
+slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
+---
+
+# PRC-06 — ใบสั่งซื้อ
+
+## Value
+
+เจ้าหน้าที่ออกใบสั่งซื้อจากผลที่อนุมัติหรือซื้อตรงวงเงินต่ำ และออกใบสั่งซื้อให้ผู้ขาย
+
+## Scope
+
+- หน้าจอ ใบสั่งซื้อ (SCR-06) ตามข้อกำหนดหน้าจอ
+- สองโหมด: จากผลประกวดและซื้อตรง
+- ตรวจมูลค่าไม่เกินวงเงิน PR
+- เรียก API: createPurchaseOrder, issuePurchaseOrder
+
+## Acceptance Criteria
+
+<!-- generated:ac -->
+| Ref | กรณีทดสอบ | ประเภท | ผลที่คาดหวัง |
+|---|---|---|---|
+| [TC-31](../../design/09-qa-and-test/cases/tc-31-boundary-create-purchase-order.md) | ซื้อตรงวงเงิน 5,000.00 | Boundary | 201 `poNo` ถูกรูปแบบ PR เป็น `ORDERED` |
+| [TC-32](../../design/09-qa-and-test/cases/tc-32-boundary-create-purchase-order.md) | ซื้อตรงวงเงิน 5,000.01 | Boundary | 422 `ERR-PO-001` |
+| [TC-33](../../design/09-qa-and-test/cases/tc-33-negative-create-purchase-order.md) | ออก PO ให้ผู้ขายที่ถูกระงับ | Negative | 422 `ERR-VND-002` |
+| [TC-34](../../design/09-qa-and-test/cases/tc-34-positive-issue-purchase-order.md) | ออก PO จาก DRAFT เป็น ISSUED | Positive | 200 `ISSUED` มี audit |
+| [TC-35](../../design/09-qa-and-test/cases/tc-35-negative-issue-purchase-order.md) | ออก PO ซ้ำ | Negative | 409 `ERR-STATE-001` |
+<!-- /generated -->
+
+## Dependency / Assumption
+
+- `PRC-05`
+- `PRC-03`
+
+- ประมาณการ story point เป็นค่าตั้งต้นที่ AI เสนอ ทีมต้องปรับเทียบ (planning poker) ก่อนใช้วางรอบ
+
+## Out of Scope
+
+- การส่งเอกสารให้ผู้ขายทางอีเมลหรือระบบภายนอก
+
+## Source Refs
+
+<!-- generated:refs -->
+| Ref | ชนิด | ชื่อ |
+|---|---|---|
+| [JNY-03](../../design/02-bu-process/journeys/jny-03-order-and-receive.md) | Journey | สั่งซื้อและรับของ |
+| [UC-06](../../design/02-bu-process/usecases/uc-06-issue-po.md) | Use Case | ออกใบสั่งซื้อ |
+| [FR-09](../../design/01-requirements/functional/fr-09-issue-po.md) | ข้อกำหนดเชิงหน้าที่ | ออกใบสั่งซื้อ |
+| [BR-01](../../design/01-requirements/business-rules/br-01-direct-purchase-limit.md) | กฎธุรกิจ | ซื้อตรงวงเงินต่ำ |
+| [BR-09](../../design/01-requirements/business-rules/br-09-po-within-pr-amount.md) | กฎธุรกิจ | PO ไม่เกินวงเงิน PR |
+| [BR-11](../../design/01-requirements/business-rules/br-11-suspended-vendor.md) | กฎธุรกิจ | ผู้ขายถูกระงับ |
+| [SCR-06](../../design/05-ui-desc/screens/scr-06-po.md) | หน้าจอ | ใบสั่งซื้อ |
+<!-- /generated -->
+
+## Implementation Touchpoints
+
+<!-- generated:touchpoints -->
+| operationId | Method Path | การเป็นเจ้าของ |
+|---|---|---|
+| `createPurchaseOrder` | POST `/purchase-orders` | เป็นเจ้าของ |
+| `issuePurchaseOrder` | POST `/purchase-orders/{poId}/issue` | เป็นเจ้าของ |
+
+ตารางข้อมูลที่เกี่ยวข้อง: `po_item`, `purchase_order`
+<!-- /generated -->
+
+## Change History
+
+| รุ่น | รายละเอียด |
+|---|---|
+| 1.0 | ร่างแรกจาก design pieces ผ่านการตรวจ gate โดยสคริปต์ รอทีมตรวจรับ |

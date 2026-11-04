@@ -1,0 +1,14 @@
+code,title,module,sprint,epic,priority,sp_dev,sp_qa,dependency,status,repo_ref
+PRC-S1,ฐานข้อมูลและการออกเลขเอกสาร,PRC,Sprint 1,JNY-01,must,8,3,,draft,plan/cards/prc-s1-database-and-numbering.md
+PRC-S2,โครงพื้นฐานของ API,PRC,Sprint 1,JNY-01,must,8,5,PRC-S1,draft,plan/cards/prc-s2-api-foundation.md
+PRC-S3,สายอนุมัติและ audit trail,PRC,Sprint 1,JNY-01,must,5,3,PRC-S1;PRC-S2,draft,plan/cards/prc-s3-approval-chain-and-audit.md
+PRC-01,รายการใบขอซื้อ,PRC,Sprint 1,JNY-01,must,3,2,PRC-S1;PRC-S2,draft,plan/cards/prc-01-pr-list.md
+PRC-02,แบบฟอร์มใบขอซื้อ,PRC,Sprint 1,JNY-01,must,8,5,PRC-S1;PRC-S2;PRC-01,draft,plan/cards/prc-02-pr-form.md
+PRC-03,กล่องอนุมัติ,PRC,Sprint 1,JNY-01,must,5,3,PRC-02;PRC-S3,draft,plan/cards/prc-03-approval-inbox.md
+PRC-08,ทะเบียนผู้ขาย,PRC,Sprint 2,JNY-02,must,3,2,PRC-S1;PRC-S2,draft,plan/cards/prc-08-vendor-master.md
+PRC-04,สร้าง RFQ และเชิญผู้ขาย,PRC,Sprint 2,JNY-02,must,5,3,PRC-03;PRC-08,draft,plan/cards/prc-04-rfq-create.md
+PRC-05,บันทึกและเปรียบเทียบใบเสนอราคา,PRC,Sprint 2,JNY-02,must,8,5,PRC-04;PRC-S3,draft,plan/cards/prc-05-quotation-compare.md
+PRC-06,ใบสั่งซื้อ,PRC,Sprint 3,JNY-03,must,5,3,PRC-05;PRC-03,draft,plan/cards/prc-06-purchase-order.md
+PRC-07,บันทึกการรับของ,PRC,Sprint 3,JNY-03,must,5,3,PRC-06,draft,plan/cards/prc-07-goods-receipt.md
+PRC-09,รายงานสรุปการจัดซื้อ,PRC,Sprint 4,JNY-04,should,5,3,PRC-06;PRC-07,draft,plan/cards/prc-09-spend-report.md
+PRC-10,Audit trail,PRC,Sprint 4,JNY-04,should,2,2,PRC-S3,draft,plan/cards/prc-10-audit-trail.md
