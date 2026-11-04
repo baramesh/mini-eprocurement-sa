@@ -1,0 +1,9 @@
+---
+doc_id: CTN-02
+technology: React และ TypeScript
+owner: ภายใน
+---
+
+# Web SPA
+
+แสดง 10 หน้าจอ จัดรูปแบบวันที่ พ.ศ. และเงินบาท สร้าง Idempotency-Key ต่อการกระทำ และจัดการข้อผิดพลาดตามรหัส

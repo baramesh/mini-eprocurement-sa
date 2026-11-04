@@ -2,7 +2,7 @@
 doc_id: STP-02
 decide: – (เกณฑ์วงเงินและสายอนุมัติเป็นสมมติที่ AI เสนอ รอผู้จัดทำตรวจรับ)
 ai: ร่าง FR, BR, NFR, ผู้เกี่ยวข้อง, ขอบเขต และสมมติฐาน เป็นไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์
-artifact: '`design/01-requirements/`'
+artifact: '`design/01-requirements/` (เล่ม User Requirement)'
 check: 'ตัวตรวจ: รหัสไม่ซ้ำ และทุกไฟล์ถูกใช้ในเอกสาร'
 ---
 

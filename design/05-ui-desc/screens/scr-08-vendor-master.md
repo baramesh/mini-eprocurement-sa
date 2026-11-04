@@ -1,6 +1,8 @@
 ---
 doc_id: SCR-08
-roles: PROCUREMENT, PROCUREMENT_HEAD
+roles:
+- PROCUREMENT
+- PROCUREMENT_HEAD
 usecases:
 - UC-08
 frs:

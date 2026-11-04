@@ -1,6 +1,7 @@
 ---
 doc_id: SCR-07
-roles: RECEIVER
+roles:
+- RECEIVER
 usecases:
 - UC-07
 frs:

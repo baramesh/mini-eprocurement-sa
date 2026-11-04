@@ -1,8 +1,8 @@
 ---
-doc_id: STP-07
+doc_id: STP-09
 decide: –
 ai: ออกแบบกรณีทดสอบ 51 กรณี ใช้การวิเคราะห์ค่าขอบกับเกณฑ์วงเงิน
-artifact: '`design/09-qa-and-test/`'
+artifact: '`design/09-qa-and-test/` (เล่ม Test)'
 check: 'ตัวตรวจ: ทุก FR และทุก operation มีกรณีทดสอบ รหัสข้อผิดพลาดที่ระบุมีจริง'
 ---
 

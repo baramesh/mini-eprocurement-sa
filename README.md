@@ -7,33 +7,37 @@
 ## โครงของ repository
 
 ```text
-design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (260 ไฟล์ ณ รุ่น 1.0) แบ่งตามพื้นที่เหมือน design-new ของ pea-docs
-  01-requirements/  02-bu-process/  03-domain-data/  05-ui-desc/  06-api-contract/  09-qa-and-test/
-  00-overview/      การทำงานกับ AI      08-plan/   หลักการของแผน
-  _generated/       เนื้อหาที่สร้างอัตโนมัติ (ดัชนี endpoint, พจนานุกรมข้อมูล, เมทริกซ์การสืบกลับ, ตารางแผน)
-  outline.yaml      โครงเอกสาร: ไฟล์ย่อยไหนอยู่บทไหน
+design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (331 ไฟล์ ณ รุ่น 1.0) แบ่งตามพื้นที่ของงานออกแบบ
+  01-requirements/  02-bu-process/  03-domain-data/  04-arch-desc/  05-ui-desc/
+  06-api-contract/  08-security-arch/  09-qa-and-test/  00-overview/  10-plan/
+  _generated/       เนื้อหาที่สร้างอัตโนมัติ (ดัชนี endpoint, พจนานุกรมข้อมูล, เมทริกซ์การสืบกลับ, เมทริกซ์ IA, ตารางแผน)
+  outline.yaml      โครงเล่ม: ไฟล์ย่อยไหนอยู่เล่มไหน บทไหน
 plan/        การ์ดงานสำหรับ dev (Journey-first) พร้อมผล gate และ backlog  ->  plan/README.md
 api/         สัญญา API (OpenAPI)
 sql/         schema (T-SQL) และชุดทดสอบฐานข้อมูล
 tests/db/    ผลรันชุดทดสอบฐานข้อมูลบน SQL Server จริง
-output/      PDF แยกรายเอกสาร
+output/      PDF แยกรายเล่ม
 ```
 
-## ผลที่ได้
+## เอกสารแยกเล่ม
 
-| เอกสาร | เนื้อหา | PDF |
+จัดเป็น 10 เล่มตามรายการเอกสารส่งมอบของโครงการภาครัฐทั่วไป (แต่ละเล่มมีสารบัญ สารบัญรูปภาพ และสารบัญตาราง) บวกเอกสารประกอบเรื่องการทำงานกับ AI
+
+| เล่ม | เนื้อหา | PDF |
 |---|---|---|
-| ข้อกำหนดความต้องการ | FR 14, กฎธุรกิจ 12, NFR 6, ผู้เกี่ยวข้อง, สมมติฐาน | [01-requirements.pdf](output/01-requirements.pdf) |
-| กระบวนการและ Use Case | Journey 4, ผังกระบวนการ, สถานะเอกสาร, Use Case 10, sequence diagram | [02-process-and-usecases.pdf](output/02-process-and-usecases.pdf) |
-| การออกแบบข้อมูล | ER diagram, ตาราง 17 ตาราง (T-SQL) พร้อมพจนานุกรมข้อมูล, การตัดสินใจออกแบบ, ดัชนี | [03-data-model.pdf](output/03-data-model.pdf) |
-| ข้อกำหนด REST API | OpenAPI 19 operation, รหัสข้อผิดพลาด 18 รหัส, กฎต่อ operation | [04-api-spec.pdf](output/04-api-spec.pdf) |
-| ข้อกำหนดหน้าจอ | หน้าจอ 10 หน้า, ผังนำทาง, ฟิลด์และกติกา | [05-screen-spec.pdf](output/05-screen-spec.pdf) |
-| กรณีทดสอบ | 51 กรณี ใช้การวิเคราะห์ค่าขอบกับเกณฑ์วงเงิน และผลรันฐานข้อมูล | [06-test-cases.pdf](output/06-test-cases.pdf) |
-| เมทริกซ์การสืบกลับ | FR → Use Case → หน้าจอ → API → กรณีทดสอบ (สร้างอัตโนมัติ) | [07-traceability-matrix.pdf](output/07-traceability-matrix.pdf) |
-| แผนการ์ดงานและ Sprint | การ์ด 13 ใบ, Journey 4 รอบ, ผล gate, backlog | [08-plan.pdf](output/08-plan.pdf), [plan/](plan) |
-| การทำงานกับ AI | ขั้นตอน บทบาทคนและ AI ปัญหาที่พบระหว่างทาง สิ่งที่ตรวจแล้วและยังไม่ได้ตรวจ | [00-ai-workflow.pdf](output/00-ai-workflow.pdf) |
-| สัญญา API และ schema | ไฟล์ต้นฉบับที่อ่านด้วยเครื่องได้ | [api/openapi.yaml](api/openapi.yaml), [sql/schema.sql](sql/schema.sql) |
-| ผลทดสอบฐานข้อมูล | schema บน SQL Server 2022, constraint, สิทธิ์ audit, ออกเลข 1,000 เลขพร้อมกัน | [tests/db/RESULTS.md](tests/db/RESULTS.md) |
+| 01 แผนการดำเนินงานและระยะเวลา (Timeline and Implementation Plan) | การ์ด 13 ใบ, Journey 4 รอบ, Sprint, ผล gate, backlog | [01-timeline-and-plan.pdf](output/01-timeline-and-plan.pdf), [plan/](plan) |
+| 02 ข้อกำหนดความต้องการ (User Requirement) | FR 14, กฎธุรกิจ 12, NFR 6, ผู้เกี่ยวข้อง, สมมติฐาน | [02-user-requirement.pdf](output/02-user-requirement.pdf) |
+| 03 การออกแบบ User Flow | Journey 4, ผังกระบวนการ, สถานะเอกสาร, Use Case 10, sequence diagram | [03-user-flow.pdf](output/03-user-flow.pdf) |
+| 04 โครงสร้างข้อมูลของส่วนติดต่อผู้ใช้ (Information Architecture) | กลุ่มผู้ใช้, ผังการนำทาง, ทะเบียนหน้าจอ, เมทริกซ์สิทธิ์, เมทริกซ์ข้อมูลรายหน้าจอ, glossary, กรณีขอบเขต | [04-information-architecture.pdf](output/04-information-architecture.pdf) |
+| 05 สถาปัตยกรรมของระบบ (System Architecture Design) | บริบท, หน่วยประกอบ, โมดูล API, runtime view, การติดตั้ง, ความมั่นคงปลอดภัย (OWASP), ADR 6 เรื่อง | [05-system-architecture.pdf](output/05-system-architecture.pdf) |
+| 06 การออกแบบฐานข้อมูล (Database Design) | ER diagram, ตาราง 17 ตาราง (T-SQL) พร้อมพจนานุกรมข้อมูล, การตัดสินใจออกแบบ, ดัชนี | [06-database-design.pdf](output/06-database-design.pdf) |
+| 07 การออกแบบ UX/UI | Design System (กติกากลาง), หน้าจอ 10 หน้า พร้อมฟิลด์และกติกา | [07-ux-ui.pdf](output/07-ux-ui.pdf) |
+| 08 ข้อกำหนด API (API Specification) | OpenAPI 19 operation, รหัสข้อผิดพลาด 18 รหัส, กฎต่อ operation | [08-api-specification.pdf](output/08-api-specification.pdf) |
+| 09 กรณีทดสอบ (Test Cases) | 51 กรณี ใช้การวิเคราะห์ค่าขอบ และผลรันฐานข้อมูล | [09-test-cases.pdf](output/09-test-cases.pdf) |
+| 10 เมทริกซ์การสืบกลับ (Traceability Matrix) | FR → Use Case → หน้าจอ → API → กรณีทดสอบ (สร้างอัตโนมัติ) | [10-traceability-matrix.pdf](output/10-traceability-matrix.pdf) |
+| 00 การทำงานกับ AI | ขั้นตอน บทบาทคนและ AI ปัญหาที่พบระหว่างทาง สิ่งที่ตรวจแล้วและยังไม่ได้ตรวจ | [00-ai-workflow.pdf](output/00-ai-workflow.pdf) |
+
+ไฟล์ต้นฉบับที่อ่านด้วยเครื่องได้: [api/openapi.yaml](api/openapi.yaml), [sql/schema.sql](sql/schema.sql) ผลทดสอบฐานข้อมูลบน SQL Server 2022 อยู่ที่ [tests/db/RESULTS.md](tests/db/RESULTS.md)
 
 ## เอกสารถูกสร้างอย่างไร
 
@@ -41,7 +45,7 @@ output/      PDF แยกรายเอกสาร
 
 ## ใช้ AI ทำอะไร (สรุป)
 
-- ร่างไฟล์ย่อยตามลำดับ requirements → process → data → API → screen → test → plan โดยแต่ละขั้นอ่านผลของขั้นก่อนหน้า
+- ร่างไฟล์ย่อยตามลำดับ requirements → process → data → API → screen/IA → architecture → test → plan โดยแต่ละขั้นอ่านผลของขั้นก่อนหน้า
 - เขียนตัวตรวจความสอดคล้องข้ามไฟล์ย่อยและแผนงาน ซึ่งจับช่องว่างจริงได้ และถูกทดสอบเชิงลบว่าจับความผิดได้
 - ตัดการ์ดงานและตรวจ gate ของ Journey จากไฟล์ย่อยโดยตรง
 - รัน schema และชุดทดสอบบน SQL Server จริง
@@ -49,8 +53,8 @@ output/      PDF แยกรายเอกสาร
 
 ## ตรวจแล้วและยังไม่ได้ตรวจ
 
-- **ตรวจแล้ว:** รหัสที่อ้างกันระหว่างไฟล์ย่อยและแผนงานมีอยู่จริงทั้งหมด; ทุก FR และทุก API operation มีกรณีทดสอบและมีเจ้าของการ์ดใบเดียว; `schema.sql` รันผ่านบน SQL Server 2022 และชุดทดสอบฐานข้อมูลผ่านทั้งหมด; เลขหน้าในสารบัญตรงกับหน้าจริงทุก PDF
-- **ยังไม่ได้ตรวจ:** กรณีทดสอบระดับ API (ยังไม่มีระบบให้รัน); ประสิทธิภาพที่ 100,000 PR; ประมาณการ story point เป็นค่าตั้งต้นของ AI และการ์ดทุกใบเป็น `draft` รอทีมตรวจรับ; เกณฑ์วงเงินไม่ได้เทียบกับระเบียบจริง
+- **ตรวจแล้ว:** รหัสที่อ้างกันระหว่างไฟล์ย่อยและแผนงานมีอยู่จริงทั้งหมด; ทุก FR และทุก API operation มีกรณีทดสอบและมีเจ้าของการ์ดใบเดียว; `schema.sql` รันผ่านบน SQL Server 2022 และชุดทดสอบฐานข้อมูลผ่านทั้งหมด; เลขหน้าในสารบัญตรงกับหน้าจริงทุก PDF; เนื้อหา IA และสถาปัตยกรรมถูกตรวจความสอดคล้องกับ API และ NFR ด้วยสคริปต์
+- **ยังไม่ได้ตรวจ:** กรณีทดสอบระดับ API (ยังไม่มีระบบให้รัน); สถาปัตยกรรมและเทคโนโลยีที่เลือกเป็นข้อเสนอที่ยังไม่ได้ทดลองสร้างต้นแบบ; ประสิทธิภาพที่ 100,000 PR; ประมาณการ story point เป็นค่าตั้งต้นของ AI และการ์ดทุกใบเป็น `draft` รอทีมตรวจรับ; เกณฑ์วงเงินไม่ได้เทียบกับระเบียบจริง
 
 ## หมายเหตุ
 

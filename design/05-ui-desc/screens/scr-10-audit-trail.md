@@ -1,6 +1,7 @@
 ---
 doc_id: SCR-10
-roles: ADMIN
+roles:
+- ADMIN
 usecases:
 - UC-10
 frs:

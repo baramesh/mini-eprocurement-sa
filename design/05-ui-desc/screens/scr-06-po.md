@@ -1,6 +1,7 @@
 ---
 doc_id: SCR-06
-roles: PROCUREMENT
+roles:
+- PROCUREMENT
 usecases:
 - UC-06
 frs:

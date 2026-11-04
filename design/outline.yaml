@@ -35,10 +35,21 @@ documents:
         pieces: [00-overview/verification]
         columns: [{ title: ตรวจแล้ว (มีหลักฐาน), field: body }, { title: ยังไม่ได้ตรวจ, field: unchecked }]
 
-  - id: 01-requirements
+  - id: 01-timeline-and-plan
+    title: แผนการดำเนินงานและระยะเวลา
+    subtitle: Timeline and Implementation Plan
+    doc_code: MEP-TML-001
+    landscape: true
+    chapters:
+      - { title: หลักการของแผน, render: list, pieces: [10-plan/principles], bold_title: true }
+      - { title: Journey การ์ด และ Sprint, render: generated, source: plan-sprint }
+      - { title: การตัดการ์ด, render: generated, source: plan-slicing }
+      - { title: ผลตรวจ gate ของ Journey, render: generated, source: plan-gate }
+      - { title: Backlog, render: generated, source: plan-backlog }
+  - id: 02-user-requirement
     title: ข้อกำหนดความต้องการ
-    subtitle: Requirements
-    doc_code: MEP-REQ-001
+    subtitle: User Requirement
+    doc_code: MEP-URS-001
     chapters:
       - title: ภาพรวมและขอบเขต
         children:
@@ -72,10 +83,10 @@ documents:
         render: list
         pieces: [01-requirements/assumptions]
 
-  - id: 02-process-and-usecases
-    title: กระบวนการธุรกิจและ Use Case
-    subtitle: Business Process and Use Cases
-    doc_code: MEP-PRC-001
+  - id: 03-user-flow
+    title: การออกแบบ User Flow
+    subtitle: User Flow Design
+    doc_code: MEP-UFL-001
     chapters:
       - title: กระบวนการธุรกิจ
         children:
@@ -103,10 +114,88 @@ documents:
           - { title: รายละเอียด Use Case, render: items, pieces: [02-bu-process/usecases], only_with_body: true, heading: "{id} {title}" }
           - { title: ลำดับการทำงาน, render: figure, pieces: [02-bu-process/sequences] }
 
-  - id: 03-data-model
-    title: การออกแบบข้อมูล
-    subtitle: Data Model
-    doc_code: MEP-DB-001
+  - id: 04-information-architecture
+    title: การออกแบบโครงสร้างข้อมูลของส่วนติดต่อผู้ใช้
+    subtitle: Information Architecture
+    doc_code: MEP-IA-001
+    landscape: true
+    chapters:
+      - { title: บทนำ, render: prose, pieces: ["05-ui-desc/ia/ia-00-*"] }
+      - title: กลุ่มผู้ใช้และหลักการออกแบบ IA
+        children:
+          - title: กลุ่มผู้ใช้
+            render: table
+            caption: กลุ่มผู้ใช้และบทบาท
+            pieces: [01-requirements/actors]
+            columns: [{ title: รหัสบทบาท, field: role_code, code: true }, { title: ผู้ใช้, field: user }, { title: สิ่งที่ทำได้, field: body }]
+          - { title: หลักการออกแบบ IA, render: list, pieces: ["05-ui-desc/ia/ia-0[1-9]-*"], bold_title: true }
+      - title: โครงสร้างการนำทางและทะเบียนหน้าจอ
+        children:
+          - { title: ผังการนำทาง, render: figure, pieces: [05-ui-desc/navigation] }
+          - title: ทะเบียนหน้าจอ
+            render: table
+            caption: ทะเบียนหน้าจอ
+            pieces: [05-ui-desc/screens]
+            columns: [{ title: รหัส, field: id }, { title: หน้าจอ, field: title }, { title: บทบาทที่เข้าได้, field: roles }, { title: Use Case, field: usecases }]
+      - title: Role-based Access Matrix
+        children:
+          - { title: บทบาทกับหน้าจอ, render: generated, source: ia-access-screen }
+          - { title: บทบาทกับ API operation, render: generated, source: ia-access-operation }
+      - { title: Page-Level Content Matrix, render: generated, source: ia-page-content }
+      - title: Taxonomy และ Glossary
+        render: table
+        caption: ศัพท์เฉพาะที่ใช้ในระบบ
+        pieces: [05-ui-desc/glossary]
+        columns: [{ title: คำ, field: title }, { title: ภาษาอังกฤษ, field: english }, { title: ความหมาย, field: body }]
+      - { title: Rules และ Edge Cases, render: list, pieces: ["05-ui-desc/ia/ia-r*"], bold_title: true }
+  - id: 05-system-architecture
+    title: การออกแบบสถาปัตยกรรมของระบบ
+    subtitle: System Architecture Design
+    doc_code: MEP-SAD-001
+    chapters:
+      - { title: บทนำและขอบเขต, render: prose, pieces: [04-arch-desc/intro] }
+      - title: ภาพรวมสถาปัตยกรรม
+        children:
+          - { title: บริบทของระบบ, render: figure, pieces: ["04-arch-desc/views/v-01-*"] }
+          - { title: แผนภาพหน่วยประกอบ, render: figure, pieces: ["04-arch-desc/views/v-02-*"] }
+          - title: รายละเอียดหน่วยประกอบ
+            render: table
+            caption: หน่วยประกอบของระบบ
+            pieces: [04-arch-desc/containers]
+            columns: [{ title: หน่วย, field: title }, { title: เทคโนโลยี, field: technology }, { title: หน้าที่, field: body }, { title: เจ้าของ, field: owner }]
+      - title: การแบ่งโมดูลของ API
+        render: table
+        caption: โมดูลของ API service
+        pieces: [04-arch-desc/components]
+        columns: [{ title: โมดูล, field: title }, { title: หน้าที่, field: body }, { title: FR, field: frs }, { title: API operation, field: operations }]
+      - { title: มุมมองขณะทำงาน (Runtime View), render: figure, pieces: ["04-arch-desc/views/v-0[34]-*"] }
+      - title: การติดตั้ง
+        children:
+          - { title: แผนภาพการติดตั้ง, render: figure, pieces: ["04-arch-desc/views/v-05-*"] }
+          - title: สภาพแวดล้อม
+            render: table
+            caption: สภาพแวดล้อมของระบบ
+            pieces: [04-arch-desc/environments]
+            columns: [{ title: สภาพแวดล้อม, field: title }, { title: วัตถุประสงค์, field: purpose }, { title: ข้อมูล, field: data }, { title: ผู้ใช้งาน, field: access }]
+      - title: ความมั่นคงปลอดภัย
+        children:
+          - { title: ขอบเขตความเชื่อถือ, render: figure, pieces: [08-security-arch/views] }
+          - { title: มาตรการหลัก, render: items, pieces: [08-security-arch/controls], heading: "{title}" }
+          - title: การเทียบกับ OWASP Top 10
+            render: table
+            caption: ความเสี่ยงตาม OWASP และมาตรการ
+            pieces: [08-security-arch/owasp]
+            columns: [{ title: ความเสี่ยง, field: title }, { title: มาตรการ, field: control }, { title: กรณีทดสอบที่รองรับ, field: evidence }]
+      - title: คุณลักษณะคุณภาพและมาตรการเชิงสถาปัตยกรรม
+        render: table
+        caption: คุณลักษณะคุณภาพและมาตรการ
+        pieces: [04-arch-desc/quality]
+        columns: [{ title: NFR, field: nfr }, { title: ข้อกำหนด, field: title }, { title: มาตรการ, field: body }, { title: ตรวจด้วย, field: verified_by }]
+      - { title: การตัดสินใจเชิงสถาปัตยกรรม, render: items, pieces: [04-arch-desc/decisions], heading: "{id} {title} ({status})" }
+  - id: 06-database-design
+    title: การออกแบบฐานข้อมูล
+    subtitle: Database Design
+    doc_code: MEP-DBD-001
     chapters:
       - title: แผนภาพความสัมพันธ์
         render: figure
@@ -133,9 +222,32 @@ documents:
             columns: [{ title: ดัชนี, field: index, code: true }, { title: รองรับคำค้น, field: query }]
           - { title: Pagination, render: prose, pieces: ["03-domain-data/indexes/idx-05-*"] }
 
-  - id: 04-api-spec
+  - id: 07-ux-ui
+    title: การออกแบบ UX/UI
+    subtitle: UX/UI Design
+    doc_code: MEP-UXU-001
+    chapters:
+      - title: Design System
+        render: table
+        caption: กติกากลางของส่วนติดต่อผู้ใช้
+        pieces: [05-ui-desc/global-rules]
+        columns: [{ title: หัวข้อ, field: title }, { title: กติกา, field: body }]
+      - title: User Interface
+        children:
+          - title: ภาพรวมหน้าจอ
+            render: table
+            caption: ภาพรวมหน้าจอ
+            pieces: [05-ui-desc/screens]
+            columns: [{ title: รหัส, field: id }, { title: หน้าจอ, field: title }, { title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: API (operationId), field: operations }]
+          - title: รายละเอียดหน้าจอ
+            render: items
+            pieces: [05-ui-desc/screens]
+            heading: "{id} {title}"
+            attrs: [{ title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: FR, field: frs }, { title: API operation, field: operations }]
+            attrs_style: list
+  - id: 08-api-specification
     title: ข้อกำหนด REST API
-    subtitle: REST API Specification
+    subtitle: API Specification
     doc_code: MEP-API-001
     chapters:
       - title: หลักการทั่วไป
@@ -160,30 +272,7 @@ documents:
       - { title: การเปลี่ยนแปลงที่ทำให้ client พัง, render: list, pieces: [06-api-contract/breaking], bold_title: true }
       - { title: ดัชนี Endpoint, render: generated, source: endpoint-index }
 
-  - id: 05-screen-spec
-    title: ข้อกำหนดหน้าจอ
-    subtitle: Screen Specification
-    doc_code: MEP-UI-001
-    chapters:
-      - title: ภาพรวมหน้าจอ
-        render: table
-        caption: ภาพรวมหน้าจอ
-        pieces: [05-ui-desc/screens]
-        columns: [{ title: รหัส, field: id }, { title: หน้าจอ, field: title }, { title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: FR, field: frs }, { title: API (operationId), field: operations }]
-      - { title: ผังการนำทาง, render: figure, pieces: [05-ui-desc/navigation] }
-      - title: รายละเอียดหน้าจอ
-        render: items
-        pieces: [05-ui-desc/screens]
-        heading: "{id} {title}"
-        attrs: [{ title: บทบาท, field: roles }, { title: Use Case, field: usecases }, { title: FR, field: frs }, { title: API operation, field: operations }]
-        attrs_style: list
-      - title: กติกากลางของทุกหน้าจอ
-        render: table
-        caption: กติกากลางของทุกหน้าจอ
-        pieces: [05-ui-desc/global-rules]
-        columns: [{ title: หัวข้อ, field: title }, { title: กติกา, field: body }]
-
-  - id: 06-test-cases
+  - id: 09-test-cases
     title: กรณีทดสอบ
     subtitle: Test Cases
     doc_code: MEP-TST-001
@@ -210,7 +299,7 @@ documents:
         columns: [{ title: กรณีทดสอบ, field: title }, { title: สิ่งที่รันจริงที่ระดับฐานข้อมูล, field: run }, { title: ผล, field: result }]
       - { title: ข้อจำกัดของชุดทดสอบ, render: list, pieces: [09-qa-and-test/limits] }
 
-  - id: 07-traceability-matrix
+  - id: 10-traceability-matrix
     title: เมทริกซ์การสืบกลับ
     subtitle: Traceability Matrix
     doc_code: MEP-TRC-001
@@ -220,14 +309,3 @@ documents:
       - { title: FR ไปยัง Use Case หน้าจอ API และกรณีทดสอบ, render: generated, source: trace-fr }
       - { title: API operation ไปยังกรณีทดสอบ, render: generated, source: trace-op }
 
-  - id: 08-plan
-    title: แผนการ์ดงานและ Sprint
-    subtitle: Delivery Plan
-    doc_code: MEP-PLN-001
-    landscape: true
-    chapters:
-      - { title: หลักการของแผน, render: list, pieces: [08-plan/principles], bold_title: true }
-      - { title: Journey การ์ด และ Sprint, render: generated, source: plan-sprint }
-      - { title: การตัดการ์ด, render: generated, source: plan-slicing }
-      - { title: ผลตรวจ gate ของ Journey, render: generated, source: plan-gate }
-      - { title: Backlog, render: generated, source: plan-backlog }

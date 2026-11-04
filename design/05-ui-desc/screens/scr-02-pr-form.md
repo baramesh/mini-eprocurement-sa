@@ -1,6 +1,7 @@
 ---
 doc_id: SCR-02
-roles: REQUESTER
+roles:
+- REQUESTER
 usecases:
 - UC-01
 - UC-02

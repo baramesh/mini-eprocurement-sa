@@ -1,6 +1,8 @@
 ---
 doc_id: SCR-09
-roles: PROCUREMENT_HEAD, ADMIN
+roles:
+- PROCUREMENT_HEAD
+- ADMIN
 usecases:
 - UC-09
 frs:

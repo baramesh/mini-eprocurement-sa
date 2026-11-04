@@ -1,6 +1,12 @@
 ---
 doc_id: SCR-01
-roles: ทุกบทบาท (ตามสิทธิ์)
+roles:
+- REQUESTER
+- DEPT_APPROVER
+- PROCUREMENT
+- PROCUREMENT_HEAD
+- COMMITTEE
+- ADMIN
 usecases:
 - UC-01
 frs:
