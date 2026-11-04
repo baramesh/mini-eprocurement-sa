@@ -37,6 +37,19 @@ output/      PDF แยกรายเล่ม
 | 10 เมทริกซ์การสืบกลับ (Traceability Matrix) | FR → Use Case → หน้าจอ → API → เกณฑ์ตรวจรับ → การ์ดงานและสถานะ (สร้างอัตโนมัติ ทั้งสองทิศทางระหว่างเอกสารออกแบบกับแผน) | [10-traceability-matrix.pdf](output/10-traceability-matrix.pdf) |
 | 00 การทำงานกับ AI | ขั้นตอน บทบาทคนและ AI ปัญหาที่พบระหว่างทาง สิ่งที่ตรวจแล้วและยังไม่ได้ตรวจ | [00-ai-workflow.pdf](output/00-ai-workflow.pdf) |
 
+ใบปะหน้า [00-cover-sheet.pdf](output/00-cover-sheet.pdf) สรุปว่าแต่ละเล่มใช้ทำอะไร มีเนื้อหาอะไร และใครได้ประโยชน์
+
+## ข้อมูลตั้งต้นและข้อมูลตัวอย่าง
+
+CSV หนึ่งไฟล์ต่อหนึ่งตารางอยู่ที่ `design/03-domain-data/seed-data/` และ `sample-data/` เป็นแหล่งข้อมูลหลัก สคริปต์ insert สร้างจาก CSV ส่งต่อให้ dev และ QA ได้ (ข้อมูลทั้งหมดเป็นข้อมูลสมมติ) โหลดบนฐานข้อมูลว่างตามลำดับนี้ ต้องใส่ `-f 65001` เพราะมีข้อความไทย:
+
+```bash
+sqlcmd -S <server> -d <db> -b -i sql/schema.sql
+sqlcmd -S <server> -d <db> -f 65001 -b -i sql/seed-data.sql
+sqlcmd -S <server> -d <db> -f 65001 -b -i sql/sample-data.sql
+sqlcmd -S <server> -d <db> -b -i sql/data-checks.sql   # ตรวจความสอดคล้อง ไม่บังคับ
+```
+
 ไฟล์ต้นฉบับที่อ่านด้วยเครื่องได้: [api/openapi.yaml](api/openapi.yaml), [sql/schema.sql](sql/schema.sql) ผลตรวจสอบ schema บน SQL Server 2022 อยู่ที่ [tests/db/RESULTS.md](tests/db/RESULTS.md)
 
 ## เอกสารถูกสร้างอย่างไร
