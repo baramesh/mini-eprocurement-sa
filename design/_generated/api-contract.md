@@ -1,4 +1,6 @@
-## listPurchaseRequests
+## ค้นหารายการใบขอซื้อ (listPurchaseRequests)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ listPurchaseRequests -->
 | รายการ | ค่า |
@@ -15,6 +17,8 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-07 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ listPurchaseRequests -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
@@ -24,6 +28,8 @@
 | `requesterId` | query | integer | ไม่ | กรองตามผู้ขอซื้อ (ผู้ขอซื้อธรรมดาเห็นเฉพาะของตนอยู่แล้ว ค่านี้ใช้กับบทบาทอื่น) |
 | `cursor` | query | string | ไม่ | ตัวชี้หน้าถัดไปแบบ keyset |
 | `limit` | query | integer | ไม่ | ค่าต่ำสุด 1; ค่าสูงสุด 100; ค่าเริ่มต้น `50` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ listPurchaseRequests -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -50,6 +56,8 @@
 | `items[].poId` | integer (null ได้) | format `int64`; PO ของ PR นี้ ใช้นำทางไปหน้ารับของ | `purchase_order[pr_id=pr_id].po_id` |
 | `nextCursor` | string (null ได้) |  | keyset: ค่า (created_at, pr_id) ของแถวสุดท้ายของหน้า เข้ารหัส base64; null เมื่อไม่มีหน้าถัดไป |
 
+### ตัวอย่าง
+
 ตัวอย่าง Response 200 (`api/examples/listPurchaseRequests.response.200.json`):
 
 ```json
@@ -73,7 +81,9 @@
 }
 ```
 
-## createPurchaseRequest
+## สร้างใบขอซื้อ (draft) (createPurchaseRequest)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ createPurchaseRequest -->
 | รายการ | ค่า |
@@ -90,6 +100,8 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-08 (เล่มสถาปัตยกรรมของระบบ)
 
+### ข้อมูลที่ส่ง (Request body)
+
 <!-- table: Request body ของ createPurchaseRequest -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
 |---|---|---|---|---|
@@ -101,6 +113,8 @@
 | `items[].quantity` | number | ใช่ | มากกว่า 0 | `pr_item.quantity` |
 | `items[].unit` | string | ใช่ | ยาวไม่เกิน 30 | `pr_item.unit` |
 | `items[].estUnitPrice` | number | ใช่ | ค่าต่ำสุด 0 | `pr_item.est_unit_price` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ createPurchaseRequest -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -125,6 +139,8 @@
 | `audit_log` | INSERT | - | `action` | ค่าคงที่ `CREATE` |
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ createPurchaseRequest -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -166,6 +182,8 @@
 | `approvals[].decision` | string | ค่า: `PENDING`, `APPROVED`, `REJECTED` | `approval.decision` |
 | `approvals[].comment` | string (null ได้) |  | `approval.comment` |
 | `approvals[].decidedAt` | string (null ได้) | format `date-time` | `approval.decided_at` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/createPurchaseRequest.request.json`):
 
@@ -215,7 +233,9 @@
 }
 ```
 
-## getPurchaseRequest
+## ดูรายละเอียดใบขอซื้อ (getPurchaseRequest)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ getPurchaseRequest -->
 | รายการ | ค่า |
@@ -232,10 +252,14 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-07 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ getPurchaseRequest -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `prId` | path | integer | ใช่ | format `int64` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ getPurchaseRequest -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -277,6 +301,8 @@
 | `approvals[].decision` | string | ค่า: `PENDING`, `APPROVED`, `REJECTED` | `approval.decision` |
 | `approvals[].comment` | string (null ได้) |  | `approval.comment` |
 | `approvals[].decidedAt` | string (null ได้) | format `date-time` | `approval.decided_at` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/getPurchaseRequest.response.200.json`):
 
@@ -339,7 +365,9 @@
 }
 ```
 
-## updatePurchaseRequest
+## แก้ไขใบขอซื้อที่เป็น draft (updatePurchaseRequest)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ updatePurchaseRequest -->
 | รายการ | ค่า |
@@ -356,11 +384,15 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-08 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ updatePurchaseRequest -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `prId` | path | integer | ใช่ | format `int64` |
 | `If-Match` | header | string | ใช่ | ค่า rowVersion ล่าสุดที่ผู้ใช้เห็น |
+
+### ข้อมูลที่ส่ง (Request body)
 
 <!-- table: Request body ของ updatePurchaseRequest -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
@@ -373,6 +405,8 @@
 | `items[].quantity` | number | ใช่ | มากกว่า 0 | `pr_item.quantity` |
 | `items[].unit` | string | ใช่ | ยาวไม่เกิน 30 | `pr_item.unit` |
 | `items[].estUnitPrice` | number | ใช่ | ค่าต่ำสุด 0 | `pr_item.est_unit_price` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ updatePurchaseRequest -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -393,6 +427,8 @@
 | `audit_log` | INSERT | - | `action` | ค่าคงที่ `UPDATE` |
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ updatePurchaseRequest -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -436,6 +472,8 @@
 | `approvals[].decision` | string | ค่า: `PENDING`, `APPROVED`, `REJECTED` | `approval.decision` |
 | `approvals[].comment` | string (null ได้) |  | `approval.comment` |
 | `approvals[].decidedAt` | string (null ได้) | format `date-time` | `approval.decided_at` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/updatePurchaseRequest.request.json`):
 
@@ -485,7 +523,9 @@
 }
 ```
 
-## submitPurchaseRequest
+## ส่งใบขอซื้อเพื่ออนุมัติ (submitPurchaseRequest)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ submitPurchaseRequest -->
 | รายการ | ค่า |
@@ -502,11 +542,15 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-03 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ submitPurchaseRequest -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `prId` | path | integer | ใช่ | format `int64` |
 | `Idempotency-Key` | header | string | ใช่ | format `uuid`; UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05) |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ submitPurchaseRequest -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -524,6 +568,8 @@
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `detail` | ค่าคงที่ `ส่งอนุมัติ` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ submitPurchaseRequest -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -567,6 +613,8 @@
 | `approvals[].decision` | string | ค่า: `PENDING`, `APPROVED`, `REJECTED` | `approval.decision` |
 | `approvals[].comment` | string (null ได้) |  | `approval.comment` |
 | `approvals[].decidedAt` | string (null ได้) | format `date-time` | `approval.decided_at` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/submitPurchaseRequest.response.200.json`):
 
@@ -629,7 +677,9 @@
 }
 ```
 
-## listMyApprovals
+## กล่องอนุมัติของผู้เรียก (เฉพาะขั้นที่ถึงบทบาทตน) (listMyApprovals)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ listMyApprovals -->
 | รายการ | ค่า |
@@ -645,6 +695,8 @@
 
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-07 (เล่มสถาปัตยกรรมของระบบ)
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ listMyApprovals -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -670,6 +722,8 @@
 | `amount` | number | วงเงิน PR หรือมูลค่าใบเสนอราคาที่ชนะ | ถ้า doc_type=PR: `purchase_request[pr_id=doc_id].total_estimated`; ถ้า doc_type=AWARD: `award[rfq_id=doc_id]>quotation[quotation_id=quotation_id].total_amount` |
 | `submittedAt` | string | format `date-time` | ถ้า doc_type=PR: `purchase_request[pr_id=doc_id].submitted_at`; ถ้า doc_type=AWARD: `award[rfq_id=doc_id].awarded_at` |
 | `proposerId` | integer | ผู้ขอซื้อ (PR) หรือผู้เสนอผล (AWARD) ใช้ซ่อนปุ่มตัดสินตาม BR-04 | ถ้า doc_type=PR: `purchase_request[pr_id=doc_id].requester_id`; ถ้า doc_type=AWARD: `award[rfq_id=doc_id].awarded_by` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/listMyApprovals.response.200.json`):
 
@@ -710,7 +764,9 @@
 ]
 ```
 
-## decideApproval
+## อนุมัติหรือปฏิเสธ (decideApproval)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ decideApproval -->
 | รายการ | ค่า |
@@ -727,17 +783,23 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-04 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ decideApproval -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `approvalId` | path | integer | ใช่ | format `int64` |
 | `Idempotency-Key` | header | string | ใช่ | format `uuid`; UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05) |
 
+### ข้อมูลที่ส่ง (Request body)
+
 <!-- table: Request body ของ decideApproval -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
 |---|---|---|---|---|
 | `decision` | string | ใช่ | ค่า: `APPROVED`, `REJECTED` | `approval.decision` |
 | `comment` | string | ไม่ | ยาวไม่เกิน 500; บังคับเมื่อ REJECTED | `approval.comment` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ decideApproval -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -758,6 +820,8 @@
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `detail` | request.comment หรือ "ขั้น N" เมื่อไม่มีความเห็น |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ decideApproval -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -780,6 +844,8 @@
 | `decision` | string | ค่า: `PENDING`, `APPROVED`, `REJECTED` | `approval.decision` |
 | `comment` | string (null ได้) |  | `approval.comment` |
 | `decidedAt` | string (null ได้) | format `date-time` | `approval.decided_at` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/decideApproval.request.json`):
 
@@ -805,7 +871,9 @@
 }
 ```
 
-## createRfq
+## สร้าง RFQ จาก PR ที่อนุมัติแล้วและเชิญผู้ขาย (createRfq)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ createRfq -->
 | รายการ | ค่า |
@@ -822,10 +890,14 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-09 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ createRfq -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `Idempotency-Key` | header | string | ใช่ | format `uuid`; UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05) |
+
+### ข้อมูลที่ส่ง (Request body)
 
 <!-- table: Request body ของ createRfq -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
@@ -833,6 +905,8 @@
 | `prId` | integer | ใช่ | format `int64` | `rfq.pr_id` |
 | `dueAt` | string | ใช่ | format `date-time` | `rfq.due_at` |
 | `vendorIds` | array[integer] | ใช่ | อย่างน้อย 3 รายการ; ไม่ซ้ำ | `rfq_vendor[rfq_id=rfq_id].vendor_id` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ createRfq -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -853,6 +927,8 @@
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
 
+### ผลลัพธ์ (Response)
+
 <!-- table: Response ของ createRfq -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
 |---|---|---|---|
@@ -871,6 +947,8 @@
 | `status` | string | ค่า: `OPEN`, `AWARD_PENDING`, `AWARDED` | `rfq.status` |
 | `dueAt` | string | format `date-time` | `rfq.due_at` |
 | `vendorIds` | array[integer] |  | `rfq_vendor[rfq_id=rfq_id].vendor_id` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/createRfq.request.json`):
 
@@ -895,7 +973,9 @@
 }
 ```
 
-## getRfq
+## ดูรายละเอียด RFQ (รายการ PR และผู้ขายที่เชิญ) (getRfq)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ getRfq -->
 | รายการ | ค่า |
@@ -912,10 +992,14 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-09 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ getRfq -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `rfqId` | path | integer | ใช่ | format `int64` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ getRfq -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -946,6 +1030,8 @@
 | `vendors` | array[object] |  | `rfq_vendor[rfq_id=rfq_id]` |
 | `vendors[].vendorId` | integer |  | `rfq_vendor.vendor_id` |
 | `vendors[].vendorName` | string |  | `vendor[vendor_id=vendor_id].name_th` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/getRfq.response.200.json`):
 
@@ -986,7 +1072,9 @@
 }
 ```
 
-## recordQuotation
+## บันทึกใบเสนอราคาของผู้ขาย (recordQuotation)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ recordQuotation -->
 | รายการ | ค่า |
@@ -1003,10 +1091,14 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-09 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ recordQuotation -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `rfqId` | path | integer | ใช่ | format `int64` |
+
+### ข้อมูลที่ส่ง (Request body)
 
 <!-- table: Request body ของ recordQuotation -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
@@ -1016,6 +1108,8 @@
 | `items` | array[object] | ใช่ | อย่างน้อย 1 รายการ | `quotation_item[quotation_id=quotation_id]` |
 | `items[].prItemId` | integer | ใช่ | format `int64` | `quotation_item.pr_item_id` |
 | `items[].unitPrice` | number | ใช่ | ค่าต่ำสุด 0 | `quotation_item.unit_price` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ recordQuotation -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -1030,6 +1124,8 @@
 | `quotation_item` | INSERT | ต่อ items[] | `quotation_id` | `quotation.quotation_id` ของแถวที่เพิ่งเขียน |
 | `quotation_item` | INSERT | ต่อ items[] | `pr_item_id` | `request.items[].prItemId` |
 | `quotation_item` | INSERT | ต่อ items[] | `unit_price` | `request.items[].unitPrice` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ recordQuotation -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1051,6 +1147,8 @@
 | `leadTimeDays` | integer |  | `quotation.lead_time_days` |
 | `isActive` | boolean |  | `quotation.is_active` |
 | `submittedAt` | string | format `date-time` | `quotation.submitted_at` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/recordQuotation.request.json`):
 
@@ -1081,7 +1179,9 @@
 }
 ```
 
-## getQuotationComparison
+## ตารางเปรียบเทียบราคา (getQuotationComparison)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ getQuotationComparison -->
 | รายการ | ค่า |
@@ -1098,10 +1198,14 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-10 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ getQuotationComparison -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `rfqId` | path | integer | ใช่ | format `int64` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ getQuotationComparison -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1127,6 +1231,8 @@
 | `quotations[].itemPrices` | array[object] |  | `quotation_item[quotation_id=quotation_id]` |
 | `quotations[].itemPrices[].prItemId` | integer | format `int64` | `quotation_item.pr_item_id` |
 | `quotations[].itemPrices[].unitPrice` | number |  | `quotation_item.unit_price` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/getQuotationComparison.response.200.json`):
 
@@ -1184,7 +1290,9 @@
 }
 ```
 
-## awardRfq
+## เสนอผลเลือกผู้ชนะเพื่ออนุมัติ (awardRfq)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ awardRfq -->
 | รายการ | ค่า |
@@ -1201,17 +1309,23 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-10 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ awardRfq -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `rfqId` | path | integer | ใช่ | format `int64` |
 | `Idempotency-Key` | header | string | ใช่ | format `uuid`; UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05) |
 
+### ข้อมูลที่ส่ง (Request body)
+
 <!-- table: Request body ของ awardRfq -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
 |---|---|---|---|---|
 | `quotationId` | integer | ใช่ | format `int64` | `award.quotation_id` |
 | `reason` | string | ไม่ | ยาวไม่เกิน 500; บังคับ (อย่างน้อย 20 ตัวอักษร) เมื่อไม่ใช่ราคาต่ำสุด | `award.reason` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ awardRfq -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -1234,6 +1348,8 @@
 | `audit_log` | INSERT | - | `detail` | `request.reason` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
 
+### ผลลัพธ์ (Response)
+
 <!-- table: Response ของ awardRfq -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
 |---|---|---|---|
@@ -1253,6 +1369,8 @@
 | `status` | string | ค่า: `OPEN`, `AWARD_PENDING`, `AWARDED` | `rfq.status` |
 | `dueAt` | string | format `date-time` | `rfq.due_at` |
 | `vendorIds` | array[integer] |  | `rfq_vendor[rfq_id=rfq_id].vendor_id` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/awardRfq.request.json`):
 
@@ -1276,7 +1394,9 @@
 }
 ```
 
-## createPurchaseOrder
+## สร้าง PO (จากผลประกวดที่อนุมัติ หรือซื้อตรงวงเงินต่ำ) (createPurchaseOrder)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ createPurchaseOrder -->
 | รายการ | ค่า |
@@ -1293,10 +1413,14 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-11 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ createPurchaseOrder -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `Idempotency-Key` | header | string | ใช่ | format `uuid`; UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05) |
+
+### ข้อมูลที่ส่ง (Request body)
 
 <!-- table: Request body ของ createPurchaseOrder -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
@@ -1304,6 +1428,8 @@
 | `prId` | integer | ใช่ | format `int64` | `purchase_order.pr_id` |
 | `vendorId` | integer | ไม่ | ใช้เฉพาะซื้อตรง (PR ไม่เกิน 5 | `purchase_order.vendor_id` |
 | `rfqId` | integer | ไม่ | format `int64`; ใช้เมื่อออกจากผลประกวดที่อนุมัติแล้ว | `purchase_order.rfq_id` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ createPurchaseOrder -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -1336,6 +1462,8 @@
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
 
+### ผลลัพธ์ (Response)
+
 <!-- table: Response ของ createPurchaseOrder -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
 |---|---|---|---|
@@ -1366,6 +1494,8 @@
 | `items[].unitPrice` | number |  | `po_item.unit_price` |
 | `items[].qtyReceived` | number | รับสะสม (ไม่รวมจำนวนที่ปฏิเสธ ตาม BR-10) | คำนวณ: `sum(gr_item[po_item_id=po_item_id].qty_received)` |
 | `items[].qtyRemaining` | number | คงเหลือ = สั่ง ลบ รับสะสม | คำนวณ: `quantity - qtyReceived` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/createPurchaseOrder.request.json`):
 
@@ -1414,7 +1544,9 @@
 }
 ```
 
-## getPurchaseOrder
+## ดูรายละเอียด PO พร้อมยอดสั่ง รับสะสม และคงเหลือ (getPurchaseOrder)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ getPurchaseOrder -->
 | รายการ | ค่า |
@@ -1431,10 +1563,14 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-11 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ getPurchaseOrder -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `poId` | path | integer | ใช่ | format `int64` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ getPurchaseOrder -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1466,6 +1602,8 @@
 | `items[].qtyReceived` | number | รับสะสม (ไม่รวมจำนวนที่ปฏิเสธ ตาม BR-10) | คำนวณ: `sum(gr_item[po_item_id=po_item_id].qty_received)` |
 | `items[].qtyRemaining` | number | คงเหลือ = สั่ง ลบ รับสะสม | คำนวณ: `quantity - qtyReceived` |
 
+### ตัวอย่าง
+
 ตัวอย่าง Response 200 (`api/examples/getPurchaseOrder.response.200.json`):
 
 ```json
@@ -1494,7 +1632,9 @@
 }
 ```
 
-## issuePurchaseOrder
+## ออก PO ให้ผู้ขาย (issuePurchaseOrder)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ issuePurchaseOrder -->
 | รายการ | ค่า |
@@ -1511,11 +1651,15 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-11 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ issuePurchaseOrder -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `poId` | path | integer | ใช่ | format `int64` |
 | `Idempotency-Key` | header | string | ใช่ | format `uuid`; UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05) |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ issuePurchaseOrder -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -1527,6 +1671,8 @@
 | `audit_log` | INSERT | - | `action` | ค่าคงที่ `ISSUE` |
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ issuePurchaseOrder -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1559,6 +1705,8 @@
 | `items[].unitPrice` | number |  | `po_item.unit_price` |
 | `items[].qtyReceived` | number | รับสะสม (ไม่รวมจำนวนที่ปฏิเสธ ตาม BR-10) | คำนวณ: `sum(gr_item[po_item_id=po_item_id].qty_received)` |
 | `items[].qtyRemaining` | number | คงเหลือ = สั่ง ลบ รับสะสม | คำนวณ: `quantity - qtyReceived` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/issuePurchaseOrder.response.200.json`):
 
@@ -1598,7 +1746,9 @@
 }
 ```
 
-## recordGoodsReceipt
+## บันทึกการรับของ (recordGoodsReceipt)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ recordGoodsReceipt -->
 | รายการ | ค่า |
@@ -1615,11 +1765,15 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-12 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ recordGoodsReceipt -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `poId` | path | integer | ใช่ | format `int64` |
 | `Idempotency-Key` | header | string | ใช่ | format `uuid`; UUID ที่ client สร้าง ส่งซ้ำด้วยคีย์เดิมจะได้ผลเดิม ไม่ทำงานซ้ำ (NFR-05) |
+
+### ข้อมูลที่ส่ง (Request body)
 
 <!-- table: Request body ของ recordGoodsReceipt -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
@@ -1629,6 +1783,8 @@
 | `items[].poItemId` | integer | ใช่ | format `int64` | `gr_item.po_item_id` |
 | `items[].qtyReceived` | number | ใช่ | ค่าต่ำสุด 0 | `gr_item.qty_received` |
 | `items[].qtyRejected` | number | ไม่ | ค่าต่ำสุด 0; ค่าเริ่มต้น `0` | `gr_item.qty_rejected` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ recordGoodsReceipt -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -1650,6 +1806,8 @@
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
 
+### ผลลัพธ์ (Response)
+
 <!-- table: Response ของ recordGoodsReceipt -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
 |---|---|---|---|
@@ -1666,6 +1824,8 @@
 | `grId` | integer | format `int64` | `goods_receipt.gr_id` |
 | `grNo` | string |  | `goods_receipt.gr_no` |
 | `poStatus` | string | ค่า: `PARTIALLY_RECEIVED`, `RECEIVED` | `purchase_order[po_id=po_id].status` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/recordGoodsReceipt.request.json`):
 
@@ -1692,7 +1852,9 @@
 }
 ```
 
-## listVendors
+## ค้นหาผู้ขาย (listVendors)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ listVendors -->
 | รายการ | ค่า |
@@ -1709,11 +1871,15 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-13 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ listVendors -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `q` | query | string | ไม่ | คำค้นชื่อหรือเลขผู้เสียภาษี |
 | `status` | query | string | ไม่ | ค่า: `ACTIVE`, `SUSPENDED` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ listVendors -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1731,6 +1897,8 @@
 | `vendorId` | integer |  | `vendor.vendor_id` |
 | `vendorCode` | string |  | `vendor.vendor_code` |
 | `status` | string | ค่า: `ACTIVE`, `SUSPENDED` | `vendor.status` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/listVendors.response.200.json`):
 
@@ -1771,7 +1939,9 @@
 ]
 ```
 
-## createVendor
+## เพิ่มผู้ขาย (createVendor)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ createVendor -->
 | รายการ | ค่า |
@@ -1788,12 +1958,16 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-13 (เล่มสถาปัตยกรรมของระบบ)
 
+### ข้อมูลที่ส่ง (Request body)
+
 <!-- table: Request body ของ createVendor -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
 |---|---|---|---|---|
 | `nameTh` | string | ใช่ | ยาวไม่เกิน 200 | `vendor.name_th` |
 | `taxId` | string | ใช่ | รูปแบบ `^[0-9]{13}$` | `vendor.tax_id` |
 | `email` | string | ไม่ | format `email` | `vendor.email` |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ createVendor -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -1809,6 +1983,8 @@
 | `audit_log` | INSERT | - | `action` | ค่าคงที่ `CREATE` |
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ createVendor -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1828,6 +2004,8 @@
 | `vendorId` | integer |  | `vendor.vendor_id` |
 | `vendorCode` | string |  | `vendor.vendor_code` |
 | `status` | string | ค่า: `ACTIVE`, `SUSPENDED` | `vendor.status` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/createVendor.request.json`):
 
@@ -1852,7 +2030,9 @@
 }
 ```
 
-## setVendorStatus
+## ระงับหรือเปิดใช้ผู้ขาย (setVendorStatus)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ setVendorStatus -->
 | รายการ | ค่า |
@@ -1869,16 +2049,22 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-13 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ setVendorStatus -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `vendorId` | path | integer | ใช่ |  |
+
+### ข้อมูลที่ส่ง (Request body)
 
 <!-- table: Request body ของ setVendorStatus -->
 | ฟิลด์ | ชนิด | บังคับ | กติกา | ที่มา (ตาราง.คอลัมน์) |
 |---|---|---|---|---|
 | `status` | string | ใช่ | ค่า: `ACTIVE`, `SUSPENDED` | `vendor.status` |
 | `reason` | string | ไม่ | ยาวไม่เกิน 500; บังคับเมื่อ status เป็น SUSPENDED | บันทึกใน audit_log.detail ของเหตุการณ์ ไม่เก็บเป็นคอลัมน์ของ vendor |
+
+### ข้อมูลที่บันทึก
 
 <!-- table: ข้อมูลที่บันทึกของ setVendorStatus -->
 | ตาราง | การกระทำ | เงื่อนไข | คอลัมน์ | ค่ามาจาก |
@@ -1890,6 +2076,8 @@
 | `audit_log` | INSERT | - | `actor_id` | ผู้เรียก `app_user.user_id` |
 | `audit_log` | INSERT | - | `detail` | `request.reason` |
 | `audit_log` | INSERT | - | `created_at` | เวลาของคำขอ (UTC) |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ setVendorStatus -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1909,6 +2097,8 @@
 | `vendorId` | integer |  | `vendor.vendor_id` |
 | `vendorCode` | string |  | `vendor.vendor_code` |
 | `status` | string | ค่า: `ACTIVE`, `SUSPENDED` | `vendor.status` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Request (`api/examples/setVendorStatus.request.json`):
 
@@ -1931,7 +2121,9 @@
 }
 ```
 
-## getSpendSummary
+## รายงานสรุปการจัดซื้อ (getSpendSummary)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ getSpendSummary -->
 | รายการ | ค่า |
@@ -1948,12 +2140,16 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-14 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ getSpendSummary -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `from` | query | string | ใช่ | format `date` |
 | `to` | query | string | ใช่ | format `date` |
 | `groupBy` | query | string | ไม่ | ค่า: `department`, `vendor`, `month`; ค่าเริ่มต้น `department` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ getSpendSummary -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -1975,6 +2171,8 @@
 | `rows[].estimatedTotal` | number |  | รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน) |
 | `rows[].orderedTotal` | number |  | รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน) |
 | `rows[].savingVsEstimate` | number | ประมาณการ ลบ มูลค่าที่สั่งจริง | รวมจากแถวเอกสารตามกติกาใน FR-12 (ดูหัวข้อสูตรรายงาน) |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/getSpendSummary.response.200.json`):
 
@@ -2003,7 +2201,9 @@
 }
 ```
 
-## listAuditLogs
+## ตรวจ audit trail ของเอกสาร (listAuditLogs)
+
+### ข้อมูลทั่วไป
 
 <!-- table: ข้อมูลทั่วไปของ listAuditLogs -->
 | รายการ | ค่า |
@@ -2020,11 +2220,15 @@
 - ต้องมี `Authorization: Bearer <token>` (SSO) ทุกคำขอ; เรียกด้วยบทบาทที่ไม่อยู่ในรายการข้างบนได้ `403`
 - ขั้นตอนการทำงานภายในและลำดับการตรวจอยู่ที่ runtime view V-14 (เล่มสถาปัตยกรรมของระบบ)
 
+### พารามิเตอร์
+
 <!-- table: พารามิเตอร์ของ listAuditLogs -->
 | ชื่อ | ที่ | ชนิด | บังคับ | กติกา |
 |---|---|---|---|---|
 | `entity` | query | string | ใช่ | ค่า: `PR`, `RFQ`, `PO`, `GR`, `VENDOR` |
 | `entityId` | query | integer | ใช่ | format `int64` |
+
+### ผลลัพธ์ (Response)
 
 <!-- table: Response ของ listAuditLogs -->
 | HTTP | ความหมาย | schema | รหัสข้อผิดพลาดที่เกิดได้ |
@@ -2042,6 +2246,8 @@
 | `actorId` | integer |  | `audit_log.actor_id` |
 | `detail` | string |  | `audit_log.detail` |
 | `createdAt` | string | format `date-time` | `audit_log.created_at` |
+
+### ตัวอย่าง
 
 ตัวอย่าง Response 200 (`api/examples/listAuditLogs.response.200.json`):
 
