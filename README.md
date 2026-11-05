@@ -7,7 +7,7 @@
 ## โครงของ repository
 
 ```text
-design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (377 ไฟล์ ณ รุ่น 1.0 ไม่นับภาพ) แบ่งตามพื้นที่ของงานออกแบบ
+design/      ไฟล์ย่อยหนึ่งชิ้นหนึ่งไฟล์ (381 ไฟล์ ณ รุ่น 1.0 ไม่นับภาพ) แบ่งตามพื้นที่ของงานออกแบบ
   01-requirements/  02-bu-process/  03-domain-data/  04-arch-desc/  05-ui-desc/
   06-api-contract/  08-security-arch/  00-overview/  10-plan/
   _generated/       เนื้อหาที่สร้างอัตโนมัติ (ดัชนี endpoint, พจนานุกรมข้อมูล, เมทริกซ์การสืบกลับ, เมทริกซ์ IA, ตารางแผน)
@@ -34,7 +34,7 @@ output/      PDF แยกรายเล่ม
 | 06 การออกแบบฐานข้อมูล (Database Design) | ER diagram, 17 ตาราง (T-SQL) พร้อมพจนานุกรมข้อมูล, การตัดสินใจออกแบบ, ดัชนี, ข้อมูลตั้งต้นและข้อมูลตัวอย่าง (CSV) | [06-database-design.pdf](output/06-database-design.pdf) |
 | 07 การออกแบบ UX/UI | Design System (กติกากลาง), wireframe 10 หน้าจอ (สร้างด้วย FigCraft) พร้อมเลขกำกับ, หน้าจอ 10 หน้า พร้อมฟิลด์และกติกา, พฤติกรรมแต่ละหน้า (เหตุการณ์ → API → ฟิลด์ที่ส่งและอ่าน) | [07-ux-ui.pdf](output/07-ux-ui.pdf) |
 | 08 ข้อกำหนด API (API Specification) | OpenAPI 21 operation, รหัสข้อผิดพลาด 19 รหัส, ที่มาของทุกฟิลด์ (ตาราง.คอลัมน์), ตัวอย่าง request/response ใน [api/examples/](api/examples) ที่สร้างจากข้อมูลตัวอย่าง | [08-api-specification.pdf](output/08-api-specification.pdf) |
-| 09 เกณฑ์ตรวจรับ (Acceptance Criteria) | 56 ข้อ ผูกกับ FR ใช้การวิเคราะห์ค่าขอบกับเกณฑ์วงเงิน เพื่อส่งต่อให้ QA ออกแบบ test case | [09-acceptance-criteria.pdf](output/09-acceptance-criteria.pdf) |
+| 09 เกณฑ์ตรวจรับ (Acceptance Criteria) | 58 ข้อ ผูกกับ FR ใช้การวิเคราะห์ค่าขอบกับเกณฑ์วงเงิน เพื่อส่งต่อให้ QA ออกแบบ test case | [09-acceptance-criteria.pdf](output/09-acceptance-criteria.pdf) |
 | 10 เมทริกซ์การสืบกลับ (Traceability Matrix) | FR → Use Case → หน้าจอ → API → เกณฑ์ตรวจรับ → การ์ดงานและสถานะ (สร้างอัตโนมัติ ทั้งสองทิศทางระหว่างเอกสารออกแบบกับแผน) | [10-traceability-matrix.pdf](output/10-traceability-matrix.pdf) |
 | 00 การทำงานกับ AI | ขั้นตอน บทบาทคนและ AI ปัญหาที่พบระหว่างทาง สิ่งที่ตรวจแล้วและยังไม่ได้ตรวจ | [00-ai-workflow.pdf](output/00-ai-workflow.pdf) |
 

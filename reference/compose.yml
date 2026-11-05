@@ -42,8 +42,6 @@ services:
     volumes:
       - ../sql:/sql:ro
   proxy:
-    image: nginx:1.27-alpine
+    build: ./web           # nginx: reverse proxy (CTN-01) and the static Web SPA (CTN-02)
     depends_on: [api]
     ports: ["8080:80"]
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro

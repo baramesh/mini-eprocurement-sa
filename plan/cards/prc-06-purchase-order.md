@@ -39,6 +39,7 @@ owned_touchpoints:
 - issuePurchaseOrder
 consumed_touchpoints:
 - getPurchaseRequest
+- getRfq
 - getQuotationComparison
 - listVendors
 tables:
@@ -109,6 +110,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 | `getPurchaseOrder` | GET `/purchase-orders/{poId}` | เป็นเจ้าของ |
 | `issuePurchaseOrder` | POST `/purchase-orders/{poId}/issue` | เป็นเจ้าของ |
 | `getPurchaseRequest` | GET `/purchase-requests/{prId}` | ใช้ร่วม (เจ้าของ PRC-02) |
+| `getRfq` | GET `/rfqs/{rfqId}` | ใช้ร่วม (เจ้าของ PRC-05) |
 | `getQuotationComparison` | GET `/rfqs/{rfqId}/comparison` | ใช้ร่วม (เจ้าของ PRC-05) |
 | `listVendors` | GET `/vendors` | ใช้ร่วม (เจ้าของ PRC-08) |
 

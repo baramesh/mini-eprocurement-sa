@@ -7,6 +7,7 @@ roles:
 - PROCUREMENT_HEAD
 - COMMITTEE
 - ADMIN
+- RECEIVER
 usecases:
 - UC-01
 frs:

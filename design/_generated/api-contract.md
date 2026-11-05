@@ -5,7 +5,7 @@
 |---|---|
 | Endpoint | `GET /purchase-requests` |
 | สรุป | ค้นหารายการใบขอซื้อ |
-| บทบาทที่เรียกได้ | `REQUESTER`, `DEPT_APPROVER`, `PROCUREMENT`, `PROCUREMENT_HEAD`, `COMMITTEE`, `ADMIN` |
+| บทบาทที่เรียกได้ | `REQUESTER`, `DEPT_APPROVER`, `PROCUREMENT`, `PROCUREMENT_HEAD`, `COMMITTEE`, `ADMIN`, `RECEIVER` |
 | FR | FR-02 |
 | หน้าจอที่เรียก | SCR-01 |
 | Runtime view | V-07 |
@@ -802,7 +802,7 @@
 | สรุป | ดูรายละเอียด RFQ (รายการ PR และผู้ขายที่เชิญ) |
 | บทบาทที่เรียกได้ | `PROCUREMENT`, `PROCUREMENT_HEAD`, `COMMITTEE` |
 | FR | FR-05, FR-06 |
-| หน้าจอที่เรียก | SCR-05 |
+| หน้าจอที่เรียก | SCR-05, SCR-06 |
 | Runtime view | V-09 |
 | การ์ดเจ้าของ | PRC-05 |
 | ตัวอย่างการเรียก | `GET /rfqs/2` |
@@ -833,6 +833,8 @@
 | `vendorIds` | array[integer] |  | `rfq_vendor[rfq_id=rfq_id].vendor_id` |
 | `prNo` | string |  | `purchase_request[pr_id=pr_id].pr_no` |
 | `prTitle` | string |  | `purchase_request[pr_id=pr_id].title` |
+| `awardedQuotationId` | integer (null ได้) | format `int64`; ใบเสนอราคาที่ถูกเสนอเป็นผู้ชนะ (ว่างจนกว่าจะเสนอผล) | `award[rfq_id=rfq_id].quotation_id` |
+| `awardReason` | string (null ได้) | เหตุผลที่ไม่เลือกราคาต่ำสุด (ว่างเมื่อเลือกราคาต่ำสุดหรือยังไม่เสนอผล) | `award[rfq_id=rfq_id].reason` |
 | `items` | array[object] |  | `pr_item[pr_id=pr_id]` |
 | `items[].prItemId` | integer | format `int64` | `pr_item.pr_item_id` |
 | `items[].description` | string |  | `pr_item.description` |
@@ -854,6 +856,8 @@
   "vendorIds": [1, 3, 4],
   "prNo": "PR-2026-00003",
   "prTitle": "เครื่องคอมพิวเตอร์ 4 เครื่อง",
+  "awardedQuotationId": 6,
+  "awardReason": "ผู้ขายรายนี้รับประกันสามปีและส่งมอบเร็วกว่าห้าวัน",
   "items": [
     {
       "prItemId": 4,

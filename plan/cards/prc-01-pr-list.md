@@ -18,6 +18,7 @@ depends_on:
 acceptance_refs:
 - AC-02-01
 - AC-02-02
+- AC-02-05
 source_refs:
 - JNY-01
 - UC-01
@@ -54,6 +55,7 @@ slicing_reason: หนึ่งหน้าจอ หนึ่งการ์ด
 |---|---|---|---|
 | [AC-02-01](../../design/01-requirements/acceptance-criteria/ac-02-01-security-list-purchase-requests.md) | ผู้ขอซื้อเห็นเฉพาะ PR ของตน | Security | ผลไม่มี PR ของ B |
 | [AC-02-02](../../design/01-requirements/acceptance-criteria/ac-02-02-security-list-purchase-requests.md) | token หมดอายุ | Security | 401 `ERR-AUTH-001` |
+| [AC-02-05](../../design/01-requirements/acceptance-criteria/ac-02-05-security-list-purchase-requests.md) | ผู้รับของหา PO ที่ต้องรับ | Security | ผลมีเฉพาะ PR ที่มี PO สถานะ `ISSUED`, `PARTIALLY_RECEIVED` หรือ `RECEIVED` |
 <!-- /generated -->
 
 ## Dependency / Assumption

@@ -24,7 +24,7 @@ paths:
       operationId: listPurchaseRequests
       summary: ค้นหารายการใบขอซื้อ
       x-fr: [FR-02]
-      x-roles: [REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN]
+      x-roles: [REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN, RECEIVER]
       parameters:
       - name: status
         in: query
@@ -928,6 +928,8 @@ components:
         properties:
           prNo: {type: string, x-source: 'purchase_request[pr_id=pr_id].pr_no'}
           prTitle: {type: string, x-source: 'purchase_request[pr_id=pr_id].title'}
+          awardedQuotationId: {type: integer, format: int64, nullable: true, description: ใบเสนอราคาที่ถูกเสนอเป็นผู้ชนะ (ว่างจนกว่าจะเสนอผล), x-source: 'award[rfq_id=rfq_id].quotation_id'}
+          awardReason: {type: string, nullable: true, description: เหตุผลที่ไม่เลือกราคาต่ำสุด (ว่างเมื่อเลือกราคาต่ำสุดหรือยังไม่เสนอผล), x-source: 'award[rfq_id=rfq_id].reason'}
           items:
             type: array
             items:

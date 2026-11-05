@@ -33,6 +33,7 @@ tables:
 - quotation_item
 - purchase_request
 - vendor
+- award
 ---
 
 # สร้าง RFQ และบันทึกใบเสนอราคา
@@ -58,7 +59,7 @@ sequenceDiagram
 | 3 | `createRfq` | `vendorIds` ไม่ซ้ำและอย่างน้อย 3 ราย (BR-02) และ `dueAt` ต้องอยู่ในอนาคต | น้อยกว่า 3 `422` `ERR-RFQ-001`; วันที่ผิด `422` `ERR-VAL-001` |
 | 4 | `createRfq` | ผู้ขายทุกรายต้องมีอยู่และ `ACTIVE` (BR-11) | `422` `ERR-VND-002` |
 | 5 | `createRfq` | ออกเลข `RFQ-YYYY-NNNNN` insert `rfq` สถานะ `OPEN` และ `rfq_vendor` ย้าย PR เป็น `IN_SOURCING` เขียน audit | `201` |
-| 6 | `getRfq` | อ่าน RFQ พร้อมเลขที่และหัวข้อของ PR รายการของ PR และผู้ขายที่เชิญ | `404` `ERR-NF-001` เมื่อไม่พบ |
+| 6 | `getRfq` | อ่าน RFQ พร้อมเลขที่และหัวข้อของ PR รายการของ PR ผู้ขายที่เชิญ และผลที่เสนอเป็นผู้ชนะ (`awardedQuotationId` และ `awardReason` จากแถว `award` ว่างเมื่อยังไม่เสนอผล) | `404` `ERR-NF-001` เมื่อไม่พบ |
 | 7 | `recordQuotation` | RFQ ต้องเป็น `OPEN` และเวลาปัจจุบัน (UTC) ไม่เกิน `due_at` | `409` `ERR-RFQ-003` |
 | 8 | `recordQuotation` | ผู้ขายต้องอยู่ใน `rfq_vendor` ของ RFQ นี้ (BR-07) | `422` `ERR-RFQ-002` |
 | 9 | `recordQuotation` | `items` ต้องครอบคลุมทุกรายการของ PR ไม่ซ้ำ ราคารวม = ผลรวมของ ปัดเศษ 2 ตำแหน่ง (จำนวนของ PR × ราคาต่อหน่วยที่เสนอ) | ไม่ครบ `422` `ERR-VAL-001` |

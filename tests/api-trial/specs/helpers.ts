@@ -9,6 +9,7 @@ import { parse } from 'yaml';
 // Test profile (CNV-10): HS256 token signed with the shared test secret; claims per CNV-03.
 const SECRET = process.env.TEST_JWT_SECRET ?? 'test-secret-test-secret-test-secret-0123';
 const AUDIENCE = 'eprocurement';
+export const API = process.env.BASE_URL ?? 'http://localhost:8080/api/v1/';
 const b64 = (o: unknown) => Buffer.from(JSON.stringify(o)).toString('base64url');
 const signJwt = (claims: Record<string, unknown>) => {
   const body = `${b64({ alg: 'HS256', typ: 'JWT' })}.${b64(claims)}`;
@@ -17,7 +18,7 @@ const signJwt = (claims: Record<string, unknown>) => {
 
 // Personas = rows of sql/sample-data.sql (app_user). Token claims: CNV-03; test profile: CNV-10.
 export const P = {
-  admin:     { email: 'admin@example.test', roles: ['ADMIN'] },
+  admin:     { email: 'admin@example.test', roles: ['ADMIN'], id: 1 },
   reqA:      { email: 'somchai.req@example.test', roles: ['REQUESTER'], id: 2 },
   apprA:     { email: 'somying.appr@example.test', roles: ['DEPT_APPROVER'], id: 3 },
   proc:      { email: 'wichai.proc@example.test', roles: ['PROCUREMENT'], id: 4 },
@@ -69,7 +70,7 @@ function checkContract(method: string, path: string, status: number, body: any) 
 }
 
 export const token = (who: Persona, over: Record<string, unknown> = {}) =>
-  signJwt({ email: P[who].email, roles: P[who].roles, aud: AUDIENCE, exp: Math.floor(Date.now() / 1000) + 3600, ...over });
+  signJwt({ sub: String(P[who].id), email: P[who].email, roles: P[who].roles, aud: AUDIENCE, exp: Math.floor(Date.now() / 1000) + 3600, ...over });
 
 let taxSeq = 0;                      // module level: tests create many vendors, taxId must stay unique across tests
 export type Res = { status: number; body: any };
@@ -79,7 +80,7 @@ export function client(request: APIRequestContext) {
     const h: Record<string, string> = { ...headers };
     if (who) h.authorization = `Bearer ${token(who, over)}`;
     if (method !== 'GET' && !h['idempotency-key'] && h['idempotency-key'] !== '') h['idempotency-key'] = crypto.randomUUID();
-    const r = await request.fetch(path.startsWith('/__test') ? path : path.replace(/^\//, ''), { method, headers: h, data: body as any });
+    const r = await request.fetch(new URL(path.startsWith('/__test') ? path : path.replace(/^\//, ''), API).toString(), { method, headers: h, data: body as any });
     const text = await r.text();
     const res = { status: r.status(), body: text ? JSON.parse(text) : null };
     checkContract(method, path, res.status, res.body);

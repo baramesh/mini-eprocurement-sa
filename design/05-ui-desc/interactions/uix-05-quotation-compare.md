@@ -33,8 +33,8 @@ bindings:
 - event: เปิดหน้า
   operation: getRfq
   sends: ["rfqId"]
-  reads: ["rfqNo", "prNo", "prTitle", "status", "dueAt", "items[].prItemId", "items[].description", "items[].quantity", "items[].unit", "vendors[].vendorId", "vendors[].vendorName"]
-  ui: หัวหน้าจอ (RFQ, PR ต้นทาง, วันปิดรับ) แถวของตารางเทียบราคา และรายชื่อผู้ขายที่บันทึกใบเสนอราคาได้
+  reads: ["rfqNo", "prNo", "prTitle", "status", "dueAt", "awardedQuotationId", "awardReason", "items[].prItemId", "items[].description", "items[].quantity", "items[].unit", "vendors[].vendorId", "vendors[].vendorName"]
+  ui: หัวหน้าจอ (RFQ, PR ต้นทาง, วันปิดรับ) แถวของตารางเทียบราคา รายชื่อผู้ขายที่บันทึกใบเสนอราคาได้ และการไฮไลต์ใบเสนอราคาที่เสนอเป็นผู้ชนะพร้อมเหตุผล (ให้ผู้อนุมัติเห็นว่ากำลังอนุมัติอะไร)
 - event: เปิดหน้า หรือหลังบันทึกใบเสนอราคา
   operation: getQuotationComparison
   sends: ["rfqId"]

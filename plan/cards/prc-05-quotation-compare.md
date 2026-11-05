@@ -18,6 +18,7 @@ depends_on:
 acceptance_refs:
 - AC-05-06
 - AC-05-07
+- AC-05-08
 - AC-06-01
 - AC-06-02
 - AC-06-03
@@ -75,6 +76,7 @@ slicing_reason: หน้าจอเดียวที่รวมการบ�
 |---|---|---|---|
 | [AC-05-06](../../design/01-requirements/acceptance-criteria/ac-05-06-positive-get-rfq.md) | ดูรายละเอียด RFQ | Positive | 200 มี `items` 1 รายการ และ `vendors` 3 ราย พร้อม `prNo` |
 | [AC-05-07](../../design/01-requirements/acceptance-criteria/ac-05-07-negative-get-rfq.md) | ดู RFQ ที่ไม่มี | Negative | 404 `ERR-NF-001` |
+| [AC-05-08](../../design/01-requirements/acceptance-criteria/ac-05-08-positive-get-rfq.md) | ผู้อนุมัติเห็นผลที่เสนอ | Positive | 200 มี `awardedQuotationId` เป็นใบเสนอราคาที่เสนอ และ `awardReason` เป็นเหตุผลนั้น; RFQ ที่ยังไม่เสนอผลได้ค่าว่างทั้งสองฟิลด์ |
 | [AC-06-01](../../design/01-requirements/acceptance-criteria/ac-06-01-negative-record-quotation.md) | บันทึกใบเสนอราคาจากผู้ขายที่ไม่ได้รับเชิญ | Negative | 422 `ERR-RFQ-002` |
 | [AC-06-02](../../design/01-requirements/acceptance-criteria/ac-06-02-negative-record-quotation.md) | บันทึกใบเสนอราคาหลังปิดรับ | Negative | 409 `ERR-RFQ-003` |
 | [AC-06-03](../../design/01-requirements/acceptance-criteria/ac-06-03-positive-record-quotation.md) | บันทึกใบเสนอราคาซ้ำ | Positive | ฉบับหลัง `isActive` = true; ตารางเปรียบเทียบของ RFQ มีใบเสนอราคาของผู้ขายรายนี้เพียงฉบับเดียวคือฉบับหลัง; ฉบับแรกยังอยู่ในฐานข้อมูลที่ `is_active` = 0 (ตรวจที่ชั้นฐานข้อมูล เพราะไม่มี operation อ่านฉบับที่เลิกใช้) |

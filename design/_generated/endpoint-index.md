@@ -3,7 +3,7 @@
 <!-- table: ดัชนี endpoint ทั้งหมดของ API -->
 | Method | Path | operationId | สรุป | บทบาท | FR |
 |--|----------|----------|--------|---------|----|
-| GET | `/purchase-requests` | `listPurchaseRequests` | ค้นหารายการใบขอซื้อ | REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN | FR-02 |
+| GET | `/purchase-requests` | `listPurchaseRequests` | ค้นหารายการใบขอซื้อ | REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN, RECEIVER | FR-02 |
 | POST | `/purchase-requests` | `createPurchaseRequest` | สร้างใบขอซื้อ (draft) | REQUESTER | FR-01, FR-14 |
 | GET | `/purchase-requests/{prId}` | `getPurchaseRequest` | ดูรายละเอียดใบขอซื้อ | REQUESTER, DEPT_APPROVER, PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE, ADMIN | FR-02 |
 | PUT | `/purchase-requests/{prId}` | `updatePurchaseRequest` | แก้ไขใบขอซื้อที่เป็น draft | REQUESTER | FR-01 |

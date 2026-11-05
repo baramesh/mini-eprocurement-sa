@@ -6,5 +6,5 @@
 | `PROCUREMENT` | ✓ |  |  | ✓ | ✓ | ✓ |  | ✓ |  |  |
 | `PROCUREMENT_HEAD` | ✓ |  | ✓ |  |  |  |  | ✓ | ✓ |  |
 | `COMMITTEE` | ✓ |  | ✓ |  |  |  |  |  |  |  |
-| `RECEIVER` |  |  |  |  |  |  | ✓ |  |  |  |
+| `RECEIVER` | ✓ |  |  |  |  |  | ✓ |  |  |  |
 | `ADMIN` | ✓ |  |  |  |  |  |  |  | ✓ | ✓ |

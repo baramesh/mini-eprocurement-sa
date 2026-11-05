@@ -42,6 +42,16 @@ test.describe('PR create / read / update (FR-01, FR-02)', () => {
     expect(r.status).toBe(200);
     expect(r.body.items.map((p: any) => p.prId)).not.toContain(other.prId);
   });
+  test('AC-02-05 a receiver lists only PRs that have an issued PO', async ({ request }) => {
+    const a = client(request);
+    const waiting = await a.approvedPr(3000);
+    const { pr: withPo } = await a.issuedPo(3000, 3);
+    const r = await a.call('recv', 'GET', '/purchase-requests?limit=100');
+    expect(r.status).toBe(200);
+    const ids = r.body.items.map((p: any) => p.prId);
+    expect(ids).toContain(withPo.prId);
+    expect(ids).not.toContain(waiting.prId);
+  });
   test('AC-02-02 expired token -> 401 ERR-AUTH-001', async ({ request }) => {
     const a = client(request);
     const r = await a.call('reqA', 'GET', '/purchase-requests', undefined, {}, { exp: Math.floor(Date.now() / 1000) - 10 });
@@ -192,6 +202,17 @@ test.describe('RFQ (FR-05)', () => {
     const r = await a.call('proc', 'GET', `/rfqs/${rfq.rfqId}`);
     expect(r.status).toBe(200);
     expect(r.body.items).toHaveLength(1); expect(r.body.vendors).toHaveLength(3); expect(r.body.prNo).toBe(pr.prNo);
+  });
+  test('AC-05-08 getRfq shows the proposed winner and the reason; empty before an award', async ({ request }) => {
+    const a = client(request);
+    const { pr, vs, rfq } = await a.rfq(30000);
+    const q = [];
+    for (const [i, p] of [100, 90, 95].entries()) q.push((await a.quote(rfq.rfqId, vs[i].vendorId, pr.items[0].prItemId, p)).body);
+    const before = await a.ok('head', 'GET', `/rfqs/${rfq.rfqId}`);
+    expect([before.awardedQuotationId, before.awardReason]).toEqual([null, null]);
+    await a.ok('proc', 'POST', `/rfqs/${rfq.rfqId}/award`, { quotationId: q[2].quotationId, reason: 'ผู้ขายนี้รับประกันสามปีและส่งมอบเร็ว' });
+    const after = await a.ok('head', 'GET', `/rfqs/${rfq.rfqId}`);
+    expect([after.awardedQuotationId, after.awardReason]).toEqual([q[2].quotationId, 'ผู้ขายนี้รับประกันสามปีและส่งมอบเร็ว']);
   });
   test('AC-05-07 unknown rfqId -> 404 ERR-NF-001', async ({ request }) => {
     const r = await client(request).call('proc', 'GET', '/rfqs/999999');

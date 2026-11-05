@@ -8,6 +8,7 @@ frs:
 - FR-09
 operations:
 - getPurchaseRequest
+- getRfq
 - getQuotationComparison
 - listVendors
 - createPurchaseOrder

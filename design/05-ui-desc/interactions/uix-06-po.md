@@ -5,6 +5,7 @@ navigates_to:
 - SCR-01
 operations:
 - getPurchaseRequest
+- getRfq
 - getQuotationComparison
 - listVendors
 - createPurchaseOrder
@@ -33,6 +34,11 @@ bindings:
   sends: ["prId"]
   reads: ["prNo", "title", "status", "totalEstimated", "items[].description", "items[].quantity", "items[].unit", "items[].estUnitPrice"]
   ui: รายการและมูลค่าที่จะสั่ง ซึ่งต้องไม่เกินวงเงิน PR
+- event: เปิดหน้าโหมดจากผลประกวด
+  operation: getRfq
+  sends: ["rfqId"]
+  reads: ["awardedQuotationId", "status"]
+  ui: ตัดสินว่าใบเสนอราคาใดชนะ (ต้องเป็น `AWARDED`)
 - event: เปิดหน้าโหมดจากผลประกวด
   operation: getQuotationComparison
   sends: ["rfqId"]
@@ -68,7 +74,7 @@ bindings:
 | ตัวกระตุ้น | เงื่อนไข | ผลที่ผู้ใช้เห็น | เรียก API |
 |---|---|---|---|
 | เปิดหน้าโหมดซื้อตรง | ไม่มี `rfqId` | แสดง PR และตัวเลือกผู้ขาย | `getPurchaseRequest` และ `listVendors` |
-| เปิดหน้าโหมดจากผลประกวด | มี `rfqId` | แสดงผู้ขายและราคาของใบเสนอราคาที่ชนะ ผู้ขายเลือกเองไม่ได้ | `getQuotationComparison` |
+| เปิดหน้าโหมดจากผลประกวด | มี `rfqId` | แสดงผู้ขายและราคาของใบเสนอราคาที่ชนะ (`awardedQuotationId`) ผู้ขายเลือกเองไม่ได้ | `getRfq` และ `getQuotationComparison` |
 | กดสร้าง PO | โหมดซื้อตรงต้องเลือกผู้ขาย; ผู้ขายต้องไม่ถูกระงับ (BR-11); มูลค่าไม่เกินวงเงิน PR (BR-09) | ปิดปุ่มระหว่างรอ สำเร็จแล้วแสดง PO สถานะ `DRAFT` | `createPurchaseOrder` แล้ว `getPurchaseOrder` |
 | เปิดหน้า PO ที่มีอยู่ | มี `poId` ใน path | แสดง PO และปุ่มตามสถานะ | `getPurchaseOrder` |
 | กดออก PO | `status` เป็น `DRAFT` | ปิดปุ่มระหว่างรอ สำเร็จแล้วสถานะเป็น `ISSUED` | `issuePurchaseOrder` |

@@ -27,6 +27,7 @@ var jwt = new JsonWebTokenHandler();
 var jsonOpts = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
 
 string[] ALL = { "REQUESTER", "DEPT_APPROVER", "PROCUREMENT", "PROCUREMENT_HEAD", "COMMITTEE", "ADMIN" };
+string[] LIST_PR = ALL.Append("RECEIVER").ToArray();
 string[] APPROVERS = { "DEPT_APPROVER", "PROCUREMENT_HEAD", "COMMITTEE" };
 string[] WIDE = { "PROCUREMENT", "PROCUREMENT_HEAD", "COMMITTEE", "ADMIN" };
 
@@ -164,6 +165,7 @@ string ScopeSql(User u)
 {
     if (u.Roles.Any(WIDE.Contains)) return "1=1";
     var parts = new List<string>();
+    if (u.Roles.Contains("RECEIVER")) parts.Add("EXISTS (SELECT 1 FROM purchase_order rp WHERE rp.pr_id = p.pr_id AND rp.status IN ('ISSUED', 'PARTIALLY_RECEIVED', 'RECEIVED'))");   // V-06 step 4
     if (u.Roles.Contains("REQUESTER")) parts.Add("p.requester_id = @uid");
     if (u.Roles.Contains("DEPT_APPROVER")) parts.Add("p.department_id = @dept");
     return parts.Count == 0 ? "1=0" : "(" + string.Join(" OR ", parts) + ")";
@@ -222,7 +224,7 @@ async Task WriteItems(Ctx c, IDbTransaction tx, long prId)
             new { prId, n = n++, d = it.GetProperty("description").GetString(), q = it.GetProperty("quantity").GetDecimal(), u = it.GetProperty("unit").GetString(), p = it.GetProperty("estUnitPrice").GetDecimal() }, tx);
 }
 
-Op("GET", "/purchase-requests", ALL, false, async c =>
+Op("GET", "/purchase-requests", LIST_PR, false, async c =>
 {
     var limit = 50;
     if (c.Query.TryGetValue("limit", out var l) && (!int.TryParse(l, out limit) || limit < 1 || limit > 100)) throw Val("limit", "1..100");
@@ -430,6 +432,8 @@ Op("GET", "/rfqs/{rfqId}", new[] { "PROCUREMENT", "PROCUREMENT_HEAD", "COMMITTEE
     var r = await RfqOut(c, id);
     var pr = (await Q1(c.Db, "SELECT p.pr_no prNo, p.title prTitle FROM rfq r JOIN purchase_request p ON p.pr_id = r.pr_id WHERE r.rfq_id = @id", new { id }))!;
     r["prNo"] = pr["prNo"]; r["prTitle"] = pr["prTitle"];
+    var aw = await Q1(c.Db, "SELECT quotation_id q, reason r FROM award WHERE rfq_id = @id", new { id });      // V-09 step 6
+    r["awardedQuotationId"] = aw?["q"]; r["awardReason"] = aw?["r"];
     r["items"] = await Q(c.Db, "SELECT i.pr_item_id prItemId, i.description, i.quantity, i.unit FROM pr_item i JOIN rfq r ON r.pr_id = i.pr_id WHERE r.rfq_id = @id ORDER BY i.line_no", new { id });
     r["vendors"] = await Q(c.Db, "SELECT v.vendor_id vendorId, v.name_th vendorName FROM rfq_vendor rv JOIN vendor v ON v.vendor_id = rv.vendor_id WHERE rv.rfq_id = @id ORDER BY v.vendor_id", new { id });
     return (200, r);

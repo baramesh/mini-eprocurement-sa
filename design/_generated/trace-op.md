@@ -1,7 +1,7 @@
 <!-- table: API operation ไปยังเกณฑ์ตรวจรับและการ์ดเจ้าของ -->
 | operationId | Method Path | เกณฑ์ตรวจรับ | การ์ดเจ้าของ | สถานะการ์ด |
 |-----|-----|----------|----|----|
-| `listPurchaseRequests` | GET `/purchase-requests` | AC-02-01, AC-02-02 | PRC-01 | draft x1 |
+| `listPurchaseRequests` | GET `/purchase-requests` | AC-02-01, AC-02-02, AC-02-05 | PRC-01 | draft x1 |
 | `createPurchaseRequest` | POST `/purchase-requests` | AC-01-01, AC-01-02, AC-01-03, AC-14-01 | PRC-02 | draft x1 |
 | `getPurchaseRequest` | GET `/purchase-requests/{prId}` | AC-02-03, AC-02-04 | PRC-02 | draft x1 |
 | `updatePurchaseRequest` | PUT `/purchase-requests/{prId}` | AC-01-04 | PRC-02 | draft x1 |
@@ -9,7 +9,7 @@
 | `listMyApprovals` | GET `/approvals` | AC-04-05 | PRC-03 | draft x1 |
 | `decideApproval` | POST `/approvals/{approvalId}/decision` | AC-04-01, AC-04-02, AC-04-03, AC-04-04, AC-08-05 | PRC-03 | draft x1 |
 | `createRfq` | POST `/rfqs` | AC-05-01, AC-05-02, AC-05-03, AC-05-04, AC-05-05 | PRC-04 | draft x1 |
-| `getRfq` | GET `/rfqs/{rfqId}` | AC-05-06, AC-05-07 | PRC-05 | draft x1 |
+| `getRfq` | GET `/rfqs/{rfqId}` | AC-05-06, AC-05-07, AC-05-08 | PRC-05 | draft x1 |
 | `recordQuotation` | POST `/rfqs/{rfqId}/quotations` | AC-06-01, AC-06-02, AC-06-03 | PRC-05 | draft x1 |
 | `getQuotationComparison` | GET `/rfqs/{rfqId}/comparison` | AC-07-01 | PRC-05 | draft x1 |
 | `awardRfq` | POST `/rfqs/{rfqId}/award` | AC-08-01, AC-08-02, AC-08-03, AC-08-04 | PRC-05 | draft x1 |

@@ -1,7 +1,7 @@
 <!-- table: สิทธิ์เรียก API operation ของแต่ละบทบาท -->
 | operationId | REQUESTER | DEPT_APPROVER | PROCUREMENT | PROCUREMENT_HEAD | COMMITTEE | RECEIVER | ADMIN |
 |----------------|----|----|----|----|----|----|----|
-| `listPurchaseRequests` | ✓ | ✓ | ✓ | ✓ | ✓ |  | ✓ |
+| `listPurchaseRequests` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | `createPurchaseRequest` | ✓ |  |  |  |  |  |  |
 | `getPurchaseRequest` | ✓ | ✓ | ✓ | ✓ | ✓ |  | ✓ |
 | `updatePurchaseRequest` | ✓ |  |  |  |  |  |  |

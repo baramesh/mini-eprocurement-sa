@@ -45,7 +45,7 @@ bindings:
 
 # พฤติกรรมหน้า SCR-04 สร้าง RFQ และเชิญผู้ขาย
 
-**เส้นทาง:** `/purchase-requests/{prId}/rfq/new` เข้าได้เฉพาะ `PROCUREMENT` และเฉพาะ PR ที่เป็น `APPROVED`
+**เส้นทาง:** `/purchase-requests/{prId}/rfq/new` เข้าได้เฉพาะ `PROCUREMENT` และเฉพาะ PR ที่เป็น `APPROVED` ช่องวันปิดรับเป็นวันและเวลาตามเวลา Asia/Bangkok ที่หน้าแปลงเป็น UTC (ISO 8601) ก่อนส่ง
 
 <!-- table: เหตุการณ์ในหน้า SCR-04 -->
 | ตัวกระตุ้น | เงื่อนไข | ผลที่ผู้ใช้เห็น | เรียก API |
