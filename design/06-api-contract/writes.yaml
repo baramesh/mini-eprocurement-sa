@@ -1,0 +1,379 @@
+# Data written by each operation that changes data: which table and column receives which value, and where the value comes from.
+# The request-body table of an operation says where a client field is stored; this file completes it with the values the server
+# sets itself (status, numbers, times, the caller) so a developer can write the INSERT or UPDATE from one table.
+#
+# Sources (checked by an internal script against sql/schema.sql and the request schema in api/openapi.yaml):
+#   request.<field>   a field of the request body (the same names as the request-body table)
+#   path.<name>       a path parameter                          header.<name>   a request header
+#   caller.<column>   a column of the app_user row of the caller (found by the email claim of the token)
+#   const <value>     a fixed value                             clock           the request time in UTC (X-Test-Now in the test profile)
+#   doc-no <TYPE>     the next document number (usp_next_doc_no), drawn before the transaction starts
+#   row <table.col>   a value of a row this operation has just written
+#   lookup <table.col> a value read from an existing row
+#   calc <text>       a computed value, the rule in words
+# Every NOT NULL column without a default must appear in an INSERT (the script fails otherwise).
+# 'per' says the row is written once for each element of that request array. 'when' says under which condition.
+
+createPurchaseRequest:
+  - table: purchase_request
+    action: INSERT
+    columns:
+      pr_no: doc-no PR
+      requester_id: caller.user_id
+      department_id: caller.department_id
+      title: request.title
+      justification: request.justification
+      needed_by_date: request.neededByDate
+      total_estimated: calc ผลรวมของ ปัดเศษ 2 ตำแหน่ง (quantity x est_unit_price) ต่อบรรทัด
+      status: const DRAFT
+      created_at: clock
+  - table: pr_item
+    action: INSERT
+    per: items[]
+    columns:
+      pr_id: row purchase_request.pr_id
+      line_no: calc ลำดับในอาร์เรย์ เริ่มที่ 1
+      description: request.items[].description
+      quantity: request.items[].quantity
+      unit: request.items[].unit
+      est_unit_price: request.items[].estUnitPrice
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const PR'
+      entity_id: 'row purchase_request.pr_id'
+      action: 'const CREATE'
+      actor_id: 'caller.user_id'
+      created_at: 'clock'
+
+updatePurchaseRequest:
+  - table: purchase_request
+    action: UPDATE
+    where: pr_id = path.prId, row_version = header.If-Match, status = DRAFT
+    columns:
+      title: request.title
+      justification: request.justification
+      needed_by_date: request.neededByDate
+      total_estimated: calc ผลรวมของ ปัดเศษ 2 ตำแหน่ง (quantity x est_unit_price) ต่อบรรทัด
+  - table: pr_item
+    action: DELETE
+    where: pr_id = path.prId
+    columns: {}
+  - table: pr_item
+    action: INSERT
+    per: items[]
+    columns:
+      pr_id: path.prId
+      line_no: calc ลำดับในอาร์เรย์ เริ่มที่ 1
+      description: request.items[].description
+      quantity: request.items[].quantity
+      unit: request.items[].unit
+      est_unit_price: request.items[].estUnitPrice
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const PR'
+      entity_id: 'path.prId'
+      action: 'const UPDATE'
+      actor_id: 'caller.user_id'
+      created_at: 'clock'
+
+submitPurchaseRequest:
+  - table: approval
+    action: INSERT
+    per: ขั้นอนุมัติแต่ละขั้นของสายตามวงเงิน (BR-03)
+    columns:
+      doc_type: const PR
+      doc_id: path.prId
+      step_no: calc ลำดับขั้น เริ่มที่ 1
+      required_role: calc บทบาทของขั้นตามวงเงินรวมของ PR
+      decision: const PENDING
+  - table: purchase_request
+    action: UPDATE
+    where: pr_id = path.prId, status = DRAFT
+    columns:
+      status: 'const SUBMITTED'
+      submitted_at: 'clock'
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const PR'
+      entity_id: 'path.prId'
+      action: 'const SUBMIT'
+      actor_id: 'caller.user_id'
+      detail: 'const ส่งอนุมัติ'
+      created_at: 'clock'
+
+decideApproval:
+  - table: approval
+    action: UPDATE
+    where: approval_id = path.approvalId, decision = PENDING
+    columns:
+      decision: 'request.decision'
+      comment: 'request.comment'
+      approver_id: 'caller.user_id'
+      decided_at: 'clock'
+  - table: purchase_request
+    action: UPDATE
+    when: อนุมัติขั้นสุดท้ายของ PR
+    columns:
+      status: 'const APPROVED'
+  - table: rfq
+    action: UPDATE
+    when: อนุมัติขั้นสุดท้ายของผลเลือกผู้ชนะ
+    columns:
+      status: 'const AWARDED'
+  - table: approval
+    action: DELETE
+    when: ปฏิเสธ (ลบทั้งชุดของเอกสารนั้น ประวัติอยู่ที่ audit_log)
+    columns: {}
+  - table: purchase_request
+    action: UPDATE
+    when: ปฏิเสธขั้นของ PR
+    columns:
+      status: 'const DRAFT'
+  - table: award
+    action: DELETE
+    when: ปฏิเสธผลเลือกผู้ชนะ
+    columns: {}
+  - table: rfq
+    action: UPDATE
+    when: ปฏิเสธผลเลือกผู้ชนะ
+    columns:
+      status: 'const OPEN'
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'calc PR หรือ RFQ ตามชนิดงาน'
+      entity_id: 'lookup approval.doc_id'
+      action: 'calc APPROVE หรือ REJECT'
+      actor_id: 'caller.user_id'
+      detail: 'calc request.comment หรือ "ขั้น N" เมื่อไม่มีความเห็น'
+      created_at: 'clock'
+
+createRfq:
+  - table: rfq
+    action: INSERT
+    columns:
+      rfq_no: doc-no RFQ
+      pr_id: request.prId
+      status: const OPEN
+      due_at: request.dueAt
+      created_by: caller.user_id
+      created_at: clock
+  - table: rfq_vendor
+    action: INSERT
+    per: vendorIds[]
+    columns:
+      rfq_id: 'row rfq.rfq_id'
+      vendor_id: 'request.vendorIds'
+      invited_at: 'clock'
+  - table: purchase_request
+    action: UPDATE
+    where: pr_id = request.prId, status = APPROVED
+    columns:
+      status: 'const IN_SOURCING'
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const RFQ'
+      entity_id: 'row rfq.rfq_id'
+      action: 'const CREATE'
+      actor_id: 'caller.user_id'
+      created_at: 'clock'
+
+recordQuotation:
+  - table: quotation
+    action: UPDATE
+    where: rfq_id = path.rfqId, vendor_id = request.vendorId, is_active = 1
+    columns:
+      is_active: 'const 0'
+  - table: quotation
+    action: INSERT
+    columns:
+      rfq_id: path.rfqId
+      vendor_id: request.vendorId
+      total_amount: calc ผลรวมของ ปัดเศษ 2 ตำแหน่ง (pr_item.quantity x unitPrice) ต่อบรรทัด
+      lead_time_days: request.leadTimeDays
+      is_active: const 1
+      submitted_at: clock
+  - table: quotation_item
+    action: INSERT
+    per: items[]
+    columns:
+      quotation_id: 'row quotation.quotation_id'
+      pr_item_id: 'request.items[].prItemId'
+      unit_price: 'request.items[].unitPrice'
+
+awardRfq:
+  - table: award
+    action: INSERT
+    columns:
+      rfq_id: 'path.rfqId'
+      quotation_id: 'request.quotationId'
+      reason: 'request.reason'
+      awarded_by: 'caller.user_id'
+      awarded_at: 'clock'
+  - table: rfq
+    action: UPDATE
+    where: rfq_id = path.rfqId, status = OPEN
+    columns:
+      status: 'const AWARD_PENDING'
+  - table: approval
+    action: INSERT
+    columns:
+      doc_type: const AWARD
+      doc_id: path.rfqId
+      step_no: const 1
+      required_role: calc COMMITTEE เมื่อราคารวมของผู้ชนะเกิน 200,000 นอกนั้น PROCUREMENT_HEAD (BR-05)
+      decision: const PENDING
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const RFQ'
+      entity_id: 'path.rfqId'
+      action: 'const AWARD'
+      actor_id: 'caller.user_id'
+      detail: 'request.reason'
+      created_at: 'clock'
+
+createPurchaseOrder:
+  - table: purchase_order
+    action: INSERT
+    when: ซื้อตรง (ไม่ส่ง rfqId)
+    columns:
+      po_no: 'doc-no PO'
+      pr_id: 'request.prId'
+      vendor_id: 'request.vendorId'
+      total_amount: 'calc ผลรวมของ ปัดเศษ 2 ตำแหน่ง (quantity x est_unit_price) ต่อบรรทัด'
+      status: 'const DRAFT'
+      created_by: 'caller.user_id'
+  - table: purchase_order
+    action: INSERT
+    when: จากผลประกวด (ส่ง rfqId)
+    columns:
+      po_no: 'doc-no PO'
+      pr_id: 'request.prId'
+      rfq_id: 'request.rfqId'
+      vendor_id: 'lookup quotation.vendor_id'
+      total_amount: 'calc ผลรวมของ ปัดเศษ 2 ตำแหน่ง (quantity x quotation_item.unit_price ของใบที่ชนะ) ต่อบรรทัด'
+      status: 'const DRAFT'
+      created_by: 'caller.user_id'
+  - table: po_item
+    action: INSERT
+    when: ซื้อตรง
+    per: รายการของ PR ต้นทางทุกรายการ
+    columns:
+      po_id: 'row purchase_order.po_id'
+      pr_item_id: 'lookup pr_item.pr_item_id'
+      quantity: 'lookup pr_item.quantity'
+      unit_price: 'lookup pr_item.est_unit_price'
+  - table: po_item
+    action: INSERT
+    when: จากผลประกวด
+    per: รายการของ PR ต้นทางทุกรายการ
+    columns:
+      po_id: 'row purchase_order.po_id'
+      pr_item_id: 'lookup pr_item.pr_item_id'
+      quantity: 'lookup pr_item.quantity'
+      unit_price: 'lookup quotation_item.unit_price'
+  - table: purchase_request
+    action: UPDATE
+    where: pr_id = request.prId
+    columns:
+      status: 'const ORDERED'
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const PO'
+      entity_id: 'row purchase_order.po_id'
+      action: 'const CREATE'
+      actor_id: 'caller.user_id'
+      created_at: 'clock'
+
+issuePurchaseOrder:
+  - table: purchase_order
+    action: UPDATE
+    where: po_id = path.poId, status = DRAFT
+    columns:
+      status: 'const ISSUED'
+      issued_at: 'clock'
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const PO'
+      entity_id: 'path.poId'
+      action: 'const ISSUE'
+      actor_id: 'caller.user_id'
+      created_at: 'clock'
+
+recordGoodsReceipt:
+  - table: goods_receipt
+    action: INSERT
+    columns:
+      gr_no: 'doc-no GR'
+      po_id: 'path.poId'
+      received_by: 'caller.user_id'
+      received_at: 'clock'
+      note: 'request.note'
+  - table: gr_item
+    action: INSERT
+    per: items[]
+    columns:
+      gr_id: 'row goods_receipt.gr_id'
+      po_item_id: 'request.items[].poItemId'
+      qty_received: 'request.items[].qtyReceived'
+      qty_rejected: 'request.items[].qtyRejected'
+  - table: purchase_order
+    action: UPDATE
+    where: po_id = path.poId
+    columns:
+      status: 'calc RECEIVED เมื่อทุกรายการรับสะสมเท่าจำนวนสั่ง นอกนั้น PARTIALLY_RECEIVED'
+  - table: purchase_request
+    action: UPDATE
+    when: PO เป็น RECEIVED
+    columns:
+      status: 'const CLOSED'
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const PO'
+      entity_id: 'path.poId'
+      action: 'const RECEIVE'
+      actor_id: 'caller.user_id'
+      created_at: 'clock'
+
+createVendor:
+  - table: vendor
+    action: INSERT
+    columns:
+      vendor_code: calc V ตามด้วยเลข 4 หลักของ vendor_id
+      name_th: request.nameTh
+      tax_id: request.taxId
+      email: request.email
+      status: const ACTIVE
+      created_at: clock
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const VENDOR'
+      entity_id: 'row vendor.vendor_id'
+      action: 'const CREATE'
+      actor_id: 'caller.user_id'
+      created_at: 'clock'
+
+setVendorStatus:
+  - table: vendor
+    action: UPDATE
+    where: vendor_id = path.vendorId
+    columns:
+      status: 'request.status'
+  - table: audit_log
+    action: INSERT
+    columns:
+      entity: 'const VENDOR'
+      entity_id: 'path.vendorId'
+      action: 'const STATUS'
+      actor_id: 'caller.user_id'
+      detail: 'request.reason'
+      created_at: 'clock'

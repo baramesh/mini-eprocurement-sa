@@ -178,6 +178,10 @@ documents:
         pieces: [04-arch-desc/components]
         columns: [{ title: โมดูล, field: title }, { title: หน้าที่, field: body }, { title: FR, field: frs }, { title: API operation, field: operations }]
       - { title: มุมมองขณะทำงาน (Runtime View), render: figure, pieces: ["04-arch-desc/views/v-06-*", "04-arch-desc/views/v-07-*", "04-arch-desc/views/v-08-*", "04-arch-desc/views/v-03-*", "04-arch-desc/views/v-04-*", "04-arch-desc/views/v-09-*", "04-arch-desc/views/v-10-*", "04-arch-desc/views/v-11-*", "04-arch-desc/views/v-12-*", "04-arch-desc/views/v-13-*", "04-arch-desc/views/v-14-*"] }
+      - title: แนวคิดที่ใช้ร่วมทุก operation
+        render: table
+        pieces: [04-arch-desc/concepts]
+        columns: [{ title: แนวคิด, field: title }, { title: ความหมายต่อการเขียนโค้ด, field: body }, { title: กติกาอยู่ที่, field: see }]
       - { title: โครงสร้างโค้ดของ API service (Development View), render: items, pieces: [04-arch-desc/development], heading: "{id} {title}" }
       - title: การติดตั้ง
         children:
@@ -270,6 +274,7 @@ documents:
     doc_code: MEP-API-001
     landscape: true
     chapters:
+      - { title: คู่มือสำหรับนักพัฒนา, render: prose, pieces: [06-api-contract/guide] }
       - title: หลักการทั่วไป
         lead: ["06-api-contract/conventions/cnv-00-*"]
         render: table
