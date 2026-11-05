@@ -180,6 +180,7 @@ documents:
       - { title: มุมมองขณะทำงาน (Runtime View), render: figure, pieces: ["04-arch-desc/views/v-06-*", "04-arch-desc/views/v-07-*", "04-arch-desc/views/v-08-*", "04-arch-desc/views/v-03-*", "04-arch-desc/views/v-04-*", "04-arch-desc/views/v-09-*", "04-arch-desc/views/v-10-*", "04-arch-desc/views/v-11-*", "04-arch-desc/views/v-12-*", "04-arch-desc/views/v-13-*", "04-arch-desc/views/v-14-*"] }
       - title: แนวคิดที่ใช้ร่วมทุก operation
         render: table
+        caption: แนวคิดที่ใช้ร่วมทุก operation
         pieces: [04-arch-desc/concepts]
         columns: [{ title: แนวคิด, field: title }, { title: ความหมายต่อการเขียนโค้ด, field: body }, { title: กติกาอยู่ที่, field: see }]
       - { title: โครงสร้างโค้ดของ API service (Development View), render: items, pieces: [04-arch-desc/development], heading: "{id} {title}" }
