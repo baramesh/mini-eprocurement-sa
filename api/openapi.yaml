@@ -58,7 +58,7 @@ paths:
     post:
       tags: [purchase-requests]
       operationId: createPurchaseRequest
-      summary: สร้างใบขอซื้อ (draft)
+      summary: สร้างใบขอซื้อฉบับร่าง
       x-fr: [FR-01, FR-14]
       x-roles: [REQUESTER]
       requestBody:
@@ -147,7 +147,7 @@ paths:
     get:
       tags: [approvals]
       operationId: listMyApprovals
-      summary: กล่องอนุมัติของผู้เรียก (เฉพาะขั้นที่ถึงบทบาทตน)
+      summary: กล่องอนุมัติของผู้เรียก เฉพาะขั้นที่ถึงบทบาทตน
       x-fr: [FR-04]
       x-roles: [DEPT_APPROVER, PROCUREMENT_HEAD, COMMITTEE]
       responses:
@@ -218,7 +218,7 @@ paths:
     get:
       tags: [rfqs]
       operationId: getRfq
-      summary: ดูรายละเอียด RFQ (รายการ PR และผู้ขายที่เชิญ)
+      summary: ดูรายละเอียด RFQ พร้อมรายการ PR และผู้ขายที่เชิญ
       x-fr: [FR-05, FR-06]
       x-roles: [PROCUREMENT, PROCUREMENT_HEAD, COMMITTEE]
       parameters:
@@ -306,7 +306,7 @@ paths:
     post:
       tags: [purchase-orders]
       operationId: createPurchaseOrder
-      summary: สร้าง PO (จากผลประกวดที่อนุมัติ หรือซื้อตรงวงเงินต่ำ)
+      summary: สร้าง PO จากผลประกวดที่อนุมัติหรือซื้อตรงวงเงินต่ำ
       x-fr: [FR-09, FR-14]
       x-roles: [PROCUREMENT]
       parameters:
