@@ -271,7 +271,6 @@ documents:
     doc_code: MEP-API-001
     landscape: true
     chapters:
-      - { title: คู่มือสำหรับนักพัฒนา, render: prose, pieces: [06-api-contract/guide] }
       - title: หลักการทั่วไป
         lead: ["06-api-contract/conventions/cnv-00-*"]
         render: items
@@ -295,7 +294,7 @@ documents:
     doc_code: MEP-ACR-001
     landscape: true
     chapters:
-      - { title: วัตถุประสงค์และวิธีใช้, render: prose, pieces: [01-requirements/acceptance-criteria-guide] }
+      - { title: วัตถุประสงค์และขอบเขต, render: prose, pieces: [01-requirements/acceptance-criteria-guide] }
       - title: เกณฑ์ตรวจรับรายข้อกำหนด
         render: table
         caption: เกณฑ์ตรวจรับของข้อกำหนดเชิงหน้าที่
