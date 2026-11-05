@@ -249,11 +249,7 @@ documents:
     doc_code: MEP-UXU-001
     landscape: true
     chapters:
-      - title: Design System
-        render: table
-        caption: กติกากลางของส่วนติดต่อผู้ใช้
-        pieces: [05-ui-desc/global-rules]
-        columns: [{ title: หัวข้อ, field: title }, { title: กติกา, field: body }]
+      - { title: Design System, render: items, pieces: [05-ui-desc/global-rules], heading: "{id} {title}" }
       - title: User Interface
         children:
           - title: ภาพรวมหน้าจอ
@@ -278,10 +274,9 @@ documents:
       - { title: คู่มือสำหรับนักพัฒนา, render: prose, pieces: [06-api-contract/guide] }
       - title: หลักการทั่วไป
         lead: ["06-api-contract/conventions/cnv-00-*"]
-        render: table
-        caption: หลักการทั่วไปของ API
+        render: items
+        heading: "{id} {title}"
         pieces: ["06-api-contract/conventions/cnv-0[1-9]-*", "06-api-contract/conventions/cnv-1[0-9]-*"]
-        columns: [{ title: หัวข้อ, field: title }, { title: ข้อกำหนด, field: body }]
       - title: รูปแบบข้อผิดพลาด
         lead: ["06-api-contract/errors/err-00-*"]
         children:
