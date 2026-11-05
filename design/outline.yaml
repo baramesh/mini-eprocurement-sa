@@ -253,6 +253,7 @@ documents:
       - title: User Interface
         children:
           - title: ภาพรวมหน้าจอ
+            lead: ["05-ui-desc/ia-link/lk-01-*"]
             render: table
             caption: ภาพรวมหน้าจอ
             pieces: [05-ui-desc/screens]

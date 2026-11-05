@@ -42,6 +42,7 @@ owasp:                     { fields: { evidence: [AC] }, required: [evidence] }
 pipeline:                  { prose: free, fields: {}, standalone: true }
 principles:                { prose: free, fields: {}, standalone: true }
 concepts:                  { fields: { see: [V, CNV], rules: [BR], nfr: [NFR], errors: [ERR], adrs: [ADR], tables: [table] }, required_any: [see] }
+ia-link:                   { fields: {}, standalone: true }
 quality:                   { fields: { nfr: [NFR], verified_by: [AC], tables: [table] }, required: [nfr] }
 scope:                     { fields: {}, standalone: true }
 screens:                   { fields: { usecases: [UC], frs: [FR], operations: [api], rules: [BR], errors: [ERR] }, required: [usecases, frs, operations], prose_ok: [SCR] }
